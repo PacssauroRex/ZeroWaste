@@ -1,10 +1,6 @@
 ## 👥 Integrantes
 
-- [Arthur de Sá](https://github.com/ruhtra5000)
-- [Caio Rocha](https://github.com/caiogmrocha)
-- [Guilherme Paes](https://github.com/Guy1717)
-- [João Victor Santos](https://github.com/JoaoVLSantos)
-- [Victor Cauã](https://github.com/PacssauroRex)
+[Arthur de Sá](https://github.com/ruhtra5000) · [Caio Rocha](https://github.com/caiogmrocha) · [Guilherme Paes](https://github.com/Guy1717) · [João Victor Santos](https://github.com/JoaoVLSantos) · [Victor Cauã](https://github.com/PacssauroRex)
 
 ---
 
