@@ -1,8 +1,8 @@
 package com.zerowaste.zerowaste.domain.entities.user;
 
 public enum UserRole {
-    USER("user"),
-    ADMIN("admin");
+    USER("USER"),
+    ADMIN("ADMIN");
 
     private final String role;
 
