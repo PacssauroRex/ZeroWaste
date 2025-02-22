@@ -13,7 +13,7 @@ public class RegisterUserService {
     @Autowired
     private UsersRepository usersRepository;
 
-    public void execute(RegisterUserServiceDto dto) throws UserWithSameEmailAlreadyExistsException {
+    public void execute(RegisterUserDTO dto) throws UserWithSameEmailAlreadyExistsException {
         var user = usersRepository.findByEmail(dto.email());
 
         if (user != null) {
