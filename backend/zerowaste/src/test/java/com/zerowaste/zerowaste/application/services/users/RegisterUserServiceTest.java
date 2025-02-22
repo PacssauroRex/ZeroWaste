@@ -39,7 +39,7 @@ public class RegisterUserServiceTest {
     @DisplayName("It should throw UserWithSameEmailAlreadyExistsException when user with same email exists")
     public void itShouldThrowUserWithSameEmailExistsException() {
         // Arrange
-        var dto = new RegisterUserServiceDto(
+        var dto = new RegisterUserDTO(
             "John Doe",
             "john@doe.com",
             "some_strong_password",
@@ -56,7 +56,7 @@ public class RegisterUserServiceTest {
     @DisplayName("It should be able to register user")
     public void itShouldRegisterUser() {
         // Arrange
-        var dto = new RegisterUserServiceDto(
+        var dto = new RegisterUserDTO(
             "John Doe",
             "john@doe.com",
             "some_strong_password",
