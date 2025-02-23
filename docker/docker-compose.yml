@@ -1,0 +1,10 @@
+services:
+  zero-waste-postgres: 
+    image: postgres:17.4-alpine
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: zero_waste
+      POSTGRES_PASSWORD: zero_waste
+      POSTGRES_DB: zero_waste
