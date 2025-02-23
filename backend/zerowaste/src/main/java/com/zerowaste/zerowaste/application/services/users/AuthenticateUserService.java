@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,6 +23,8 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zerowaste.zerowaste.application.interfaces.UsersRepository;
 import com.zerowaste.zerowaste.domain.entities.user.User;
 
@@ -58,15 +61,25 @@ public class AuthenticateUserService extends OncePerRequestFilter implements Use
     private String generateToken(User user) {
         try {
             var algorithm = Algorithm.HMAC256(this.jwtSecret);
+
+            var payload = Map.of(
+                "email", user.getEmail(),
+                "role", user.getRole().toString()
+            );
+
+            ObjectMapper mapper = new ObjectMapper();
+            
+            var stringJsonPayload = mapper.writeValueAsString(payload);
+
             var token = JWT
                     .create()
                     .withIssuer("zerowaste")
-                    .withSubject(user.getEmail())
+                    .withSubject(stringJsonPayload)
                     .withExpiresAt(this.getExpirationTime())
                     .sign(algorithm);
 
             return token;
-        } catch (JWTCreationException e) {
+        } catch (JWTCreationException | JsonProcessingException e) {
             throw new RuntimeException("Erro ao gerar token", e);
         }
     }
@@ -75,13 +88,19 @@ public class AuthenticateUserService extends OncePerRequestFilter implements Use
         try {
             var algorithm = Algorithm.HMAC256(this.jwtSecret);
 
-            return JWT
+            var stringJsonPayload = JWT
                     .require(algorithm)
                     .withIssuer("zerowaste")
                     .build()
                     .verify(token)
                     .getSubject();
-        } catch (JWTVerificationException e) {
+
+            ObjectMapper mapper = new ObjectMapper();
+
+            var payload = mapper.readValue(stringJsonPayload, Map.class);
+
+            return (String) payload.get("email");
+        } catch (JWTVerificationException | JsonProcessingException e) {
             return "";
         }
     }
