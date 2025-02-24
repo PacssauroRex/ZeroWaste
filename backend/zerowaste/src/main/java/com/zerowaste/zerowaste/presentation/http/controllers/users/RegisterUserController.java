@@ -29,13 +29,14 @@ public class RegisterUserController {
             registerUserService.execute(dto);
 
             return ResponseEntity.ok(Map.of("message", "User registered successfully"));
+        } catch (UserWithSameEmailAlreadyExistsException e) {
+            return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(Map.of("message", e.getMessage()));
         } catch (Exception e) {
-            switch (e) {
-                case UserWithSameEmailAlreadyExistsException ex:
-                    return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("message", e.getMessage()));
-                default:
-                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("message", "Internal server error"));
-            }
+            return ResponseEntity
+            .status(HttpStatus.INTERNAL_SERVER_ERROR)
+            .body(Map.of("message", "Internal server error"));
         }
     }
 }

@@ -15,6 +15,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import com.zerowaste.zerowaste.application.interfaces.UsersRepository;
 import com.zerowaste.zerowaste.application.services.users.exceptions.UserWithSameEmailAlreadyExistsException;
@@ -32,6 +33,7 @@ public class RegisterUserServiceTest {
 
     @BeforeEach
     public void setup() {
+        ReflectionTestUtils.setField(registerUserService, "bcryptEncoderStrength", 10);
         MockitoAnnotations.openMocks(this);
     }
 
