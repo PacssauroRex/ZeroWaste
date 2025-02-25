@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { jwtDecode } from 'jwt-decode';
+import { User } from './user';
 
 @Injectable({
   providedIn: 'root'
@@ -51,5 +52,20 @@ export class AuthService {
 
   getToken(): string | null {
     return localStorage.getItem('token');
+  }
+
+  async register(user: User): Promise<User | null> {
+    try {
+      const response = await fetch(this.apiURL, {
+        method:'POST',
+        headers: { 'Content-Type': 'application/json'},
+        body: JSON.stringify(user)
+      });
+      return await response.json();
+    }
+    catch (err) {
+      console.error("Erro ao registrar novo usuário: ", err);
+      return null;
+    }
   }
 }
