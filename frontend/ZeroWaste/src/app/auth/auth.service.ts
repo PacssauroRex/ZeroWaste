@@ -7,7 +7,7 @@ import { User } from './user';
 })
 export class AuthService {
 
-  private apiURL = "http://localhost:1717/auth";
+  private apiURL = "http://localhost:8080";
 
   async login(email: string, password: string): Promise<boolean> {
     try{
@@ -53,7 +53,7 @@ export class AuthService {
   getToken(): string | null {
     return localStorage.getItem('token');
   }
-
+  
   async register(user: User): Promise<User | null> {
     try {
       const response = await fetch(this.apiURL, {
