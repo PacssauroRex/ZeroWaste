@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { jwtDecode} from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root'
@@ -27,5 +28,28 @@ export class AuthService {
       return false;
     }
   }
+}
+
+isAuthenticated(): boolean {
+  return !!this.getToken();
+}
+
+hasRole(requiredRole: string): boolean {
+  const token = this.getToken();
+  if (!token) {
+    return false;
+  }
+  try {
+    const decodedToken: any = jwtDecode(token);
+    return decodedToken.role === requiredRole;
+  } catch (error) {
+    console.error('Erro de token', error);
+    return false;    
+  }
+
+getToken(): string | null {
+  return localStorage.getIem('token');
+}
+
 }
 
