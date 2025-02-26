@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-logout',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   template: `
     <button (click)="logout()" *ngIf="isAuthenticated()">
       Logout
