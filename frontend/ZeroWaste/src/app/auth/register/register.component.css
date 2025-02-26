@@ -1,6 +1,6 @@
 
 form {
-    height: 520px;
+    height: 600px;
     width: 400px;
     background-color: rgba(255,255,255,0.13);
     position: absolute;
@@ -28,18 +28,18 @@ form h2{
     text-align: center;
 }
 
-form div {
-    padding-top: 5px;
+form div#erros {
+    padding-top: 7px;
 }
 
 label{
     display: block;
-    margin-top: 30px;
+    margin-top: 25px;
     font-size: 16px;
     font-weight: 500;
 }
 
-input{
+input {
     display: block;
     height: 50px;
     width: 95%;
@@ -53,7 +53,22 @@ input{
     font-weight: 300;
 }
 
-button{
+div#checkbox {
+    display: block;
+    padding-top: 15px;
+}
+
+input.checkbox {
+    display: inline;
+    height: 20px;
+    width: 20px;
+}
+
+label#checkbox {
+    display: inline;
+}
+
+button {
     margin-top: 40px;
     width: 100%;
     background-color: #ffffff;

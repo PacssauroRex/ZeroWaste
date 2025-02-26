@@ -55,8 +55,9 @@ export class AuthService {
   }
   
   async register(user: User): Promise<User | null> {
+    const url = this.apiURL + '/users';
     try {
-      const response = await fetch(this.apiURL, {
+      const response = await fetch(url, {
         method:'POST',
         headers: { 'Content-Type': 'application/json'},
         body: JSON.stringify(user)
