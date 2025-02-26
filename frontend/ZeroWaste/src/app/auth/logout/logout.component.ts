@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [CommonModule],
   template: `
-    <button (click)="logout()" *ngIf="isAuthenticated()">
+    <button class="logout-button" (click)="logout()" *ngIf="isAuthenticated()">
       Logout
   </button>
   `,
