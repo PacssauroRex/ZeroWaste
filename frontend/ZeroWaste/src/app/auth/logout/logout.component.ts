@@ -6,7 +6,11 @@ import { inject } from '@angular/core';
   selector: 'app-logout',
   standalone: true,
   imports: [],
-  templateUrl: './logout.component.html',
+  template: `
+    <button (click)="logout()" *ngIf="isAuthenticated()">
+      Logout
+  </button>
+  `,
   styleUrl: './logout.component.css'
 })
 
