@@ -11,14 +11,14 @@ export class AuthService {
 
   async login(email: string, password: string): Promise<boolean> {
     const url = this.apiURL + '/users/login'
-    try{
+    try {
       const resposta = await fetch(url, {
         method: 'POST',
-        headers: {'Content-Type': 'application/json'},
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
       });
 
-      if(!resposta.ok){
+      if (!resposta.ok) {
         throw new Error('Login Falhou');
       }
 
@@ -33,7 +33,7 @@ export class AuthService {
 
 
   isAuthenticated(): boolean {
-    return !! this.getToken();
+    return !!this.getToken();
   }
 
   hasRole(requiredRole: string): boolean {
@@ -42,11 +42,11 @@ export class AuthService {
       return false;
     }
     try {
-      const decodedToken: any = jwtDecode(token); 
+      const decodedToken: any = jwtDecode(token);
       return decodedToken.role === requiredRole;
     } catch (error) {
       console.error('Erro de token', error);
-      return false;    
+      return false;
     }
 
   }
@@ -54,13 +54,13 @@ export class AuthService {
   getToken(): string | null {
     return localStorage.getItem('token');
   }
-  
+
   async register(user: User): Promise<User | null> {
     const url = this.apiURL + '/users';
     try {
       const response = await fetch(url, {
-        method:'POST',
-        headers: { 'Content-Type': 'application/json'},
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(user)
       });
       return await response.json();
@@ -69,5 +69,9 @@ export class AuthService {
       console.error("Erro ao registrar novo usuário: ", err);
       return null;
     }
+  }
+
+  logout(): void {
+    localStorage.removeItem('token');
   }
 }
