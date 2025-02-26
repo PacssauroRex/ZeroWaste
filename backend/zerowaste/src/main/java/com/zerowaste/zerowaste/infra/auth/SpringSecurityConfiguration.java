@@ -26,9 +26,11 @@ public class SpringSecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
         .csrf(csrf -> csrf.disable())
+        .cors(cors -> cors.disable())
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(authorize -> authorize
             .requestMatchers(HttpMethod.POST, "/users", "/users/login").permitAll()
+            .requestMatchers(HttpMethod.OPTIONS, "/users", "/users/login").permitAll()
             .requestMatchers(HttpMethod.GET, "/users/check-auth-token").hasRole("USER")
             .anyRequest().authenticated()
         )

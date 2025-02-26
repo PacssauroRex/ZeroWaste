@@ -19,14 +19,15 @@ export class LoginComponent {
 
   loginForm: FormGroup = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
-    password: ['', Validators.required]
+    senha: ['', Validators.required]
   });
 
   onSubmit() {
     if (this.loginForm.valid) {
-      const { email, password } = this.loginForm.value;
-      this.authService.login(email, password)
-      .then(user => this.router.navigate(['/home']))
+      const { email, senha } = this.loginForm.value;
+
+      this.authService.login(email, senha)
+      .then(() => this.router.navigate(['/home']), () => this.router.navigate(['/login']))
       .catch(err => alert('Login error: ' + err));
     }
   }

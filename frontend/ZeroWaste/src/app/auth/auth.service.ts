@@ -10,8 +10,9 @@ export class AuthService {
   private apiURL = "http://localhost:8080";
 
   async login(email: string, password: string): Promise<boolean> {
+    const url = this.apiURL + '/users/login'
     try{
-      const resposta = await fetch(this.apiURL, {
+      const resposta = await fetch(url, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({ email, password }),
