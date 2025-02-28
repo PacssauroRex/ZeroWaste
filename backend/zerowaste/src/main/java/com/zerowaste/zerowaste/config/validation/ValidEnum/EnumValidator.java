@@ -1,4 +1,4 @@
-package com.zerowaste.zerowaste.infra.validation.ValidEnum;
+package com.zerowaste.zerowaste.config.validation.ValidEnum;
 
 import java.util.List;
 import java.util.stream.Collectors;

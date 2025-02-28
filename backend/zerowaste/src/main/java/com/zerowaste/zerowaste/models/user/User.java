@@ -1,4 +1,4 @@
-package com.zerowaste.zerowaste.domain.models.user;
+package com.zerowaste.zerowaste.models.user;
 
 import java.util.Collection;
 import java.util.Date;

@@ -1,4 +1,4 @@
-package com.zerowaste.zerowaste.infra.http;
+package com.zerowaste.zerowaste.config.http;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

@@ -1,4 +1,4 @@
-package com.zerowaste.zerowaste.infra.validation;
+package com.zerowaste.zerowaste.config.validation;
 
 import java.util.List;
 import java.util.Map;
