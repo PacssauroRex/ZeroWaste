@@ -1,4 +1,4 @@
-package com.zerowaste.zerowaste.application.services.users;
+package com.zerowaste.zerowaste.services.users;
 
 import com.zerowaste.zerowaste.domain.entities.user.UserRole;
 import com.zerowaste.zerowaste.infra.validation.ValidEnum.ValidEnum;

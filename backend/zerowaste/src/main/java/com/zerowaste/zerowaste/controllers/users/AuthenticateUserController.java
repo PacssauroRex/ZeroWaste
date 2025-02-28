@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.zerowaste.zerowaste.application.services.users.AuthenticateUserDTO;
-import com.zerowaste.zerowaste.application.services.users.AuthenticateUserService;
+import com.zerowaste.zerowaste.services.users.AuthenticateUserDTO;
+import com.zerowaste.zerowaste.services.users.AuthenticateUserService;
 
 import jakarta.validation.Valid;
 

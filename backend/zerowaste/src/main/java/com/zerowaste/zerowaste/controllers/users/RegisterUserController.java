@@ -10,12 +10,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.zerowaste.zerowaste.application.services.users.RegisterUserService;
-import com.zerowaste.zerowaste.application.services.users.exceptions.UserWithSameEmailAlreadyExistsException;
+import com.zerowaste.zerowaste.services.users.RegisterUserDTO;
+import com.zerowaste.zerowaste.services.users.RegisterUserService;
+import com.zerowaste.zerowaste.services.users.exceptions.UserWithSameEmailAlreadyExistsException;
 
 import jakarta.validation.Valid;
-
-import com.zerowaste.zerowaste.application.services.users.RegisterUserDTO;
 
 @RestController
 @RequestMapping("/users")

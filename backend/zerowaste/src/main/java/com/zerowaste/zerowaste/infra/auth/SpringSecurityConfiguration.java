@@ -14,7 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.zerowaste.zerowaste.application.services.users.AuthenticateUserService;
+import com.zerowaste.zerowaste.services.users.AuthenticateUserService;
 
 @Configuration
 @EnableWebSecurity

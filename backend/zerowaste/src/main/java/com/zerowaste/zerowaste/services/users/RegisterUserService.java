@@ -1,4 +1,4 @@
-package com.zerowaste.zerowaste.application.services.users;
+package com.zerowaste.zerowaste.services.users;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -6,9 +6,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.zerowaste.zerowaste.application.interfaces.UsersRepository;
-import com.zerowaste.zerowaste.application.services.users.exceptions.UserWithSameEmailAlreadyExistsException;
 import com.zerowaste.zerowaste.domain.entities.user.User;
 import com.zerowaste.zerowaste.domain.entities.user.UserRole;
+import com.zerowaste.zerowaste.services.users.exceptions.UserWithSameEmailAlreadyExistsException;
 
 @Service
 public class RegisterUserService {
