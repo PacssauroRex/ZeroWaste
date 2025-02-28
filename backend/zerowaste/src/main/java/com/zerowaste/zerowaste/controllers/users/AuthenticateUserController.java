@@ -1,4 +1,4 @@
-package com.zerowaste.zerowaste.presentation.http.controllers.users;
+package com.zerowaste.zerowaste.controllers.users;
 
 import java.util.Map;
 

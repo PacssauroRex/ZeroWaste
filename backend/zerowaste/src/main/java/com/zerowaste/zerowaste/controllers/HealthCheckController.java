@@ -1,4 +1,4 @@
-package com.zerowaste.zerowaste.presentation.http.controllers;
+package com.zerowaste.zerowaste.controllers;
 
 import java.util.HashMap;
 import java.util.Map;
