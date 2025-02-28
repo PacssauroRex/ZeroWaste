@@ -19,7 +19,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import com.zerowaste.zerowaste.models.user.User;
 import com.zerowaste.zerowaste.models.user.UserRole;
-import com.zerowaste.zerowaste.repositories.interfaces.UsersRepository;
+import com.zerowaste.zerowaste.repositories.UsersRepository;
 import com.zerowaste.zerowaste.services.users.RegisterUserDTO;
 import com.zerowaste.zerowaste.services.users.RegisterUserService;
 import com.zerowaste.zerowaste.services.users.exceptions.UserWithSameEmailAlreadyExistsException;

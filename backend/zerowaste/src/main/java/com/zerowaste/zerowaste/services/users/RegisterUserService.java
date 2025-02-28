@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.zerowaste.zerowaste.models.user.User;
 import com.zerowaste.zerowaste.models.user.UserRole;
-import com.zerowaste.zerowaste.repositories.interfaces.UsersRepository;
+import com.zerowaste.zerowaste.repositories.UsersRepository;
 import com.zerowaste.zerowaste.services.users.exceptions.UserWithSameEmailAlreadyExistsException;
 
 @Service

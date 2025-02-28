@@ -1,4 +1,4 @@
-package com.zerowaste.zerowaste.repositories.interfaces;
+package com.zerowaste.zerowaste.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
