@@ -6,8 +6,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.zerowaste.zerowaste.application.interfaces.UsersRepository;
-import com.zerowaste.zerowaste.domain.entities.user.User;
-import com.zerowaste.zerowaste.domain.entities.user.UserRole;
+import com.zerowaste.zerowaste.domain.models.user.User;
+import com.zerowaste.zerowaste.domain.models.user.UserRole;
 import com.zerowaste.zerowaste.services.users.exceptions.UserWithSameEmailAlreadyExistsException;
 
 @Service

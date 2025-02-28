@@ -26,7 +26,7 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zerowaste.zerowaste.application.interfaces.UsersRepository;
-import com.zerowaste.zerowaste.domain.entities.user.User;
+import com.zerowaste.zerowaste.domain.models.user.User;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

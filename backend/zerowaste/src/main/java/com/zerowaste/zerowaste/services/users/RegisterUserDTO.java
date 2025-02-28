@@ -1,6 +1,6 @@
 package com.zerowaste.zerowaste.services.users;
 
-import com.zerowaste.zerowaste.domain.entities.user.UserRole;
+import com.zerowaste.zerowaste.domain.models.user.UserRole;
 import com.zerowaste.zerowaste.infra.validation.ValidEnum.ValidEnum;
 
 import jakarta.validation.constraints.Email;
