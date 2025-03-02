@@ -17,12 +17,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import com.zerowaste.zerowaste.dtos.RegisterUserDTO;
-import com.zerowaste.zerowaste.models.user.User;
-import com.zerowaste.zerowaste.models.user.UserRole;
-import com.zerowaste.zerowaste.repositories.UsersRepository;
-import com.zerowaste.zerowaste.services.users.RegisterUserService;
-import com.zerowaste.zerowaste.services.users.exceptions.UserWithSameEmailAlreadyExistsException;
+import com.zerowaste.dtos.RegisterUserDTO;
+import com.zerowaste.models.user.User;
+import com.zerowaste.models.user.UserRole;
+import com.zerowaste.repositories.UsersRepository;
+import com.zerowaste.services.users.RegisterUserService;
+import com.zerowaste.services.users.exceptions.UserWithSameEmailAlreadyExistsException;
 
 @ExtendWith(MockitoExtension.class)
 public class RegisterUserServiceTest {
