@@ -1,4 +1,4 @@
-package com.zerowaste.zerowaste.config.validation.ValidEnum;
+package com.zerowaste.zerowaste.utils.validation.ValidEnum;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

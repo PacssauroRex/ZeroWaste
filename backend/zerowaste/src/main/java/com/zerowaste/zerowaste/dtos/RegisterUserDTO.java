@@ -1,7 +1,7 @@
 package com.zerowaste.zerowaste.dtos;
 
-import com.zerowaste.zerowaste.config.validation.ValidEnum.ValidEnum;
 import com.zerowaste.zerowaste.models.user.UserRole;
+import com.zerowaste.zerowaste.utils.validation.ValidEnum.ValidEnum;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
