@@ -1,4 +1,4 @@
-package com.zerowaste.zerowaste.services.users;
+package com.zerowaste.zerowaste.dtos;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

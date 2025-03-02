@@ -25,6 +25,7 @@ import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.zerowaste.zerowaste.dtos.AuthenticateUserDTO;
 import com.zerowaste.zerowaste.models.user.User;
 import com.zerowaste.zerowaste.repositories.UsersRepository;
 

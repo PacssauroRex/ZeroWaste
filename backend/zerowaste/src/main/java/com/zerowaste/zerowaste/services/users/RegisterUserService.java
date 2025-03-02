@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.zerowaste.zerowaste.dtos.RegisterUserDTO;
 import com.zerowaste.zerowaste.models.user.User;
 import com.zerowaste.zerowaste.models.user.UserRole;
 import com.zerowaste.zerowaste.repositories.UsersRepository;
