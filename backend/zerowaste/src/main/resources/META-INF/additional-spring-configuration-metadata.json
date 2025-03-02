@@ -1,0 +1,17 @@
+{"properties": [
+  {
+    "name": "app.bcrypt.encoder.strength",
+    "type": "java.lang.String",
+    "description": "Bcrypt encoder strength"
+  },
+  {
+    "name": "app.jwt.secret",
+    "type": "java.lang.String",
+    "description": "JWT secret"
+  },
+  {
+    "name": "app.gmt.offset",
+    "type": "java.lang.String",
+    "description": "GMT offset"
+  }
+]}
