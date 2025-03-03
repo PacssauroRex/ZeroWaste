@@ -1,6 +1,6 @@
 package com.zerowaste.models.product;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -20,7 +20,7 @@ public class Product {
     public Product() {}
 
     public Product(Long id, String name, String description, String brand, ProductCategory category, Double unitPrice,
-        Double promotionPrice, Integer stock, Date expiresAt, Date createdAt, Date updatedAt, Date deletedAt) {
+        Double promotionPrice, Integer stock, LocalDate expiresAt, LocalDate createdAt, LocalDate updatedAt, LocalDate deletedAt) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -56,32 +56,32 @@ public class Product {
     @Column(name = "unit_price")
     private Double unitPrice;
 
-    @Column(name = "promotion_price")
+    @Column(name = "promotion_price", nullable = true)
     private Double promotionPrice;
 
     @Column(name = "stock")
     private Integer stock;
 
     @Column(name = "expires_at")
-    private Date expiresAt;
+    private LocalDate expiresAt;
 
     @Column(name = "created_at")
-    private Date createdAt;
+    private LocalDate createdAt;
 
     @Column(name = "updated_at", nullable = true)
-    private Date updatedAt;
+    private LocalDate updatedAt;
 
     @Column(name = "deleted_at", nullable = true)
-    private Date deletedAt;
+    private LocalDate deletedAt;
 
     @PrePersist
     public void prePersist() {
-        this.createdAt = new Date();
+        this.createdAt = LocalDate.now();
     }
 
     @PreUpdate
     public void preUpdate() {
-        this.updatedAt = new Date();
+        this.updatedAt = LocalDate.now();
     }
 
     public Long getId() {
@@ -148,35 +148,35 @@ public class Product {
         this.stock = stock;
     }
 
-    public Date getExpiresAt() {
+    public LocalDate getExpiresAt() {
         return expiresAt;
     }
 
-    public void setExpiresAt(Date expiresAt) {
+    public void setExpiresAt(LocalDate expiresAt) {
         this.expiresAt = expiresAt;
     }
 
-    public Date getCreatedAt() {
+    public LocalDate getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(LocalDate createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Date getUpdatedAt() {
+    public LocalDate getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Date updatedAt) {
+    public void setUpdatedAt(LocalDate updatedAt) {
         this.updatedAt = updatedAt;
     }
 
-    public Date getDeletedAt() {
+    public LocalDate getDeletedAt() {
         return deletedAt;
     }
 
-    public void setDeletedAt(Date deletedAt) {
+    public void setDeletedAt(LocalDate deletedAt) {
         this.deletedAt = deletedAt;
     }
 
