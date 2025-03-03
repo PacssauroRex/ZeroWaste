@@ -1,4 +1,4 @@
-package com.zerowaste.zerowaste.application.services.users;
+package com.zerowaste.zerowaste.services.users;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
