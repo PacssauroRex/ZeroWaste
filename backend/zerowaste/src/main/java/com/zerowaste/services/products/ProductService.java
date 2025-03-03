@@ -1,5 +1,6 @@
 package com.zerowaste.services.products;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,6 +11,7 @@ import com.zerowaste.dtos.EditProductDTO;
 import com.zerowaste.models.product.Product;
 import com.zerowaste.models.product.ProductCategory;
 import com.zerowaste.repositories.ProductsRepository;
+import com.zerowaste.services.products.exceptions.ProductDeletedException;
 import com.zerowaste.services.products.exceptions.ProductNotFoundException;
 
 @Service
@@ -30,11 +32,14 @@ public class ProductService {
         return p.get();
     }
 
-    public void edit (Long id, EditProductDTO dto) throws ProductNotFoundException {
+    public void edit (Long id, EditProductDTO dto) throws ProductNotFoundException, ProductDeletedException {
         Product p = productsRepository.findById(id).get();
         
         if(p == null)
             throw new ProductNotFoundException("Produto não encontrado");
+
+        if(p.getDeletedAt() != null)
+            throw new ProductDeletedException("O produto em questão foi deletado!");
         
         p.setName(dto.name());
         p.setDescription(dto.description());
@@ -44,6 +49,7 @@ public class ProductService {
         p.setPromotionPrice(dto.promotionPrice());
         p.setExpiresAt(dto.expiresAt());
         p.setStock(dto.stock());
+        p.setUpdatedAt(new Date());
 
         productsRepository.save(p);
     }
