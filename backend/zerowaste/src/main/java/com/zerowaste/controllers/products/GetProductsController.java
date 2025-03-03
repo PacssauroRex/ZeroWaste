@@ -27,7 +27,7 @@ public class GetProductsController {
         }
         catch (Exception err) {
             return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(Map.of("error", err.getMessage()));
         }
     }
