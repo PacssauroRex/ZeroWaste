@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.zerowaste.services.products.ProductService;
-import com.zerowaste.services.products.exceptions.ProductDeletedException;
 import com.zerowaste.services.products.exceptions.ProductNotFoundException;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,11 +29,6 @@ public class GetProductIdController {
         catch (ProductNotFoundException err) {
             return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
-                .body(Map.of("error", err.getMessage()));
-        }
-        catch (ProductDeletedException err) {
-            return ResponseEntity
-                .status(HttpStatus.GONE)
                 .body(Map.of("error", err.getMessage()));
         }
         catch(Exception err) {

@@ -11,7 +11,6 @@ import com.zerowaste.dtos.EditProductDTO;
 import com.zerowaste.models.product.Product;
 import com.zerowaste.models.product.ProductCategory;
 import com.zerowaste.repositories.ProductsRepository;
-import com.zerowaste.services.products.exceptions.ProductDeletedException;
 import com.zerowaste.services.products.exceptions.ProductNotFoundException;
 
 @Service
@@ -24,25 +23,19 @@ public class ProductService {
         return productsRepository.findAllNotDeleted();
     }
     
-    public Product getById (Long id) throws ProductNotFoundException, ProductDeletedException {
+    public Product getById (Long id) throws ProductNotFoundException {
         Optional<Product> p = productsRepository.findById(id);
-        if(!p.isPresent()) 
+        if(!p.isPresent() || p.get().getDeletedAt() != null) 
             throw new ProductNotFoundException("Produto não encontrado");
-        
-        if(p.get().getDeletedAt() != null)
-            throw new ProductDeletedException("O produto em questão foi deletado");
 
         return p.get();
     }
 
-    public void edit (Long id, EditProductDTO dto) throws ProductNotFoundException, ProductDeletedException {
+    public void edit (Long id, EditProductDTO dto) throws ProductNotFoundException {
         Product p = productsRepository.findById(id).get();
         
-        if(p == null)
+        if(p == null || p.getDeletedAt() != null)
             throw new ProductNotFoundException("Produto não encontrado");
-
-        if(p.getDeletedAt() != null)
-            throw new ProductDeletedException("O produto em questão foi deletado!");
         
         p.setName(dto.name());
         p.setDescription(dto.description());
@@ -57,14 +50,11 @@ public class ProductService {
         productsRepository.save(p);
     }
 
-    public void delete (Long id) throws ProductNotFoundException, ProductDeletedException {
+    public void delete (Long id) throws ProductNotFoundException {
         Product p = productsRepository.findById(id).get();
 
-        if(p == null)
+        if(p == null || p.getDeletedAt() != null)
             throw new ProductNotFoundException("Produto não encontrado");
-
-        if(p.getDeletedAt() != null)
-            throw new ProductDeletedException("O produto em questão foi deletado!");
 
         p.setDeletedAt(LocalDate.now());
         

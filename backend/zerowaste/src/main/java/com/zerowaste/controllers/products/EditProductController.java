@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.zerowaste.dtos.EditProductDTO;
 import com.zerowaste.services.products.ProductService;
-import com.zerowaste.services.products.exceptions.ProductDeletedException;
 import com.zerowaste.services.products.exceptions.ProductNotFoundException;
 
 import jakarta.validation.Valid;
@@ -35,11 +34,6 @@ public class EditProductController {
         catch (ProductNotFoundException err) {
             return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
-                .body(Map.of("error", err.getMessage()));
-        }
-        catch (ProductDeletedException err) {
-            return ResponseEntity
-                .status(HttpStatus.GONE)
                 .body(Map.of("error", err.getMessage()));
         }
         catch(Exception err) {
