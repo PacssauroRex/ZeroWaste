@@ -24,11 +24,14 @@ public class ProductService {
         return productsRepository.findAll();
     }
     
-    public Product getById (Long id) throws ProductNotFoundException {
+    public Product getById (Long id) throws ProductNotFoundException, ProductDeletedException {
         Optional<Product> p = productsRepository.findById(id);
-        if(!p.isPresent()) {
+        if(!p.isPresent()) 
             throw new ProductNotFoundException("Produto não encontrado");
-        }
+        
+        if(p.get().getDeletedAt() == null)
+            throw new ProductDeletedException("O produto em questão foi deletado");
+
         return p.get();
     }
 
