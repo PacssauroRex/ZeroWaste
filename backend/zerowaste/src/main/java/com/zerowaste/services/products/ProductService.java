@@ -21,7 +21,7 @@ public class ProductService {
     private ProductsRepository productsRepository;
 
     public List<Product> getAll () {
-        return productsRepository.findAll();
+        return productsRepository.findAllNotDeleted();
     }
     
     public Product getById (Long id) throws ProductNotFoundException, ProductDeletedException {
