@@ -29,7 +29,7 @@ public class ProductService {
         if(!p.isPresent()) 
             throw new ProductNotFoundException("Produto não encontrado");
         
-        if(p.get().getDeletedAt() == null)
+        if(p.get().getDeletedAt() != null)
             throw new ProductDeletedException("O produto em questão foi deletado");
 
         return p.get();
@@ -54,6 +54,20 @@ public class ProductService {
         p.setStock(dto.stock());
         p.setUpdatedAt(new Date());
 
+        productsRepository.save(p);
+    }
+
+    public void delete (Long id) throws ProductNotFoundException, ProductDeletedException {
+        Product p = productsRepository.findById(id).get();
+
+        if(p == null)
+            throw new ProductNotFoundException("Produto não encontrado");
+
+        if(p.getDeletedAt() != null)
+            throw new ProductDeletedException("O produto em questão foi deletado!");
+
+        p.setDeletedAt(new Date());
+        
         productsRepository.save(p);
     }
 }
