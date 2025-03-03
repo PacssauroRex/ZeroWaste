@@ -32,7 +32,7 @@ public class SpringSecurityConfiguration {
             .requestMatchers(HttpMethod.POST, "/users", "/users/login").permitAll()
             .requestMatchers(HttpMethod.OPTIONS, "/users", "/users/login").permitAll()
             .requestMatchers(HttpMethod.GET, "/users/check-auth-token").hasRole("USER")
-            .requestMatchers(HttpMethod.GET, "/products/").hasRole("ADMIN")
+            .requestMatchers(HttpMethod.GET, "/products/", "/products/**").hasRole("ADMIN")
             .anyRequest().authenticated()
         )
         .addFilterBefore(authenticationUserService, UsernamePasswordAuthenticationFilter.class)
