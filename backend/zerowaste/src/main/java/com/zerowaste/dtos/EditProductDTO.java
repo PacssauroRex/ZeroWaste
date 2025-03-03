@@ -1,11 +1,13 @@
 package com.zerowaste.dtos;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import com.zerowaste.models.product.ProductCategory;
 import com.zerowaste.utils.validation.ValidEnum.ValidEnum;
 
 import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 
 public record EditProductDTO(
@@ -28,7 +30,9 @@ public record EditProductDTO(
     @DecimalMin("0")
     Double promotionPrice,
 
-    Date expiresAt,
+    @FutureOrPresent
+    LocalDate expiresAt,
 
+    @Min(0)
     Integer stock
 ) {} 

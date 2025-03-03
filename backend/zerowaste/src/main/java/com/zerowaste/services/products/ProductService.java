@@ -1,6 +1,6 @@
 package com.zerowaste.services.products;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,7 +52,7 @@ public class ProductService {
         p.setPromotionPrice(dto.promotionPrice());
         p.setExpiresAt(dto.expiresAt());
         p.setStock(dto.stock());
-        p.setUpdatedAt(new Date());
+        p.setUpdatedAt(LocalDate.now());
 
         productsRepository.save(p);
     }
@@ -66,7 +66,7 @@ public class ProductService {
         if(p.getDeletedAt() != null)
             throw new ProductDeletedException("O produto em questão foi deletado!");
 
-        p.setDeletedAt(new Date());
+        p.setDeletedAt(LocalDate.now());
         
         productsRepository.save(p);
     }
