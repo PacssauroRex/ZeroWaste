@@ -9,6 +9,7 @@ import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public record CreateProductDTO(
@@ -28,15 +29,15 @@ public record CreateProductDTO(
     @ValidEnum(targetClassType = ProductCategory.class, message = "O campo \"category\" deve ser um dos valores: \"DAIRY\", \"FRUIT\", \"HYGIENE\", \"CLEANING\", \"DRINK\", \"MEAT\", \"BAKERY\"")
     String category,
 
-    @NotEmpty(message = "O campo \"unitPrice\" é obrigatório")
+    @NotNull(message = "O campo \"unitPrice\" é obrigatório")
     @DecimalMin("0")
     Double unitPrice,
 
-    @NotEmpty(message = "O campo \"stock\" é obrigatório")
+    @NotNull(message = "O campo \"stock\" é obrigatório")
     @Min(0)
     Integer stock,
 
-    @NotEmpty(message = "O campo \"expiresAt\" é obrigatório")
+    @NotNull(message = "O campo \"expiresAt\" é obrigatório")
     @Future(message = "O campo \"expiresAt\" deve ser uma data futura")
     LocalDate expiresAt
 ) {}
