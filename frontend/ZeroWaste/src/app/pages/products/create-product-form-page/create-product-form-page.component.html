@@ -1,0 +1,92 @@
+<section>
+  <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+    <div>
+      <label for="name">Name</label>
+      <input
+        type="text"
+        id="name"
+        name="name"
+        formControlName="name"
+        required
+      />
+      <small *ngIf="productForm.get('name')?.touched && getErrorMessage('name') as errorMessage">
+        {{errorMessage}}
+      </small>
+    </div>
+
+    <div>
+      <label for="description">Description</label>
+      <textarea
+        id="description"
+        name="description"
+        formControlName="description"
+        required
+      ></textarea>
+      <small *ngIf="productForm.get('description')?.touched && getErrorMessage('description') as errorMessage">
+        {{errorMessage}}
+      </small>
+    </div>
+
+    <div>
+      <div>
+        <label for="brand">Brand</label>
+        <input
+          type="text"
+          id="brand"
+          name="brand"
+          formControlName="brand"
+          required
+        />
+        <small *ngIf="productForm.get('brand')?.touched && getErrorMessage('brand') as errorMessage">
+          {{errorMessage}}
+        </small>
+      </div>
+      <div>
+        <label for="category">Category</label>
+        <input
+          type="text"
+          id="category"
+          name="category"
+          formControlName="category"
+          required
+        />
+        <small *ngIf="productForm.get('category')?.touched && getErrorMessage('category') as errorMessage">
+          {{errorMessage}}
+        </small>
+      </div>
+    </div>
+
+    <div>
+      <div>
+        <label for="price">Price</label>
+        <input
+          type="number"
+          id="price"
+          name="price"
+          formControlName="price"
+          required
+        />
+        <small *ngIf="productForm.get('price')?.touched && getErrorMessage('price') as errorMessage">
+          {{errorMessage}}
+        </small>
+      </div>
+      <div>
+        <label for="stock">Stock</label>
+        <input
+          type="text"
+          id="stock"
+          name="stock"
+          formControlName="stock"
+          required
+        />
+        <small *ngIf="productForm.get('stock')?.touched && getErrorMessage('stock') as errorMessage">
+          {{errorMessage}}
+        </small>
+      </div>
+    </div>
+
+    <div>
+      <button type="submit">Create</button>
+    </div>
+  </form>
+</section>
