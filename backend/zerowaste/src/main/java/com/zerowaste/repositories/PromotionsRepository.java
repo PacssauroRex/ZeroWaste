@@ -10,5 +10,5 @@ import com.zerowaste.models.promotion.Promotion;
 
 @Repository
 public interface PromotionsRepository extends JpaRepository<Promotion, Long> {
-    
+    List<Promotion> findAll();
 }
