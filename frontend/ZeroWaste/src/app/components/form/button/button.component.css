@@ -47,3 +47,8 @@ button {
   background-color: var(--color-slate-200);
   color: var(--color-slate-900);
 }
+
+.block {
+  width: 100%;
+  flex: 1;
+}

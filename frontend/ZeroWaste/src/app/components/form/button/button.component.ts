@@ -4,7 +4,11 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   selector: 'app-button',
   imports: [],
   template: `
-    <button [classList]="[variant]" [type]="type" [disabled]="disabled">
+    <button
+      [classList]="[variant, block ? 'block' : ''].join(' ').trim()"
+      [type]="type"
+      [disabled]="disabled"
+    >
       <ng-content />
     </button>
   `,
@@ -15,6 +19,7 @@ export class ButtonComponent {
   @Input() type: HTMLButtonElement['type'] = 'button';
   @Input() disabled: HTMLButtonElement['disabled'] = false;
   @Input() variant: 'default' | 'destructive' | 'outline' | 'subtle' = 'default';
+  @Input() block: boolean = false;
 
   @Output() click = new EventEmitter<MouseEvent>();
 
