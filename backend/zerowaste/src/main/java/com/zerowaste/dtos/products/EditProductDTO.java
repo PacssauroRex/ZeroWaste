@@ -1,4 +1,4 @@
-package com.zerowaste.dtos;
+package com.zerowaste.dtos.products;
 
 import java.time.LocalDate;
 

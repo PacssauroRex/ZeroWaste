@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.zerowaste.dtos.EditProductDTO;
+import com.zerowaste.dtos.products.EditProductDTO;
 import com.zerowaste.services.products.ProductService;
 import com.zerowaste.services.products.exceptions.ProductNotFoundException;
 
