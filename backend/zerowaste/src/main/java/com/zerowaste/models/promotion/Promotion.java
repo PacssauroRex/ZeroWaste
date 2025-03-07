@@ -15,10 +15,11 @@ public class Promotion {
     public Promotion() {
     }
 
-    public Promotion(Long id, Set<Product> products, String name, LocalDate startsAt, LocalDate endsAt) {
+    public Promotion(Long id, Set<Product> products, String name, Double percentage, LocalDate startsAt, LocalDate endsAt) {
         this.id = id;
         this.products = products;
         this.name = name;
+        this.percentage = percentage;
         this.startsAt = startsAt;
         this.endsAt = endsAt;
     }
@@ -31,6 +32,9 @@ public class Promotion {
 
     @Column(name = "name", length = 100, nullable = false)
     private String name;
+
+    @Column(name = "percentage", nullable = false)
+    private Double percentage;
 
     @Column(name = "starts_at", nullable = false)
     private LocalDate startsAt;
@@ -57,6 +61,14 @@ public class Promotion {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Double getPercentage() {
+        return percentage;
+    }
+
+    public void setPercentage(Double percentage) {
+        this.percentage = percentage;
     }
 
     public LocalDate getStartsAt() {
