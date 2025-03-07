@@ -1,5 +1,7 @@
 package com.zerowaste.services.promotions;
 
+import java.time.LocalDate;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,7 @@ public class PromotionService {
         p.setPercentage(dto.percentage());
         p.setStartsAt(dto.startsAt());
         p.setEndsAt(dto.endsAt());
+        p.setCreatedAt(LocalDate.now());
 
         promotionsRepository.save(p);
     }
