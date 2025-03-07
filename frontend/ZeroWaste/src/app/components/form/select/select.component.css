@@ -1,5 +1,7 @@
 select {
   padding: 8px 12px;
+  /* width: 100%;
+  flex: 1; */
   background-color: #FFFFFF;
   border: 1px solid #CBD5E1;
   color: #0F172A;

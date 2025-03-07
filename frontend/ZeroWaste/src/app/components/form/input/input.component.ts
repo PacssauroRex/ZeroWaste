@@ -11,6 +11,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
       [type]="type"
       [placeholder]="placeholder"
       (blur)="onTouch($event)"
+      (input)="onChange($event)"
     />
   `,
   styleUrl: './input.component.css',
@@ -23,7 +24,6 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
     }
   ],
   host: {
-    '(input)': 'onChange($event.target.value)',
     '[value]': 'value',
   },
 })
@@ -36,7 +36,9 @@ export class InputComponent implements ControlValueAccessor {
   @Input() value: HTMLInputElement['value'] = '';
 
   // ControlValueAccessor
-  onChange: any = () => {};
+  onChange: any = (event: any) => {
+
+  };
   onTouch: any = () => {};
 
   constructor () {}

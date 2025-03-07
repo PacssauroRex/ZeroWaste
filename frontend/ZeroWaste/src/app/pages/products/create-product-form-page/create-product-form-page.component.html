@@ -1,92 +1,99 @@
-<section>
+<section class="container">
+  <header>
+    <h1>Cadastrar produto</h1>
+  </header>
+
   <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
-    <div>
-      <label for="name">Name</label>
-      <input
-        type="text"
-        id="name"
-        name="name"
+    <div class="form-group">
+      <label for="name">Nome</label>
+      <app-input
+        [id]="'name'"
+        [name]="'name'"
+        [type]="'text'"
+        [placeholder]="'Digite o nome do produto'"
         formControlName="name"
-        required
       />
-      <small *ngIf="productForm.get('name')?.touched && getErrorMessage('name') as errorMessage">
+      <small *ngIf="productForm.get('name')?.touched && getErrorMessage('name') as errorMessage" class="invalid-feedback">
         {{errorMessage}}
       </small>
     </div>
 
-    <div>
-      <label for="description">Description</label>
-      <textarea
-        id="description"
-        name="description"
+    <div class="form-group">
+      <label for="description">Descrição</label>
+      <app-textarea
+        [id]="'description'"
+        [name]="'description'"
+        [placeholder]="'Digite a descrição do produto'"
         formControlName="description"
-        required
-      ></textarea>
-      <small *ngIf="productForm.get('description')?.touched && getErrorMessage('description') as errorMessage">
+      />
+      <small *ngIf="productForm.get('description')?.touched && getErrorMessage('description') as errorMessage" class="invalid-feedback">
         {{errorMessage}}
       </small>
     </div>
 
-    <div>
-      <div>
-        <label for="brand">Brand</label>
-        <input
-          type="text"
-          id="brand"
-          name="brand"
+    <div class="row">
+      <div class="form-group">
+        <label for="brand">Marca</label>
+        <app-input
+          [id]="'brand'"
+          [name]="'brand'"
+          [type]="'text'"
+          [placeholder]="'Digite a marca do produto'"
           formControlName="brand"
-          required
         />
-        <small *ngIf="productForm.get('brand')?.touched && getErrorMessage('brand') as errorMessage">
+        <small *ngIf="productForm.get('brand')?.touched && getErrorMessage('brand') as errorMessage" class="invalid-feedback">
           {{errorMessage}}
         </small>
       </div>
-      <div>
-        <label for="category">Category</label>
-        <input
-          type="text"
-          id="category"
-          name="category"
-          formControlName="category"
-          required
-        />
-        <small *ngIf="productForm.get('category')?.touched && getErrorMessage('category') as errorMessage">
+      <div class="form-group">
+        <label for="category">Categoria</label>
+        <app-select [id]="'category'" [name]="'category'" [placeholder]="'Selecione uma categoria'" formControlName="category">
+          <option value="DAIRY">DAIRY</option>
+          <option value="FRUIT">FRUIT</option>
+          <option value="HYGIENE">HYGIENE</option>
+          <option value="CLEANING">CLEANING</option>
+          <option value="DRINK">DRINK</option>
+          <option value="MEAT">MEAT</option>
+          <option value="BAKERY">BAKERY</option>
+        </app-select>
+        <small *ngIf="productForm.get('category')?.touched && getErrorMessage('category') as errorMessage" class="invalid-feedback">
           {{errorMessage}}
         </small>
       </div>
     </div>
 
-    <div>
-      <div>
-        <label for="price">Price</label>
-        <input
-          type="number"
-          id="price"
-          name="price"
+    <div class="row">
+      <div class="form-group">
+        <label for="price">Preço</label>
+        <app-input
+          [id]="'price'"
+          [name]="'price'"
+          [type]="'number'"
+          [placeholder]="'Digite o preço do produto'"
           formControlName="price"
-          required
         />
-        <small *ngIf="productForm.get('price')?.touched && getErrorMessage('price') as errorMessage">
+        <small *ngIf="productForm.get('price')?.touched && getErrorMessage('price') as errorMessage" class="invalid-feedback">
           {{errorMessage}}
         </small>
       </div>
-      <div>
-        <label for="stock">Stock</label>
-        <input
-          type="text"
-          id="stock"
-          name="stock"
+      <div class="form-group">
+        <label for="stock">Estoque</label>
+        <app-input
+          [id]="'stock'"
+          [name]="'stock'"
+          [type]="'number'"
+          [placeholder]="'Digite a quantidade em estoque do produto'"
           formControlName="stock"
-          required
         />
-        <small *ngIf="productForm.get('stock')?.touched && getErrorMessage('stock') as errorMessage">
+        <small *ngIf="productForm.get('stock')?.touched && getErrorMessage('stock') as errorMessage" class="invalid-feedback">
           {{errorMessage}}
         </small>
       </div>
     </div>
 
-    <div>
-      <button type="submit">Create</button>
-    </div>
+    <footer style="display: flex;">
+      <app-button [type]="'button'" [block]="true" [variant]="'outline'">Voltar</app-button>
+      <app-button [type]="'submit'" [block]="true">Salvar</app-button>
+    </footer>
   </form>
 </section>
