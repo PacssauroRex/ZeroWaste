@@ -1,0 +1,120 @@
+<section class="container">
+  <header>
+    <h1>Cadastrar produto</h1>
+  </header>
+
+  <form [formGroup]="productForm" (ngSubmit)="onSubmit($event)">
+    <div class="form-group">
+      <label for="name">Nome</label>
+      <app-input
+        [id]="'name'"
+        [name]="'name'"
+        [type]="'text'"
+        [placeholder]="'Digite o nome do produto'"
+        formControlName="name"
+      />
+      <small *ngIf="productForm.get('name')?.touched && getErrorMessage('name') as errorMessage" class="invalid-feedback">
+        {{errorMessage}}
+      </small>
+    </div>
+
+    <div class="form-group">
+      <label for="description">Descrição</label>
+      <app-textarea
+        [id]="' '"
+        [name]="'description'"
+        [placeholder]="'Digite a descrição do produto'"
+        formControlName="description"
+      />
+      <small *ngIf="productForm.get('description')?.touched && getErrorMessage('description') as errorMessage" class="invalid-feedback">
+        {{errorMessage}}
+      </small>
+    </div>
+
+    <div class="form-group">
+      <label for="brand">Marca</label>
+      <app-input
+        [id]="'brand'"
+        [name]="'brand'"
+        [type]="'text'"
+        [placeholder]="'Digite a marca do produto'"
+        formControlName="brand"
+      />
+      <small *ngIf="productForm.get('brand')?.touched && getErrorMessage('brand') as errorMessage" class="invalid-feedback">
+        {{errorMessage}}
+      </small>
+    </div>
+
+    <div class="row">
+      <div class="form-group">
+        <label for="expiresAt">Marca</label>
+        <app-input
+          [id]="'expiresAt'"
+          [name]="'expiresAt'"
+          [type]="'date'"
+          [placeholder]="'Digite a marca do produto'"
+          formControlName="expiresAt"
+        />
+        <small *ngIf="productForm.get('expiresAt')?.touched && getErrorMessage('expiresAt') as errorMessage" class="invalid-feedback">
+          {{errorMessage}}
+        </small>
+      </div>
+      <div class="form-group">
+        <label for="category">Categoria</label>
+        <app-select [id]="'category'" [name]="'category'" [placeholder]="'Selecione uma categoria'" formControlName="category">
+          <option value="DAIRY">DAIRY</option>
+          <option value="FRUIT">FRUIT</option>
+          <option value="HYGIENE">HYGIENE</option>
+          <option value="CLEANING">CLEANING</option>
+          <option value="DRINK">DRINK</option>
+          <option value="MEAT">MEAT</option>
+          <option value="BAKERY">BAKERY</option>
+        </app-select>
+        <small *ngIf="productForm.get('category')?.touched && getErrorMessage('category') as errorMessage" class="invalid-feedback">
+          {{errorMessage}}
+        </small>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="form-group">
+        <label for="unitPrice">Preço</label>
+        <app-input
+          [id]="'unitPrice'"
+          [name]="'unitPrice'"
+          [type]="'number'"
+          [placeholder]="'Digite o preço do produto'"
+          formControlName="unitPrice"
+        />
+        <small *ngIf="productForm.get('unitPrice')?.touched && getErrorMessage('unitPrice') as errorMessage" class="invalid-feedback">
+          {{errorMessage}}
+        </small>
+      </div>
+      <div class="form-group">
+        <label for="stock">Estoque</label>
+        <app-input
+          [id]="'stock'"
+          [name]="'stock'"
+          [type]="'number'"
+          [placeholder]="'Digite a quantidade em estoque do produto'"
+          formControlName="stock"
+        />
+        <small *ngIf="productForm.get('stock')?.touched && getErrorMessage('stock') as errorMessage" class="invalid-feedback">
+          {{errorMessage}}
+        </small>
+      </div>
+    </div>
+
+    <footer style="display: flex;">
+      <a routerLink="/home" class="mr-2">
+        <app-button [type]="'button'" [block]="true" [variant]="'outline'">
+          Voltar
+        </app-button>
+      </a>
+
+      <app-button [type]="'submit'" [block]="true">
+        Salvar
+      </app-button>
+    </footer>
+  </form>
+</section>
