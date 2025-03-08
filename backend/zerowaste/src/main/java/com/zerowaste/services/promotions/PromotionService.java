@@ -58,7 +58,7 @@ public class PromotionService {
     }
 
     public Promotion getPromotionByProductId(Long productsIds) throws PromotionNotFoundException {
-        Optional<Promotion> p = promotionsRepository.findByProductId(productsIds);
+        Optional<Promotion> p = promotionsRepository.findByProducts_Id(productsIds);
         if(!p.isPresent() || p.get().getDeletedAt() != null) 
             throw new PromotionNotFoundException("Promoção não encontrada!");
         
