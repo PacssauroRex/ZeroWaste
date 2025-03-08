@@ -23,19 +23,27 @@ public class SpringSecurityConfiguration {
     private AuthenticateUserService authenticationUserService;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+    SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
         .csrf(csrf -> csrf.disable())
-        .cors(cors -> cors.disable())
+        .cors(cors -> cors.configurationSource(request -> {
+            var corsConfiguration = new org.springframework.web.cors.CorsConfiguration();
+            
+            corsConfiguration.setAllowedOrigins(java.util.List.of("*"));
+            corsConfiguration.setAllowedMethods(java.util.List.of("GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS"));
+            corsConfiguration.setAllowedHeaders(java.util.List.of("*"));
+
+            return corsConfiguration;
+        }))
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(authorize -> authorize
             .requestMatchers(HttpMethod.POST, "/users", "/users/login").permitAll()
             .requestMatchers(HttpMethod.OPTIONS, "/users", "/users/login").permitAll()
             .requestMatchers(HttpMethod.GET, "/users/check-auth-token").hasRole("USER")
-            .requestMatchers(HttpMethod.GET, "/products/", "/products/**").hasRole("ADMIN")
+            .requestMatchers(HttpMethod.POST, "/products").hasRole("ADMIN")
+            .requestMatchers(HttpMethod.GET, "/products", "/products/**").hasRole("ADMIN")
             .requestMatchers(HttpMethod.PUT, "/products/**").hasRole("ADMIN")
             .requestMatchers(HttpMethod.DELETE, "/products/**").hasRole("ADMIN")
-            .requestMatchers(HttpMethod.POST, "/products").hasRole("ADMIN")
             .anyRequest().authenticated()
         )
         .addFilterBefore(authenticationUserService, UsernamePasswordAuthenticationFilter.class)
@@ -43,12 +51,12 @@ public class SpringSecurityConfiguration {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+    AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
+    PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 }
