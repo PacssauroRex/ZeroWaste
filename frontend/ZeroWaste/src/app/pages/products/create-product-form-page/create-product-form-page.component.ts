@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { ValidationErrorMessage } from '../../../services/ValidationErrorMessage';
 import { InputComponent } from "../../../components/form/input/input.component";
 import { TextareaComponent } from "../../../components/form/textarea/textarea.component";
@@ -11,13 +11,22 @@ import { API_URL } from '../../../utils/contants';
 
 @Component({
   selector: 'app-create-product-form-page',
-  imports: [CommonModule, ReactiveFormsModule, RouterModule, InputComponent, TextareaComponent, SelectComponent, ButtonComponent],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    RouterModule,
+    InputComponent,
+    TextareaComponent,
+    SelectComponent,
+    ButtonComponent,
+  ],
   templateUrl: './create-product-form-page.component.html',
   styleUrl: './create-product-form-page.component.css'
 })
 export class CreateProductFormPageComponent {
   private fb = inject(FormBuilder);
   private validationErrorMessage = inject(ValidationErrorMessage);
+  private router = inject(Router);
 
   public productForm = this.fb.group({
     name: ['', [Validators.required, Validators.minLength(3) , Validators.maxLength(100)]],
@@ -38,15 +47,14 @@ export class CreateProductFormPageComponent {
   public async onSubmit(event: SubmitEvent) {
     event.preventDefault();
 
-    console.log(this.productForm.value);
-
     if (this.productForm.invalid) {
       return;
     }
 
     try {
-      console.log(await this.saveProduct(this.productForm.value));
+      await this.saveProduct(this.productForm.value)
       alert('Produto salvo com sucesso');
+      this.router.navigate(['/home']);
     } catch (error) {
       console.error('Erro ao salvar produto', error);
       alert('Erro ao salvar produto');
