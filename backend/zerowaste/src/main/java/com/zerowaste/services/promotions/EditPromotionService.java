@@ -1,7 +1,6 @@
 package com.zerowaste.services.promotions;
 
 import java.time.LocalDate;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +18,10 @@ public class EditPromotionService {
 
     public void execute(Long id, EditPromotionDTO dto) throws PromotionNotFoundException {
 
-        Promotion p = getPromotionById(id);
+        Promotion p = promotionsRepository.findById(id).get();
+
+        if (p == null || p.getDeletedAt() != null)
+            throw new PromotionNotFoundException("Promoção não encontrada!");
 
         p.setName(dto.name());
         p.setPercentage(dto.percentage());
@@ -29,16 +31,4 @@ public class EditPromotionService {
 
         promotionsRepository.save(p);
     }
-
-    public Promotion getPromotionById(Long id) throws PromotionNotFoundException {
-
-        Optional<Promotion> p = promotionsRepository.findById(id);
-
-        if (!p.isPresent() || p.get().getDeletedAt() != null)
-            throw new PromotionNotFoundException("Promoção não encontrada!");
-
-        return p.get();
-
-    }
-
 }
