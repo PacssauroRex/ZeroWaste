@@ -7,6 +7,7 @@ import { InputComponent } from "../../../components/form/input/input.component";
 import { TextareaComponent } from "../../../components/form/textarea/textarea.component";
 import { SelectComponent } from "../../../components/form/select/select.component";
 import { ButtonComponent } from "../../../components/form/button/button.component";
+import { API_URL } from '../../../utils/contants';
 
 @Component({
   selector: 'app-create-product-form-page',
@@ -20,25 +21,49 @@ export class CreateProductFormPageComponent {
 
   public productForm = this.fb.group({
     name: ['', [Validators.required, Validators.minLength(3) , Validators.maxLength(100)]],
-    description: ['', [Validators.nullValidator, Validators.minLength(3), Validators.maxLength(255)]],
+    description: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(255)]],
     brand: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
     category: ['', [Validators.required]],
-    price: ['', [Validators.required, Validators.min(0.00)]],
+    unitPrice: ['', [Validators.required, Validators.min(0.00)]],
     stock: ['', [Validators.required, Validators.min(0)]],
     expiresAt: ['', [Validators.pattern(/^\d{4}-\d{2}-\d{2}$/)]],
   });
 
-  getErrorMessage(controlName: string): string | null {
+  public getErrorMessage(controlName: string): string | null {
     const validationErrorMessage = this.validationErrorMessage.getValidationErrorMessage(this.productForm.get(controlName)!);
 
-    return validationErrorMessage
+    return validationErrorMessage;
   }
 
-  onClick() {
-    console.log('Button clicked')
+  public async onSubmit(event: SubmitEvent) {
+    event.preventDefault();
+
+    console.log(this.productForm.value);
+
+    if (this.productForm.invalid) {
+      return;
+    }
+
+    try {
+      console.log(await this.saveProduct(this.productForm.value));
+      alert('Produto salvo com sucesso');
+    } catch (error) {
+      console.error('Erro ao salvar produto', error);
+      alert('Erro ao salvar produto');
+    }
   }
 
-  onSubmit() {
-    console.log(this.productForm.value)
+  public async saveProduct(data: typeof this.productForm.value) {
+    const response = await fetch(API_URL + "/products", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      },
+      body: JSON.stringify(data),
+    });
+
+    return response.json();
   }
 }
