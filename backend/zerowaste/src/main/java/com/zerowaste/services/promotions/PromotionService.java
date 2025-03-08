@@ -56,4 +56,12 @@ public class PromotionService {
         }
         return promotions;
     }
+
+    public Promotion getPromotionByProductId(Long productsIds) throws PromotionNotFoundException {
+        Optional<Promotion> p = promotionsRepository.findByProductId(productsIds);
+        if(!p.isPresent() || p.get().getDeletedAt() != null) 
+            throw new PromotionNotFoundException("Promoção não encontrada!");
+        
+        return p.get();
+    }
 }
