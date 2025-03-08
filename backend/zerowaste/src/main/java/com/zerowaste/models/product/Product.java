@@ -1,6 +1,9 @@
 package com.zerowaste.models.product;
 
 import java.time.LocalDate;
+import java.util.Set;
+
+import com.zerowaste.models.promotion.Promotion;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,6 +12,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.SequenceGenerator;
@@ -73,6 +77,9 @@ public class Product {
 
     @Column(name = "deleted_at", nullable = true)
     private LocalDate deletedAt;
+
+    @ManyToMany(mappedBy = "products")
+    private Set<Promotion> promotions;
 
     @PrePersist
     public void prePersist() {
