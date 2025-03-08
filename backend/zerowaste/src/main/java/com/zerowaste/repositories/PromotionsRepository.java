@@ -15,4 +15,5 @@ public interface PromotionsRepository extends JpaRepository<Promotion, Long> {
     List<Promotion> findAllNotDeleted();
     Optional<Promotion> findById(Long id);
     List<Promotion> findByPercentage(Long percentage);
+    Optional<Promotion> findByProductId(Long productsIds);
 }
