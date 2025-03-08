@@ -1,12 +1,14 @@
 package com.zerowaste.dtos.promotions;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public record EditPromotionDTO(
@@ -23,6 +25,9 @@ public record EditPromotionDTO(
         LocalDate startsAt,
 
         @Future
-        LocalDate endsAt
+        LocalDate endsAt,
+
+        @NotNull(message = "A lista de produtos não pode ser nula")
+        Set<Long> productIds
         
-        ) {}
+) {}

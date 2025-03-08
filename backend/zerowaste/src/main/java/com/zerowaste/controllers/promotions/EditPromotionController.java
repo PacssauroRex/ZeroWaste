@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.zerowaste.dtos.promotions.EditPromotionDTO;
+import com.zerowaste.services.products.exceptions.ProductNotFoundException;
 import com.zerowaste.services.promotions.EditPromotionService;
 import com.zerowaste.services.promotions.exceptions.PromotionNotFoundException;
 
@@ -33,7 +34,7 @@ public class EditPromotionController {
             return ResponseEntity.ok(Map.of("message", "Promoção editada com sucesso!"));
         }
 
-        catch (PromotionNotFoundException err) {
+        catch (PromotionNotFoundException | ProductNotFoundException err) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", err.getMessage()));
         }
 
@@ -41,5 +42,4 @@ public class EditPromotionController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", err.getMessage()));
         }
     }
-
 }
