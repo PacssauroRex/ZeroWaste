@@ -2,12 +2,12 @@ import { Injectable } from "@angular/core";
 import { AbstractControl } from "@angular/forms";
 
 export const validationDictionary = {
-  ['required']: 'This field is required',
-  ['minlength']: 'This field must have at least {requiredLength} characters',
-  ['maxlength']: 'This field must have at most {requiredLength} characters',
-  ['min']: 'This field must be greater than or equal to {min}',
-  ['pattern']: 'Invalid format',
-  ['email']: 'Invalid email',
+  ['required']: 'Esse campo é obrigatório',
+  ['minlength']: 'Esse campo deve ter no mínimo {requiredLength} caracteres',
+  ['maxlength']: 'Esse campo deve ter no máximo {requiredLength} caracteres',
+  ['min']: 'Esse campo deve ser no mínimo {min}',
+  ['pattern']: 'Esse campo está em um formato inválido',
+  ['email']: 'Esse campo deve ser um email válido',
 } as const;
 
 export type ValidationDictionary = typeof validationDictionary;

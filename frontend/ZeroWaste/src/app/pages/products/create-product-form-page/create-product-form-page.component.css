@@ -14,12 +14,6 @@
   gap: 8px;
 }
 
-/* .container form div {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-} */
-
 .container form footer {
   display: flex;
   justify-content: flex-end;
