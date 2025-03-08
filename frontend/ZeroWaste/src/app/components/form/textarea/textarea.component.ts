@@ -9,9 +9,8 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
       [id]="id"
       [name]="name"
       [placeholder]="placeholder"
-      [value]="value"
-      (input)="onChange($event)"
       (blur)="onTouch($event)"
+      (input)="onTextareaChange($event)"
     >{{ value }}</textarea>
   `,
   styleUrl: './textarea.component.css',
@@ -30,14 +29,15 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 export class TextareaComponent implements ControlValueAccessor {
   @Input() id: HTMLInputElement['id'] = '';
   @Input() name: HTMLInputElement['name'] = '';
-  @Input() type: HTMLInputElement['type'] = 'text';
   @Input() placeholder: HTMLInputElement['placeholder'] = '';
   @Input() value: HTMLInputElement['value'] = '';
 
   onChange: any = () => {};
   onTouch: any = () => {};
 
-  constructor () {}
+  writeValue(obj: any): void {
+    this.value = obj;
+  }
 
   registerOnChange(fn: any): void {
     this.onChange = fn;
@@ -47,11 +47,8 @@ export class TextareaComponent implements ControlValueAccessor {
     this.onTouch = fn;
   }
 
-  writeValue(obj: any): void {
-    console.log('obj', obj);
-
-    this.value = obj;
-    this.onChange(this.value);
-    this.onTouch(this.value);
+  onTextareaChange(event: Event): void {
+    this.writeValue((event.target as HTMLInputElement).value);
+    this.onChange((event.target as HTMLInputElement).value);
   }
 }

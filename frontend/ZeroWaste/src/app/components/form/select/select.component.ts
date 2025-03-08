@@ -16,7 +16,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
   standalone: true,
   host: {
     '[value]': 'value',
-    '(change)': 'onChange($event)',
+    '(change)': 'onSelectChange($event)',
     '(blur)': 'onTouch($event)'
   },
   providers: [
@@ -50,5 +50,10 @@ export class SelectComponent implements ControlValueAccessor {
 
   registerOnTouched(fn: any): void {
     this.onTouch = fn;
+  }
+
+  onSelectChange(event: Event): void {
+    this.writeValue((event.target as HTMLSelectElement).value);
+    this.onChange((event.target as HTMLSelectElement).value);
   }
 }

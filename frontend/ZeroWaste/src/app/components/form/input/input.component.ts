@@ -11,7 +11,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
       [type]="type"
       [placeholder]="placeholder"
       (blur)="onTouch($event)"
-      (input)="onChange($event)"
+      (input)="onInputChange($event)"
     />
   `,
   styleUrl: './input.component.css',
@@ -28,25 +28,17 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
   },
 })
 export class InputComponent implements ControlValueAccessor {
-  // Input
   @Input() id: HTMLInputElement['id'] = '';
   @Input() name: HTMLInputElement['name'] = '';
   @Input() type: HTMLInputElement['type'] = 'text';
   @Input() placeholder: HTMLInputElement['placeholder'] = '';
   @Input() value: HTMLInputElement['value'] = '';
 
-  // ControlValueAccessor
-  onChange: any = (event: any) => {
-
-  };
+  onChange: any = () => {};
   onTouch: any = () => {};
-
-  constructor () {}
 
   writeValue(value: any): void {
     this.value = value;
-    this.onChange(this.value);
-    this.onTouch(this.value);
   }
 
   registerOnChange(fn: any): void {
@@ -55,5 +47,10 @@ export class InputComponent implements ControlValueAccessor {
 
   registerOnTouched(fn: any): void {
     this.onTouch = fn;
+  }
+
+  onInputChange(event: Event): void {
+    this.writeValue((event.target as HTMLInputElement).value);
+    this.onChange((event.target as HTMLInputElement).value);
   }
 }
