@@ -26,7 +26,7 @@
                             </app-button>
                         </a>
                         <!--Modificar rotas-->
-                        <a routerLink="/products/" title="Editar produto">
+                        <a [routerLink]="['/products/update', product.id]" title="Editar produto">
                             <app-button [type]="'button'" [variant]="'outline'">
                                 <img src="editar.png" alt="edit product"> 
                             </app-button>
