@@ -1,6 +1,7 @@
 package com.zerowaste.dtos.products;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import com.zerowaste.models.product.ProductCategory;
 import com.zerowaste.utils.validation.ValidEnum.ValidEnum;
@@ -34,5 +35,7 @@ public record EditProductDTO(
     LocalDate expiresAt,
 
     @Min(0)
-    Integer stock
-) {} 
+    Integer stock,
+
+    List<Long> promotionsIds
+) {}
