@@ -34,12 +34,12 @@ public class EditProductController {
         catch (ProductNotFoundException err) {
             return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
-                .body(Map.of("error", err.getMessage()));
+                .body(Map.of("message", err.getMessage()));
         }
         catch(Exception err) {
             return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Map.of("error", err.getMessage()));
+                .body(Map.of("message", err.getMessage()));
         }
     }
 }
