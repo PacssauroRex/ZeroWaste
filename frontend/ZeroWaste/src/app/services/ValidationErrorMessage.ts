@@ -6,6 +6,7 @@ export const validationDictionary = {
   ['minlength']: 'Esse campo deve ter no mínimo {requiredLength} caracteres',
   ['maxlength']: 'Esse campo deve ter no máximo {requiredLength} caracteres',
   ['min']: 'Esse campo deve ser no mínimo {min}',
+  ['max']: 'Esse campo deve ser no máximo {max}',
   ['pattern']: 'Esse campo está em um formato inválido',
   ['email']: 'Esse campo deve ser um email válido',
 } as const;
@@ -35,6 +36,10 @@ export class ValidationErrorMessage {
       case control.hasError('min'): {
         return validationDictionary.min
           .replace('{min}', control.getError('min')?.min);
+      }
+      case control.hasError('max'): {
+        return validationDictionary.max
+          .replace('{max}', control.getError('max')?.max);
       }
 
       case control.hasError('pattern'): {
