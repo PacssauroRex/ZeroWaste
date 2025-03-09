@@ -10,6 +10,8 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
       [name]="name"
       [type]="type"
       [placeholder]="placeholder"
+      [value]="value"
+      [disabled]="disabled"
       (blur)="onTouch($event)"
       (input)="onInputChange($event)"
     />
@@ -33,6 +35,7 @@ export class InputComponent implements ControlValueAccessor {
   @Input() type: HTMLInputElement['type'] = 'text';
   @Input() placeholder: HTMLInputElement['placeholder'] = '';
   @Input() value: HTMLInputElement['value'] = '';
+  @Input() disabled: HTMLInputElement['disabled'] = false;
 
   onChange: any = () => {};
   onTouch: any = () => {};
@@ -52,5 +55,9 @@ export class InputComponent implements ControlValueAccessor {
   onInputChange(event: Event): void {
     this.writeValue((event.target as HTMLInputElement).value);
     this.onChange((event.target as HTMLInputElement).value);
+  }
+
+  setDisabledState(isDisabled: boolean): void {
+    this.disabled = isDisabled;
   }
 }

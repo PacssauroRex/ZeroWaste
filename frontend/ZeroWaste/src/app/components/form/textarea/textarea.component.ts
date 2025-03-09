@@ -9,6 +9,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
       [id]="id"
       [name]="name"
       [placeholder]="placeholder"
+      [disabled]="disabled"
       (blur)="onTouch($event)"
       (input)="onTextareaChange($event)"
     >{{ value }}</textarea>
@@ -31,6 +32,7 @@ export class TextareaComponent implements ControlValueAccessor {
   @Input() name: HTMLInputElement['name'] = '';
   @Input() placeholder: HTMLInputElement['placeholder'] = '';
   @Input() value: HTMLInputElement['value'] = '';
+  @Input() disabled: HTMLInputElement['disabled'] = false;
 
   onChange: any = () => {};
   onTouch: any = () => {};
@@ -45,6 +47,10 @@ export class TextareaComponent implements ControlValueAccessor {
 
   registerOnTouched(fn: any): void {
     this.onTouch = fn;
+  }
+
+  setDisabledState(isDisabled: boolean): void {
+    this.disabled = isDisabled;
   }
 
   onTextareaChange(event: Event): void {
