@@ -40,8 +40,8 @@ public class Product {
     }
 
     @Id
-    @SequenceGenerator(name = "users_id_seq", sequenceName = "users_id_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_id_seq")
+    @SequenceGenerator(name = "product_id_seq", sequenceName = "product_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "product_id_seq")
     private Long id;
     
     @Column(name = "name", length = 100)
@@ -187,6 +187,13 @@ public class Product {
         this.deletedAt = deletedAt;
     }
 
+    public void setPromotions(Set<Promotion> promotions2) {
+        if (promotions2 == null) {
+            throw new IllegalArgumentException("Promoções não podem ser nulas.");
+        }
+        this.promotions = Collections.unmodifiableSet(promotions2);
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -210,5 +217,5 @@ public class Product {
         } else if (!id.equals(other.id))
             return false;
         return true;
-    }
+    }   
 }
