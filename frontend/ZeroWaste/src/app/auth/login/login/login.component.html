@@ -2,7 +2,7 @@
     <div class="login-container">
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
         <h2>Login</h2>
-        
+
           <div class="form-group">
             <label for="email">E-mail</label>
             <app-input
@@ -22,7 +22,7 @@
             <app-input
               [id]="'senha'"
               [name]="'senha'"
-              [type]="'passwword'"
+              [type]="'password'"
               [placeholder]="'Informe sua senha'"
               formControlName="senha"
             />
