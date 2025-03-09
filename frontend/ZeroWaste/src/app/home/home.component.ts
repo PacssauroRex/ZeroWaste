@@ -5,7 +5,7 @@ import { ButtonComponent } from "../components/form/button/button.component";
 
 @Component({
   selector: 'app-home',
-  imports: [LogoutComponent, ModalComponent, ButtonComponent],
+  imports: [LogoutComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
