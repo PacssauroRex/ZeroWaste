@@ -1,6 +1,7 @@
 package com.zerowaste.models.product;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.Set;
 
 import com.zerowaste.models.promotion.Promotion;
@@ -163,6 +164,17 @@ public class Product {
         this.expiresAt = expiresAt;
     }
 
+    public Set<Promotion> getPromotions() {
+        return promotions;
+    }
+
+    public void setPromotions(Set<Promotion> promotions2) {
+        if (promotions2 == null) {
+            throw new IllegalArgumentException("Promoções não podem ser nulas.");
+        }
+        this.promotions = Collections.unmodifiableSet(promotions2);
+    }
+
     public LocalDate getCreatedAt() {
         return createdAt;
     }
@@ -185,13 +197,6 @@ public class Product {
 
     public void setDeletedAt(LocalDate deletedAt) {
         this.deletedAt = deletedAt;
-    }
-
-    public void setPromotions(Set<Promotion> promotions2) {
-        if (promotions2 == null) {
-            throw new IllegalArgumentException("Promoções não podem ser nulas.");
-        }
-        this.promotions = Collections.unmodifiableSet(promotions2);
     }
 
     @Override
