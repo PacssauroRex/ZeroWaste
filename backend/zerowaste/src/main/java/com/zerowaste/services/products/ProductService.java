@@ -73,7 +73,8 @@ public class ProductService {
 
         if (p.getDeletedAt() != null) {
             throw new ProductNotFoundException("Produto foi deletado");
-        }   
+        }
+    }  
 
     public void validatePromotions(EditProductDTO dto) {
         if (dto.promotionsIds() != null && !dto.promotionsIds().isEmpty()) {
