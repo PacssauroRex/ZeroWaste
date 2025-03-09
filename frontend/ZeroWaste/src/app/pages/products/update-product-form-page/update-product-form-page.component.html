@@ -1,6 +1,6 @@
 <section class="container">
   <header>
-    <h1>Cadastrar produto</h1>
+    <h1>Editar produto #{{route.snapshot.paramMap.get("id")}}</h1>
   </header>
 
   <form [formGroup]="productForm" (ngSubmit)="onSubmit($event)">
@@ -47,7 +47,7 @@
 
     <div class="row">
       <div class="form-group">
-        <label for="expiresAt">Data de Validade</label>
+        <label for="expiresAt">Marca</label>
         <app-input
           [id]="'expiresAt'"
           [name]="'expiresAt'"
@@ -106,7 +106,7 @@
     </div>
 
     <footer style="display: flex;">
-      <a routerLink="/products" class="mr-2">
+      <a routerLink="/home" class="mr-2">
         <app-button [type]="'button'" [block]="true" [variant]="'outline'">
           Voltar
         </app-button>

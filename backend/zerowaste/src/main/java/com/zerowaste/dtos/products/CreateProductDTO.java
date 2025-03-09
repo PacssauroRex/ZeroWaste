@@ -17,6 +17,7 @@ public record CreateProductDTO(
     @Size(max = 100, message = "O campo \"name\" deve ter entre 3 e 100 caracteres")
     String name,
 
+    @NotEmpty(message = "O campo \"name\" é obrigatório")
     @Size(max = 255, message = "O campo \"description\" deve ter entre 3 e 100 caracteres")
     String description,
 
