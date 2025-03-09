@@ -60,7 +60,7 @@ public class PromotionService {
     public List<Promotion> getPromotionByProductId(Long productsIds) throws PromotionNotFoundException {
         List<Promotion> promotions = promotionsRepository.findByProducts_Id(productsIds);
         if (promotions.isEmpty() || promotions.stream().allMatch(promo -> promo.getDeletedAt() != null)) {
-            throw new PromotionNotFoundException("Nenhuma promoção encontrada para a porcentagem indicada.");
+            throw new PromotionNotFoundException("Nenhuma promoção encontrada para o produto indicado.");
         }
         return promotions;
     }
