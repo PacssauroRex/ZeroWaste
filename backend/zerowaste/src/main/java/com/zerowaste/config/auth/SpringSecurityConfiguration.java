@@ -37,13 +37,21 @@ public class SpringSecurityConfiguration {
         }))
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(authorize -> authorize
+            //Users
             .requestMatchers(HttpMethod.POST, "/users", "/users/login").permitAll()
             .requestMatchers(HttpMethod.OPTIONS, "/users", "/users/login").permitAll()
             .requestMatchers(HttpMethod.GET, "/users/check-auth-token").hasRole("USER")
+            //Products
             .requestMatchers(HttpMethod.POST, "/products").hasRole("ADMIN")
             .requestMatchers(HttpMethod.GET, "/products", "/products/**").hasRole("ADMIN")
             .requestMatchers(HttpMethod.PUT, "/products/**").hasRole("ADMIN")
             .requestMatchers(HttpMethod.DELETE, "/products/**").hasRole("ADMIN")
+            //Promotions
+            .requestMatchers(HttpMethod.POST, "/promotions/").hasRole("ADMIN")
+            .requestMatchers(HttpMethod.GET, "/promotions/", "/promotions/**").hasRole("ADMIN")
+            .requestMatchers(HttpMethod.PUT, "/promotions/**").hasRole("ADMIN") 
+            .requestMatchers(HttpMethod.DELETE, "/promotions/**").hasRole("ADMIN")
+            //Others
             .anyRequest().authenticated()
         )
         .addFilterBefore(authenticationUserService, UsernamePasswordAuthenticationFilter.class)
