@@ -49,19 +49,20 @@ public class PromotionService {
     }
 
     
-    public List<Promotion> getPromotionsByPercentage(Long percentage) throws PromotionNotFoundException {
+    public List<Promotion> getPromotionsByPercentage(Double percentage) throws PromotionNotFoundException {
         List<Promotion> promotions = promotionsRepository.findByPercentage(percentage);
-        if (promotions.isEmpty()) {
+        if (promotions.isEmpty() || promotions.stream().allMatch(promo -> promo.getDeletedAt() != null)) {
             throw new PromotionNotFoundException("Nenhuma promoção encontrada para a porcentagem indicada.");
         }
         return promotions;
     }
 
-    public Promotion getPromotionByProductId(Long productsIds) throws PromotionNotFoundException {
-        Optional<Promotion> p = promotionsRepository.findByProducts_Id(productsIds);
-        if(!p.isPresent() || p.get().getDeletedAt() != null) 
-            throw new PromotionNotFoundException("Promoção não encontrada!");
-        
-        return p.get();
+    public List<Promotion> getPromotionByProductId(Long productsIds) throws PromotionNotFoundException {
+        List<Promotion> promotions = promotionsRepository.findByProducts_Id(productsIds);
+        if (promotions.isEmpty() || promotions.stream().allMatch(promo -> promo.getDeletedAt() != null)) {
+            throw new PromotionNotFoundException("Nenhuma promoção encontrada para a porcentagem indicada.");
+        }
+        return promotions;
     }
+    
 }

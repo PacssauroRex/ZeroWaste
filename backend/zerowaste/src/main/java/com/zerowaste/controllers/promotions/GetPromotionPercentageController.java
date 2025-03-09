@@ -21,8 +21,8 @@ public class GetPromotionPercentageController {
     @Autowired
     private PromotionService promotionService;
 
-    @GetMapping("/{percentage}")
-    public ResponseEntity<Map<String, ?>> getPromotionByPercentage(@RequestParam Long percentage) {
+    @GetMapping("/percentageFilter/{percentage}")
+    public ResponseEntity<Map<String, ?>> getPromotionByPercentage(@RequestParam Double percentage) {
         try{
             return ResponseEntity.ok(Map.of("promotions", promotionService.getPromotionsByPercentage(percentage)));
         } 

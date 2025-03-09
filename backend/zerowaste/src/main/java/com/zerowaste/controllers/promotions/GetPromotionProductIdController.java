@@ -21,10 +21,10 @@ public class GetPromotionProductIdController {
     @Autowired
     private PromotionService promotionService;
 
-    @GetMapping("/{productsIds}")
+    @GetMapping("/productFilter/{productsIds}")
     public ResponseEntity<Map<String, ?>> getPromotionByProductId(@RequestParam Long productsIds) {
         try {
-            return ResponseEntity.ok(Map.of("promotion", promotionService.getPromotionByProductId(productsIds)));
+            return ResponseEntity.ok(Map.of("promotions", promotionService.getPromotionByProductId(productsIds)));
         }
         catch(PromotionNotFoundException err) {
             return ResponseEntity
