@@ -39,55 +39,38 @@ public class ProductService {
     }
 
     public void edit (Long id, EditProductDTO dto) throws ProductNotFoundException {
-
-        validateProduct(id, dto);
-
-        Product p = productsRepository.findById(id).get();
+        var product = productsRepository.findById(id).orElseThrow(() -> new ProductNotFoundException("Produto não encontrado"));
         
-        p.setName(dto.name());
-        p.setDescription(dto.description());
-        p.setBrand(dto.brand());
-        p.setCategory(ProductCategory.valueOf(dto.category()));
-        p.setUnitPrice(dto.unitPrice());
-        p.setPromotionPrice(dto.promotionPrice());
-        p.setExpiresAt(dto.expiresAt());
-        p.setStock(dto.stock());
-        p.setUpdatedAt(LocalDate.now());
-    
+        if (product.getDeletedAt() != null) {
+            throw new ProductNotFoundException("Produto não encontrado");
+        }
         
+        product.setName(dto.name());
+        product.setDescription(dto.description());
+        product.setBrand(dto.brand());
+        product.setCategory(ProductCategory.valueOf(dto.category()));
+        product.setUnitPrice(dto.unitPrice());
+        product.setPromotionPrice(dto.promotionPrice());
+        product.setExpiresAt(dto.expiresAt());
+        product.setStock(dto.stock());
+        product.setUpdatedAt(LocalDate.now());
+
         if (dto.promotionsIds() != null && !dto.promotionsIds().isEmpty()) {
             Set<Promotion> promotions = promotionsRepository.findAllById(dto.promotionsIds())
                                                         .stream()
                                                         .collect(Collectors.toSet());
-            p.setPromotions(promotions);
-        }
-
-        productsRepository.save(p);
-    }
-
-    private void validateProduct(Long id, EditProductDTO dto) throws ProductNotFoundException {
-
-        Product p = productsRepository.findById(id)
-            .orElseThrow(() -> new ProductNotFoundException("Produto não encontrado"));
-
-
-        if (p.getDeletedAt() != null) {
-            throw new ProductNotFoundException("Produto foi deletado");
-        }
-    }  
-
-    public void validatePromotions(EditProductDTO dto) {
-        if (dto.promotionsIds() != null && !dto.promotionsIds().isEmpty()) {
             
-            List<Long> invalidIds = dto.promotionsIds().stream()
-                .filter(id -> !promotionsRepository.existsById(id)) 
-                .collect(Collectors.toList());
-                
-            if (!invalidIds.isEmpty()) {
-                throw new IllegalArgumentException("Um ou mais IDs de promoção são inválidos: " + invalidIds);
+            if (!promotions.isEmpty()) {
+                throw new IllegalArgumentException("Um ou mais IDs de promoção são inválidos: " + promotions);
             }
+
+            product.setPromotions(promotions);
         }
+
+        productsRepository.save(product);
     }
+
+    
 
     public void delete (Long id) throws ProductNotFoundException {
         Product p = productsRepository.findById(id).get();
