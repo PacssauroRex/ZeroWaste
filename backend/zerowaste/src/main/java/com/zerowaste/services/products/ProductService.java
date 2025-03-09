@@ -7,7 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.zerowaste.dtos.EditProductDTO;
+import com.zerowaste.dtos.products.EditProductDTO;
 import com.zerowaste.models.product.Product;
 import com.zerowaste.models.product.ProductCategory;
 import com.zerowaste.repositories.ProductsRepository;
@@ -32,22 +32,23 @@ public class ProductService {
     }
 
     public void edit (Long id, EditProductDTO dto) throws ProductNotFoundException {
-        Product p = productsRepository.findById(id).get();
+        var product = productsRepository.findById(id).orElseThrow(() -> new ProductNotFoundException("Produto não encontrado"));
         
-        if(p == null || p.getDeletedAt() != null)
+        if (product.getDeletedAt() != null) {
             throw new ProductNotFoundException("Produto não encontrado");
+        }
         
-        p.setName(dto.name());
-        p.setDescription(dto.description());
-        p.setBrand(dto.brand());
-        p.setCategory(ProductCategory.valueOf(dto.category()));
-        p.setUnitPrice(dto.unitPrice());
-        p.setPromotionPrice(dto.promotionPrice());
-        p.setExpiresAt(dto.expiresAt());
-        p.setStock(dto.stock());
-        p.setUpdatedAt(LocalDate.now());
+        product.setName(dto.name());
+        product.setDescription(dto.description());
+        product.setBrand(dto.brand());
+        product.setCategory(ProductCategory.valueOf(dto.category()));
+        product.setUnitPrice(dto.unitPrice());
+        product.setPromotionPrice(dto.promotionPrice());
+        product.setExpiresAt(dto.expiresAt());
+        product.setStock(dto.stock());
+        product.setUpdatedAt(LocalDate.now());
 
-        productsRepository.save(p);
+        productsRepository.save(product);
     }
 
     public void delete (Long id) throws ProductNotFoundException {
