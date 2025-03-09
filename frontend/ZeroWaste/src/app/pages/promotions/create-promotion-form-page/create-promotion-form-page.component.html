@@ -1,0 +1,86 @@
+<section class="container">
+  <div class="card">
+    <header>
+      <h1>Cadastrar promoção</h1>
+    </header>
+
+    <form [formGroup]="promotionForm" (ngSubmit)="onSubmit($event)">
+
+      <div class="row">
+        <!-- Nome da promoção -->
+        <div class="form-group">
+          <label for="name">Nome</label>
+          <app-input [id]="'name'" [name]="'name'" [type]="'text'" [placeholder]="'Nomeie a promoção'"
+            formControlName="name" />
+          <small *ngIf="promotionForm.get('name')?.touched && getErrorMessage('name') as errorMessage"
+            class="invalid-feedback">
+            {{errorMessage}}
+          </small>
+        </div>
+
+        <!-- Desconto da promoção -->
+        <div class="form-group">
+          <label for="percentage">Desconto</label>
+          <app-input-with-symbol [id]="'percentage'" [name]="'percentage'" [type]="'number'"
+            [placeholder]="'Informe o desconto'" [symbol]="'%'" formControlName="percentage" />
+
+          <small *ngIf="promotionForm.get('percentage')?.touched && getErrorMessage('percentage') as errorMessage"
+            class="invalid-feedback">
+            {{ errorMessage }}
+          </small>
+        </div>
+
+
+      </div>
+
+      <!-- Descrição da promoção -->
+      <div class="form-group">
+        <label for="description">Descrição</label>
+        <app-textarea [id]="' '" [name]="'description'" [placeholder]="'Descreva a promoção'"
+          formControlName="description" />
+        <small *ngIf="promotionForm.get('description')?.touched && getErrorMessage('description') as errorMessage"
+          class="invalid-feedback">
+          {{errorMessage}}
+        </small>
+      </div>
+
+      <div class="row">
+        <!-- Data de início da promoção -->
+        <div class="form-group">
+          <label for="startsAt">Data de Início</label>
+          <app-input [id]="'startsAt'" [name]="'startsAt'" [type]="'date'" [placeholder]="'Digite a data de início'"
+            formControlName="startsAt" />
+          <small *ngIf="promotionForm.get('startsAt')?.touched && getErrorMessage('startsAt') as errorMessage"
+            class="invalid-feedback">
+            {{errorMessage}}
+          </small>
+        </div>
+
+        <!-- Data de término da promoção -->
+        <div class="form-group">
+          <label for="endsAt">Data de Término</label>
+          <app-input [id]="'endsAt'" [name]="'endsAt'" [type]="'date'" [placeholder]="'Digite a data de término'"
+            formControlName="endsAt" />
+          <small *ngIf="promotionForm.get('endsAt')?.touched && getErrorMessage('endsAt') as errorMessage"
+            class="invalid-feedback">
+            {{errorMessage}}
+          </small>
+        </div>
+      </div>
+
+      <!-- Botões -->
+      <footer style="display: flex;">
+        <a routerLink="/home" class="mr-2">
+          <app-button [type]="'button'" [block]="true" [variant]="'outline'">
+            Voltar
+          </app-button>
+        </a>
+
+        <app-button [type]="'submit'" [block]="true">
+          Salvar
+        </app-button>
+      </footer>
+
+    </form>
+  </div>
+</section>
