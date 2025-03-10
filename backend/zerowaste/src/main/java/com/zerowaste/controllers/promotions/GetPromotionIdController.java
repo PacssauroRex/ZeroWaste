@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.zerowaste.services.promotions.PromotionService;
+import com.zerowaste.services.promotions.GetPromotionsIdService;
 import com.zerowaste.services.promotions.exceptions.PromotionNotFoundException;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,12 +20,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 public class GetPromotionIdController {
     
     @Autowired
-    private PromotionService promotionService;
+    private GetPromotionsIdService getPromotionsIdService;
 
     @GetMapping("/{id}")
     public ResponseEntity<Map<String, ?>> getPromotionById(@PathVariable Long id) {
         try {
-            return ResponseEntity.ok(Map.of("promotion", promotionService.getPromotionById(id)));
+            return ResponseEntity.ok(Map.of("promotion", getPromotionsIdService.execute(id)));
         }
         catch(PromotionNotFoundException err) {
             return ResponseEntity

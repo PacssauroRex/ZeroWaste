@@ -9,25 +9,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.zerowaste.dtos.promotions.AddPromotionDTO;
-import com.zerowaste.services.promotions.PromotionService;
+import com.zerowaste.services.promotions.CreatePromotionService;
 
 import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-
 @RestController
 @RequestMapping("/promotions")
 public class CreatePromotionController {
     
     @Autowired
-    private PromotionService promotionService;
+    private CreatePromotionService createPromotionService;
 
     @PostMapping("/")
     public ResponseEntity<Map<String, ?>> createPromotion (@RequestBody @Valid AddPromotionDTO dto) {
         try {
-            promotionService.createPromotion(dto);
+            createPromotionService.execute(dto);
             return ResponseEntity.ok(Map.of("message", "promoção criada com sucesso!"));
         } 
         catch(Exception err) {
