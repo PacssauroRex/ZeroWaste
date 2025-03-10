@@ -4,6 +4,7 @@ import { RegisterComponent } from './auth/register/register.component';
 import { HomeComponent } from './home/home.component';
 
 import { routes as productsRoutes } from './pages/products/products.routes';
+import { routes as promotionsRoutes } from './pages/promotions/promotions.routes';
 
 const routes: Routes = [
   {
@@ -27,6 +28,7 @@ const routes: Routes = [
     title: "Homepage"
   },
   ...productsRoutes,
+  ...promotionsRoutes
 ];
 
 export default routes;
