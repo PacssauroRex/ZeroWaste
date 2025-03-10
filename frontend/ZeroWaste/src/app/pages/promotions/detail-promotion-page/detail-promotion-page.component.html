@@ -1,0 +1,63 @@
+<section class="container">
+  <header>
+    <h1>Detalhes da promoção (#{{route.snapshot.paramMap.get("id")}})</h1>
+  </header>
+
+  <form [formGroup]="promotionForm">
+
+    <div class="row">
+      <!-- Nome da promoção -->
+      <div class="form-group">
+        <label for="name">Nome</label>
+        <app-input [id]="'name'" [name]="'name'" [type]="'text'" [placeholder]="'Nomeie a promoção'"
+          formControlName="name" />
+      </div>
+
+      <!-- Desconto da promoção -->
+      <div class="form-group">
+        <label for="percentage">Desconto</label>
+        <app-input-with-symbol [id]="'percentage'" [name]="'percentage'" [type]="'number'"
+          [placeholder]="'Informe o desconto'" [symbol]="'%'" formControlName="percentage" />
+      </div>
+
+
+    </div>
+
+    <div class="row">
+      <!-- Data de início da promoção -->
+      <div class="form-group">
+        <label for="startsAt">Data de Início</label>
+        <app-input [id]="'startsAt'" [name]="'startsAt'" [type]="'date'" [placeholder]="'Digite a data de início'"
+          formControlName="startsAt" />
+      </div>
+
+      <!-- Data de término da promoção -->
+      <div class="form-group">
+        <label for="endsAt">Data de Término</label>
+        <app-input [id]="'endsAt'" [name]="'endsAt'" [type]="'date'" [placeholder]="'Digite a data de término'"
+          formControlName="endsAt" />
+      </div>
+    </div>
+
+    <!-- Produtos -->
+    <div class="form-group">
+      <label for="products">Produtos neste promoção</label>
+      <select name="products" id="products">
+        @for (product of products; track product.id) {
+        <option value="{{product.id}}">{{product.id}}: {{product.name}}</option>
+        }
+      </select>
+    </div>
+
+    <!-- Botões -->
+    <footer style="display: flex;">
+      <a routerLink="/home" class="mr-2">
+        <app-button [type]="'button'" [block]="true" [variant]="'outline'">
+          Voltar
+        </app-button>
+      </a>
+
+    </footer>
+
+  </form>
+</section>

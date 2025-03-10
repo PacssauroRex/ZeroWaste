@@ -1,0 +1,48 @@
+.container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  justify-content: center;
+  align-items: center;
+}
+
+.container form {
+  width: 500px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.container form footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+select {
+  width: 100%;
+  padding: 8px 12px;
+  font-size: 16px;
+  color: #333;
+  background-color: #f3f3f3;
+  /* Cor semelhante aos campos desativados */
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: not-allowed;
+  /* Indica que está desativado */
+  /* appearance: none; */
+  /* Remove o estilo padrão do navegador */
+}
+
+select:disabled {
+  background-color: #e9ecef;
+  /* Ajuste para o mesmo tom dos inputs desabilitados */
+  color: #6c757d;
+  /* Cor do texto desativado */
+}
+
+select option {
+  padding: 8px;
+  font-size: 16px;
+}
