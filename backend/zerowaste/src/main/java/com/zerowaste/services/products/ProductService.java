@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.zerowaste.dtos.products.EditProductDTO;
+import com.zerowaste.dtos.products.GetProductsDTO;
 import com.zerowaste.models.product.Product;
 import com.zerowaste.models.product.ProductCategory;
 import com.zerowaste.models.promotion.Promotion;
@@ -22,12 +23,13 @@ public class ProductService {
     
     @Autowired
     private ProductsRepository productsRepository;
-
+  
     @Autowired
     private PromotionsRepository promotionsRepository;
 
-    public List<Product> getAll () {
-        return productsRepository.findAllNotDeleted();
+
+    public List<Product> getAll (GetProductsDTO dto) {
+        return productsRepository.findAllNotDeleted(dto.daysToExpire());
     }
     
     public Product getById (Long id) throws ProductNotFoundException {
@@ -69,9 +71,7 @@ public class ProductService {
 
         productsRepository.save(product);
     }
-
-    
-
+  
     public void delete (Long id) throws ProductNotFoundException {
         Product p = productsRepository.findById(id).get();
 

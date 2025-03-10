@@ -8,7 +8,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.zerowaste.dtos.products.GetProductsDTO;
 import com.zerowaste.services.products.ProductService;
+
+import jakarta.validation.Valid;
+
 import org.springframework.web.bind.annotation.GetMapping;
 
 
@@ -18,10 +22,10 @@ public class GetProductsController {
     @Autowired
     private ProductService productService;
 
-    @GetMapping("/")
-    public ResponseEntity<Map<String, ?>> getAllProducts() {
+    @GetMapping()
+    public ResponseEntity<Map<String, ?>> getAllProducts(@Valid GetProductsDTO dto) {
         try {
-            return ResponseEntity.ok(Map.of("products", productService.getAll()));
+            return ResponseEntity.ok(Map.of("products", productService.getAll(dto)));
         }
         catch (Exception err) {
             return ResponseEntity
