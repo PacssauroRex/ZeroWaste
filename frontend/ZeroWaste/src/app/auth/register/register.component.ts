@@ -3,56 +3,28 @@ import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../auth.service';
 import { Router, RouterModule } from '@angular/router';
+import { InputComponent } from '../../components/form/input/input.component';
+import { ButtonComponent } from '../../components/form/button/button.component';
+import { ValidationErrorMessage } from '../../services/ValidationErrorMessage';
 
 @Component({
   selector: 'app-registro',
   standalone: true,
-  imports: [RouterModule, CommonModule, ReactiveFormsModule],
-  template: `
-    <div>
-      <div class="registro-container">
-      <form [formGroup]="registroForm" (ngSubmit)="onSubmit()">
-          <h2>Registro</h2>
-          <label>Nome</label>
-          <input type="text" formControlName="nome" placeholder="Informe seu nome" required/>
-          <div class="erros" *ngIf="registroForm.get('nome')?.invalid && registroForm.get('nome')?.touched">
-            Nome é obrigatório.
-          </div>
-
-          <label>E-mail</label>
-          <input type="email" formControlName="email" placeholder="Informe seu e-mail" required/>
-          <div class="erros" *ngIf="registroForm.get('email')?.invalid && registroForm.get('email')?.touched">
-            E-mail inválido.
-          </div>
-
-          <label>Senha</label>
-          <input type="password" formControlName="senha" placeholder="Informe sua senha" required/>
-          <div class="erros" *ngIf="registroForm.get('senha')?.invalid && registroForm.get('senha')?.touched">
-            Senha é obrigatória.
-          </div>
-
-          <label>Confirmação de senha</label>
-          <input type="password" formControlName="confirmSenha" placeholder="Confirme sua senha" required/>
-          <div class="erros" *ngIf="registroForm.get('confirmSenha')?.invalid && registroForm.get('confirmSenha')?.touched">
-            A confirmação de senha é obrigatória.
-          </div>
-
-          <div class="checkbox">
-            <input type="checkbox" formControlName="role" class="checkbox">
-            <label id="checkbox">ADMIN</label>
-          </div>
-
-          <button type="submit" [disabled]="registroForm.invalid">Registrar</button>
-        </form>
-      </div>
-    </div>
-  `,
+  imports: [
+    RouterModule, 
+    CommonModule, 
+    ReactiveFormsModule,
+    InputComponent,
+    ButtonComponent
+  ],
+  templateUrl: './register.component.html',
   styleUrl: './register.component.css'
 })
 export class RegisterComponent {
   private authService = inject(AuthService);
   private router = inject(Router);
-  private formBuilder = inject(FormBuilder)
+  private formBuilder = inject(FormBuilder);
+  private validationErrorMessage = inject(ValidationErrorMessage);
 
   registroForm: FormGroup = this.formBuilder.group({
     nome: ['', Validators.required],
@@ -82,5 +54,11 @@ export class RegisterComponent {
       .then(() => this.router.navigate(['/login']))
       .catch(err => alert('Erro ao registrar novo usuário: ' + err));
     }
+  }
+
+  public getErrorMessage(controlName: string): string | null {
+    const validationErrorMessage = this.validationErrorMessage.getValidationErrorMessage(this.registroForm.get(controlName)!);
+
+    return validationErrorMessage;
   }
 }

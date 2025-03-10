@@ -1,0 +1,97 @@
+<section class="container">
+    <header>
+      <h1>Detalhes do Produto</h1>
+    </header>
+    
+    <form [formGroup]="productForm">
+        <div class="form-group" >
+          <label for="name">Nome</label>
+          <app-input
+            [id]="'name'"
+            [name]="'name'"
+            [type]="'text'"
+            formControlName="name"
+          />
+        </div>
+    
+        <div class="form-group">
+          <label for="description">Descrição</label>
+          <app-textarea
+            [id]="' '"
+            [name]="'description'"
+            formControlName="description"
+          />
+        </div>
+    
+        <div class="form-group">
+          <label for="brand">Marca</label>
+          <app-input
+            [id]="'brand'"
+            [name]="'brand'"
+            [type]="'text'"
+            formControlName="brand"
+          />
+        </div>
+        
+        <div class="form-group">
+          <label for="expiresAt">Data de Validade</label>
+          <app-input
+            [id]="'expiresAt'"
+            [name]="'expiresAt'"
+            [type]="'text'"
+            formControlName="expiresAt"
+          />
+        </div>
+    
+        <div class="row">
+          <div class="form-group">
+            <label for="category">Categoria</label>
+            <app-input
+              [id]="'category'"
+              [name]="'category'"
+              [type]="'text'"
+              formControlName="category"
+            />
+          </div>
+    
+          <div class="form-group">
+            <label for="stock">Estoque</label>
+            <app-input
+              [id]="'stock'"
+              [name]="'stock'"
+              [type]="'text'"
+              formControlName="stock"
+            />
+          </div>
+        </div>
+    
+        <div class="row">
+          <div class="form-group">
+            <label for="unitPrice">Preço</label>
+            <app-input
+              [id]="'unitPrice'"
+              [name]="'unitPrice'"
+              [type]="'text'"
+              formControlName="unitPrice"
+            />
+          </div>
+          <div class="form-group">
+            <label for="promotionPrice">Preço promocional</label>
+                <app-input
+                  [id]="'promotionPrice'"
+                  [name]="'promotionPrice'"
+                  [type]="'text'"
+                  formControlName="promotionPrice"
+                />
+          </div>
+        </div>
+    
+        <footer style="display: flex;">
+          <a routerLink="/products" class="mr-2">
+            <app-button [type]="'button'" [block]="true" [variant]="'outline'">
+              Voltar
+            </app-button>
+          </a>
+        </footer>
+    </form>
+</section>
