@@ -3,7 +3,7 @@ package com.zerowaste.controllers.promotions;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.zerowaste.services.promotions.PromotionService;
+import com.zerowaste.services.promotions.GetPromotionService;
 
 import java.util.Map;
 
@@ -17,12 +17,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class GetPromotionsController {
 
     @Autowired
-    private PromotionService promotionService;
+    private GetPromotionService getPromotionService;
     
     @GetMapping("/")
     public ResponseEntity<Map<String, ?>> getAllPromotions() {
         try {
-            return ResponseEntity.ok(Map.of("promotions", promotionService.getAllPromotions()));
+            return ResponseEntity.ok(Map.of("promotions", getPromotionService.execute()));
         } 
         catch(Exception err) {
             return ResponseEntity

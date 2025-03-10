@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.zerowaste.dtos.products.GetProductsDTO;
-import com.zerowaste.services.products.ProductService;
+import com.zerowaste.services.products.GetProductService;
 
 import jakarta.validation.Valid;
 
@@ -20,12 +20,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 @RequestMapping("/products")
 public class GetProductsController {
     @Autowired
-    private ProductService productService;
+    private GetProductService getProductService;
 
     @GetMapping()
     public ResponseEntity<Map<String, ?>> getAllProducts(@Valid GetProductsDTO dto) {
         try {
-            return ResponseEntity.ok(Map.of("products", productService.getAll(dto)));
+            return ResponseEntity.ok(Map.of("products", getProductService.execute(dto)));
         }
         catch (Exception err) {
             return ResponseEntity

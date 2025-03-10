@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.zerowaste.services.promotions.PromotionService;
+import com.zerowaste.services.promotions.GetPromotionPercentageService;
 import com.zerowaste.services.promotions.exceptions.PromotionNotFoundException;
 
 @RestController
@@ -19,12 +19,12 @@ import com.zerowaste.services.promotions.exceptions.PromotionNotFoundException;
 public class GetPromotionPercentageController {
 
     @Autowired
-    private PromotionService promotionService;
+    private GetPromotionPercentageService getPromotionPercentageService;
 
     @GetMapping("/percentageFilter/{percentage}")
     public ResponseEntity<Map<String, ?>> getPromotionByPercentage(@RequestParam Double percentage) {
         try{
-            return ResponseEntity.ok(Map.of("promotions", promotionService.getPromotionsByPercentage(percentage)));
+            return ResponseEntity.ok(Map.of("promotions", getPromotionPercentageService.execute(percentage)));
         } 
         catch(PromotionNotFoundException err) {
             return ResponseEntity

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.zerowaste.services.promotions.PromotionService;
+import com.zerowaste.services.promotions.GetPromotionProductService;
 import com.zerowaste.services.promotions.exceptions.PromotionNotFoundException;
 
 @RestController
@@ -19,12 +19,12 @@ import com.zerowaste.services.promotions.exceptions.PromotionNotFoundException;
 public class GetPromotionProductIdController {
 
     @Autowired
-    private PromotionService promotionService;
+    private GetPromotionProductService getPromotionProductService;
 
     @GetMapping("/productFilter/{productsIds}")
     public ResponseEntity<Map<String, ?>> getPromotionByProductId(@RequestParam Long productsIds) {
         try {
-            return ResponseEntity.ok(Map.of("promotions", promotionService.getPromotionByProductId(productsIds)));
+            return ResponseEntity.ok(Map.of("promotions", getPromotionProductService.execute(productsIds)));
         }
         catch(PromotionNotFoundException err) {
             return ResponseEntity

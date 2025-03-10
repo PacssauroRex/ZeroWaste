@@ -50,9 +50,14 @@ export class RegisterComponent {
 
       const user = {name: nome, email, password: senha, role: finalRole};
 
-      this.authService.register(user)
-      .then(() => this.router.navigate(['/login']))
-      .catch(err => alert('Erro ao registrar novo usuário: ' + err));
+      try {
+        this.authService.register(user)
+        this.router.navigate(['/login'])
+        alert('Usuário cadastrado com sucesso')  
+      }
+      catch(err) {
+        alert('Erro ao registrar novo usuário: ' + err); 
+      }
     }
   }
 

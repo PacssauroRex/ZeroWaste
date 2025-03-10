@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.zerowaste.services.products.ProductService;
+import com.zerowaste.services.products.GetProductIdService;
 import com.zerowaste.services.products.exceptions.ProductNotFoundException;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,12 +19,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 @RequestMapping("/products")
 public class GetProductIdController {
     @Autowired
-    private ProductService productService;
+    private GetProductIdService getProductIdService;
 
     @GetMapping("/{id}")
     public ResponseEntity<Map<String, ?>> getProductById(@PathVariable Long id) {
         try {
-            return ResponseEntity.ok(Map.of("product", productService.getById(id)));
+            return ResponseEntity.ok(Map.of("product", getProductIdService.execute(id)));
         } 
         catch (ProductNotFoundException err) {
             return ResponseEntity
