@@ -1,0 +1,74 @@
+<section>
+    <div class="registro-container">
+        <form [formGroup]="registroForm" (ngSubmit)="onSubmit()">
+            <h2>Registro</h2>
+
+            <div class="form-group">
+                <label for="nome">Nome</label>
+                <app-input
+                  [id]="'nome'"
+                  [name]="'nome'"
+                  [type]="'text'"
+                  [placeholder]="'Informe seu nome'"
+                  formControlName="nome"
+                />
+                <small *ngIf="registroForm.get('nome')?.touched && getErrorMessage('nome') as errorMessage" class="invalid-feedback">
+                  {{errorMessage}}
+                </small>
+            </div>
+    
+            <div class="form-group">
+                <label for="email">E-mail</label>
+                <app-input
+                  [id]="'email'"
+                  [name]="'email'"
+                  [type]="'text'"
+                  [placeholder]="'Informe seu e-mail'"
+                  formControlName="email"
+                />
+                <small *ngIf="registroForm.get('email')?.touched && getErrorMessage('email') as errorMessage" class="invalid-feedback">
+                  {{errorMessage}}
+                </small>
+            </div>
+
+            <div class="form-group">
+                <label for="senha">Senha</label>
+                <app-input
+                  [id]="'senha'"
+                  [name]="'senha'"
+                  [type]="'password'"
+                  [placeholder]="'Informe sua senha'"
+                  formControlName="senha"
+                />
+                <small *ngIf="registroForm.get('senha')?.touched && getErrorMessage('senha') as errorMessage" class="invalid-feedback">
+                  {{errorMessage}}
+                </small>
+            </div>
+
+            <div class="form-group">
+                <label for="confirmSenha">Confirmação de senha</label>
+                <app-input
+                  [id]="'confirmSenha'"
+                  [name]="'confirmSenha'"
+                  [type]="'password'"
+                  [placeholder]="'Confirme sua senha'"
+                  formControlName="confirmSenha"
+                />
+                <small *ngIf="registroForm.get('confirmSenha')?.touched && getErrorMessage('senha') as errorMessage" class="invalid-feedback">
+                  {{errorMessage}}
+                </small>
+            </div>
+    
+            <div class="checkbox">
+              <input type="checkbox" formControlName="role" class="checkbox" id="checkbox">
+              <label for="checkbox">ADMIN</label>
+            </div>
+
+            <div class="button">
+                <app-button [type]="'submit'" [block]="true" [disabled]="registroForm.invalid">
+                  Resgistrar
+                </app-button>
+            </div>
+          </form>
+        </div>
+</section>

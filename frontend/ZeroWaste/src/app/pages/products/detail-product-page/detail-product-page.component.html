@@ -1,48 +1,97 @@
-<div class="container">
-    <h1>Detalhes do Produto</h1>
-    <div class="product-info">
-        <div class="product-row">
-            <span class="label">Nome:</span>
-            <span class="value" id="product-name">{{product?.name}}</span>
+<section class="container">
+    <header>
+      <h1>Detalhes do Produto</h1>
+    </header>
+    
+    <form [formGroup]="productForm">
+        <div class="form-group" >
+          <label for="name">Nome</label>
+          <app-input
+            [id]="'name'"
+            [name]="'name'"
+            [type]="'text'"
+            formControlName="name"
+          />
         </div>
-        <div class="product-row">
-            <span class="label">Descrição:</span>
-            <span class="value" id="product-description">{{product?.description}}</span>
+    
+        <div class="form-group">
+          <label for="description">Descrição</label>
+          <app-textarea
+            [id]="' '"
+            [name]="'description'"
+            formControlName="description"
+          />
         </div>
-        <div class="product-row">
-            <span class="label">Marca:</span>
-            <span class="value" id="product-brand">{{product?.brand}}</span>
+    
+        <div class="form-group">
+          <label for="brand">Marca</label>
+          <app-input
+            [id]="'brand'"
+            [name]="'brand'"
+            [type]="'text'"
+            formControlName="brand"
+          />
         </div>
-        <div class="product-row">
-            <span class="label">Categoria:</span>
-            <span class="value" id="product-category">{{product?.category}}</span>
+        
+        <div class="form-group">
+          <label for="expiresAt">Data de Validade</label>
+          <app-input
+            [id]="'expiresAt'"
+            [name]="'expiresAt'"
+            [type]="'text'"
+            formControlName="expiresAt"
+          />
         </div>
-        <div class="product-row">
-            <span class="label">Preço Unitário:</span>
-            <span class="value" id="product-price">R${{product?.unitPrice | number : '1.2-2'}}</span>
+    
+        <div class="row">
+          <div class="form-group">
+            <label for="category">Categoria</label>
+            <app-input
+              [id]="'category'"
+              [name]="'category'"
+              [type]="'text'"
+              formControlName="category"
+            />
+          </div>
+    
+          <div class="form-group">
+            <label for="stock">Estoque</label>
+            <app-input
+              [id]="'stock'"
+              [name]="'stock'"
+              [type]="'text'"
+              formControlName="stock"
+            />
+          </div>
         </div>
-        <div class="product-row">
-            <span class="label">Preço Promocional:</span>
-            <span class="value" id="product-promo-price" *ngIf="product?.promotionPrice != null">
-                R${{product?.promotionPrice | number : '1.2-2'}}
-            </span>
-            <span class="value" id="product-promo-price" *ngIf="product?.promotionPrice == null">
-                Sem preço promocional
-            </span>
+    
+        <div class="row">
+          <div class="form-group">
+            <label for="unitPrice">Preço</label>
+            <app-input
+              [id]="'unitPrice'"
+              [name]="'unitPrice'"
+              [type]="'text'"
+              formControlName="unitPrice"
+            />
+          </div>
+          <div class="form-group">
+            <label for="promotionPrice">Preço promocional</label>
+                <app-input
+                  [id]="'promotionPrice'"
+                  [name]="'promotionPrice'"
+                  [type]="'text'"
+                  formControlName="promotionPrice"
+                />
+          </div>
         </div>
-        <div class="product-row">
-            <span class="label">Quantidade em Estoque:</span>
-            <span class="value" id="product-quantity">{{product?.stock}} unidades</span>
-        </div>
-        <div class="product-row">
-            <span class="label">Data de Validade:</span>
-            <span class="value" id="product-expiry-date">{{product?.expiresAt | date: 'dd/MM/yyyy'}}</span>
-        </div>
-    </div>
-
-    <a routerLink="/products" class="mr-2">
-        <app-button [type]="'button'" [block]="true" [variant]="'outline'">
-          Voltar
-        </app-button>
-      </a>
-</div>
+    
+        <footer style="display: flex;">
+          <a routerLink="/products" class="mr-2">
+            <app-button [type]="'button'" [block]="true" [variant]="'outline'">
+              Voltar
+            </app-button>
+          </a>
+        </footer>
+    </form>
+</section>
