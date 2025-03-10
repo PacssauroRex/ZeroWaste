@@ -27,7 +27,6 @@ public record EditPromotionDTO(
         @Future
         LocalDate endsAt,
 
-        @NotNull(message = "A lista de produtos não pode ser nula")
         Set<Long> productIds
         
 ) {}
