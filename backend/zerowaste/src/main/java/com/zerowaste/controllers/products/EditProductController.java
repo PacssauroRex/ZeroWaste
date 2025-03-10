@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.zerowaste.dtos.products.EditProductDTO;
-import com.zerowaste.services.products.ProductService;
+import com.zerowaste.services.products.EditProductService;
 import com.zerowaste.services.products.exceptions.ProductNotFoundException;
 
 import jakarta.validation.Valid;
@@ -23,12 +23,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 @RequestMapping("/products")
 public class EditProductController {
     @Autowired
-    private ProductService productService;
+    private EditProductService editProductService;
 
     @PutMapping("/{id}")
     public ResponseEntity<Map<String, ?>> editProduct(@PathVariable Long id, @RequestBody @Valid EditProductDTO dto) {
         try {
-            productService.edit(id, dto);
+            editProductService.execute(id, dto);
             return ResponseEntity.ok(Map.of("message", "Produto editado com sucesso!"));
         } 
         catch (ProductNotFoundException err) {

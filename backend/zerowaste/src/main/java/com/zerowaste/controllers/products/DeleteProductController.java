@@ -10,19 +10,19 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.zerowaste.services.products.ProductService;
+import com.zerowaste.services.products.DeleteProductService;
 import com.zerowaste.services.products.exceptions.ProductNotFoundException;
 
 @RestController
 @RequestMapping("/products")
 public class DeleteProductController {
     @Autowired
-    private ProductService productService;
+    private DeleteProductService deleteProductService;
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Map<String, ?>> deleteProduct(@PathVariable Long id) {
         try {
-            productService.delete(id);
+            deleteProductService.execute(id);
             return ResponseEntity.ok(Map.of("message", "Produto deletado com sucesso!"));
         } 
         catch (ProductNotFoundException err) {
