@@ -18,7 +18,6 @@ import { API_URL } from '../../../utils/contants';
     RouterModule,
     InputComponent,
     InputWithSymbolComponent,
-    TextareaComponent,
     ButtonComponent,
   ],
   templateUrl: './create-promotion-form-page.component.html',

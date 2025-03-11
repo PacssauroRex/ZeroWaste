@@ -18,7 +18,6 @@ import { MultiSelectComponent } from '../../../components/form/multi-select/mult
     RouterModule,
     InputComponent,
     InputWithSymbolComponent,
-    TextareaComponent,
     ButtonComponent,
     MultiSelectComponent
   ],

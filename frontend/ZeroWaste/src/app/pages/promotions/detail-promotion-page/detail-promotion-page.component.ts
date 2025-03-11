@@ -16,7 +16,6 @@ import { InputWithSymbolComponent } from '../../../components/form/input-with-sy
     ReactiveFormsModule,
     ButtonComponent,
     InputComponent,
-    SelectComponent,
     RouterModule,
     InputWithSymbolComponent
   ],
