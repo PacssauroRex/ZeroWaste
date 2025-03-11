@@ -37,13 +37,23 @@ public class EditPromotionService {
         p.setEndsAt(dto.endsAt());
         p.setUpdatedAt(LocalDate.now());
 
+        // Encontra todos os produtos válidos
         Set<Product> products = new HashSet<Product>(productRepository.findAllById(dto.productIds()));
 
+        // Caso nenhum produto seja válido
         if (products.isEmpty() && !dto.productIds().isEmpty())
             throw new ProductNotFoundException("Nenhum produto válido foi encontrado!");
 
         p.setProducts(products);
 
         promotionsRepository.save(p);
+
+        // Atualiza o preço promocional dos produtos
+        for (Product product : products) {
+            double promotionPrice = product.getUnitPrice() - (product.getUnitPrice() * p.getPercentage());
+            product.setPromotionPrice(promotionPrice);
+            productRepository.save(product);
+        }
+
     }
 }
