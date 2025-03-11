@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 import { Product } from '../product';
 import { ProductService } from '../../../services/ProductService';
 import { ModalComponent } from "../../../components/modal/modal.component";
+import { CardComponent, CardHeaderComponent, CardContentComponent, CardFooterComponent } from "../../../components/card/card.component";
 
 @Component({
   selector: 'app-list-product-page',
@@ -12,8 +13,12 @@ import { ModalComponent } from "../../../components/modal/modal.component";
     CommonModule,
     ButtonComponent,
     RouterModule,
-    ModalComponent
-  ],
+    ModalComponent,
+    CardComponent,
+    CardHeaderComponent,
+    CardContentComponent,
+    CardFooterComponent
+],
   templateUrl: './list-product-page.component.html',
   styleUrl: './list-product-page.component.css'
 })

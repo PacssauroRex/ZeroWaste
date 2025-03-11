@@ -50,24 +50,26 @@
                   </app-button>
 
                   <app-modal #modal>
-                    <header modal-header>
-                      <h2 modal-header>
-                        Você tem certeza que deseja deletar este produto?
-                      </h2>
-                    </header>
+                    <app-card>
+                      <app-card-header>
+                        <h2>
+                          Você tem certeza que deseja deletar este produto?
+                        </h2>
+                      </app-card-header>
 
-                    <main modal-content>
-                      Essa ação não pode ser desfeita. Clique em "Confirmar" para deletar o produto.
-                    </main>
+                      <app-card-content>
+                        Essa ação não pode ser desfeita. Clique em "Confirmar" para deletar o produto.
+                      </app-card-content>
 
-                    <footer modal-footer>
-                      <app-button [variant]="'outline'" style="margin-right: 8px;" (click)="modal.closeModal()">
-                        Cancelar
-                      </app-button>
-                      <app-button (click)="onDeleteProductConfirmation(product.id)">
-                        Confirmar
-                      </app-button>
-                    </footer>
+                      <app-card-footer>
+                        <app-button [variant]="'outline'" style="margin-right: 8px;" (click)="modal.closeModal()">
+                          Cancelar
+                        </app-button>
+                        <app-button (click)="onDeleteProductConfirmation(product.id)">
+                          Confirmar
+                        </app-button>
+                      </app-card-footer>
+                    </app-card>
                   </app-modal>
                 </a>
               </td>

@@ -19,7 +19,6 @@ import { API_URL } from '../../../utils/contants';
     InputComponent,
     InputWithSymbolComponent,
     TextareaComponent,
-    SelectComponent,
     ButtonComponent,
   ],
   templateUrl: './create-promotion-form-page.component.html',
