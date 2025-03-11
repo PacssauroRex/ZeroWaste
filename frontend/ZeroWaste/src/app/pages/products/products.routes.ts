@@ -13,6 +13,7 @@ export const routes: Routes = [
         path: '',
         title: 'Products',
         component: ListProductPageComponent,
+        data: { role: 'ADMIN' },
       },
       {
         path: 'create',
