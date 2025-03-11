@@ -1,6 +1,6 @@
-<section class="container">
+<section class="container" *ngIf="isLoading === false">
   <header>
-    <h1>Cadastrar promoção</h1>
+    <h1>Atualizar promoção (#{{route.snapshot.paramMap.get("id")}})</h1>
   </header>
 
   <form [formGroup]="promotionForm" (ngSubmit)="onSubmit($event)">
@@ -55,6 +55,20 @@
         </small>
       </div>
     </div>
+
+    <!-- Produtos -->
+
+    <app-input hidden [id]="'productIds'" [name]="'productIds'" [type]="'text'" formControlName="productIds">
+    </app-input>
+
+    <div class="form-group">
+      <label for="allProducts">Produtos</label>
+      <app-multi-select [id]="'allProducts'" [options]="allProducts" labelKey="name" valueKey="id"
+        (selectionChange)="onSelectionChange($event, allProducts)" [preselectedItems]="alreadyInListProducts">
+      </app-multi-select>
+    </div>
+
+
 
     <!-- Botões -->
     <footer style="display: flex;">

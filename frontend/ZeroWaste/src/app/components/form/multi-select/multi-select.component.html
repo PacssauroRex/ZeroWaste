@@ -1,0 +1,17 @@
+<div class="multi-select">
+  <div class="selected-items">
+    <span *ngFor="let item of selectedItems; trackBy: trackByFn" class="tag">
+      {{ item[labelKey] }}
+    </span>
+  </div>
+
+  <div class="dropdown">
+    <button class="dropdown-button" type="button">Selecionar</button>
+    <div class="dropdown-content">
+      <label *ngFor="let option of options; trackBy: trackByFn">
+        <input type="checkbox" [checked]="isSelected(option)" (change)="toggleSelection(option)">
+        {{ option[labelKey] }}
+      </label>
+    </div>
+  </div>
+</div>
