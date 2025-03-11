@@ -1,0 +1,13 @@
+<article #card class="card">
+  <header class="card-header">
+    <ng-content select="[div, header, card-header]"></ng-content>
+  </header>
+
+  <main class="card-content">
+    <ng-content select="[div, main, section, card-content]"></ng-content>
+  </main>
+
+  <footer class="card-footer">
+    <ng-content select="[div, footer, card-footer]"></ng-content>
+  </footer>
+</article>
