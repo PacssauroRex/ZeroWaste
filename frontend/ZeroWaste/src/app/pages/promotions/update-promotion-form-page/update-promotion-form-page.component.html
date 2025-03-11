@@ -1,4 +1,4 @@
-<section class="container">
+<section class="container" *ngIf="isLoading === false">
   <header>
     <h1>Atualizar promoção (#{{route.snapshot.paramMap.get("id")}})</h1>
   </header>

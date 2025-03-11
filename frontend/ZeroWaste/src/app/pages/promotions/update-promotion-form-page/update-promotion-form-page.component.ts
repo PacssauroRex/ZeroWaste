@@ -45,6 +45,8 @@ export class UpdatePromotionFormPageComponent {
   public selectedVariants: { [key: number]: any[] } = {};
   public productIds: number[] = [];
 
+  public isLoading = true; // Página começa carregando
+
   public async ngOnInit(): Promise<void> {
     this.promotionForm.disable();
 
@@ -58,6 +60,7 @@ export class UpdatePromotionFormPageComponent {
     }
 
     finally {
+      this.isLoading = false; // Apenas agora os dados estão prontos
       this.promotionForm.enable();
       this.promotionForm.get('productIds')?.disable();
     }
