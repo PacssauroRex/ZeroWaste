@@ -19,7 +19,7 @@ public class GetPromotionService {
         List<Promotion> promos = promotionsRepository.findAllNotDeleted();
         List<PromotionDTO> promotionDTOs = new ArrayList<>();
         for (var p : promos) {
-            promotionDTOs.add(new PromotionDTO(p.getName(), p.getPercentage(), p.getStartsAt(), p.getEndsAt()));
+            promotionDTOs.add(new PromotionDTO(p.getId(), p.getName(), p.getPercentage(), p.getStartsAt(), p.getEndsAt()));
         }
 
         return promotionDTOs;
