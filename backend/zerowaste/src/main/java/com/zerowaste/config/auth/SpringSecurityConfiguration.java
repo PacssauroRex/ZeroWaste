@@ -1,5 +1,6 @@
 package com.zerowaste.config.auth;
 
+import com.zerowaste.services.users.AuthenticateUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,8 +14,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-import com.zerowaste.services.users.AuthenticateUserService;
 
 @Configuration
 @EnableWebSecurity
@@ -51,7 +50,11 @@ public class SpringSecurityConfiguration {
             .requestMatchers(HttpMethod.GET, "/promotions/", "/promotions/**").hasRole("ADMIN")
             .requestMatchers(HttpMethod.GET, "/promotions/percentageFilter/**").hasAnyRole("USER", "ADMIN")
             .requestMatchers(HttpMethod.GET, "/promotions/productFilter/**").hasAnyRole("USER", "ADMIN")
+            .requestMatchers(HttpMethod.DELETE, "/promotions/percentageFilter/**").hasAnyRole("USER", "ADMIN")
+            .requestMatchers(HttpMethod.DELETE, "/promotions/productFilter/**").hasAnyRole("USER", "ADMIN")
+            .requestMatchers(HttpMethod.GET, "/promotions/percentage/**").hasAnyRole("USER", "ADMIN")
             .requestMatchers(HttpMethod.PUT, "/promotions/**").hasRole("ADMIN")
+            .requestMatchers(HttpMethod.DELETE, "/promotions/**").hasRole("ADMIN")
         )
         .addFilterBefore(authenticationUserService, UsernamePasswordAuthenticationFilter.class)
         .build();
