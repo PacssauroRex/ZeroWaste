@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, forwardRef, inject } from '@angular/core';
+import { FormBuilder, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { InputComponent } from '../../../components/form/input/input.component';
 import { InputWithSymbolComponent } from '../../../components/form/input-with-symbol/input-with-symbol.component';
@@ -8,6 +8,7 @@ import { TextareaComponent } from '../../../components/form/textarea/textarea.co
 import { ButtonComponent } from '../../../components/form/button/button.component';
 import { ValidationErrorMessage } from '../../../services/ValidationErrorMessage';
 import { API_URL } from '../../../utils/contants';
+import { MultiSelectComponent } from '../../../components/form/multi-select/multi-select.component';
 
 @Component({
   selector: 'app-update-promotion-form-page',
@@ -19,6 +20,7 @@ import { API_URL } from '../../../utils/contants';
     InputWithSymbolComponent,
     TextareaComponent,
     ButtonComponent,
+    MultiSelectComponent
   ],
   templateUrl: './update-promotion-form-page.component.html',
   styleUrl: './update-promotion-form-page.component.css'
@@ -30,20 +32,116 @@ export class UpdatePromotionFormPageComponent {
   private router = inject(Router);
   public route = inject(ActivatedRoute);
 
-  // Form
   public promotionForm = this.fb.group({
     name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
     percentage: ['', [Validators.required, Validators.min(1), Validators.max(100)]],
     startsAt: ['', [Validators.required, Validators.pattern(/^\d{4}-\d{2}-\d{2}$/)]],
     endsAt: ['', [Validators.required, Validators.pattern(/^\d{4}-\d{2}-\d{2}$/)]],
+    productIds: [<any>[], [Validators.required]],
   });
 
-  public getErrorMessage(controlName: string): string | null {
-    const validationErrorMessage = this.validationErrorMessage.getValidationErrorMessage(
-      this.promotionForm.get(controlName)!
-    );
+  public allProducts: any[] = [];
+  public alreadyInListProducts: any[] = [];
+  public selectedVariants: { [key: number]: any[] } = {};
+  public productIds: number[] = [];
 
-    return validationErrorMessage;
+  public async ngOnInit(): Promise<void> {
+    this.promotionForm.disable();
+
+    try {
+      await this.loadPromotionData();
+      await this.loadProductData();
+    }
+
+    catch (error) {
+      alert("Falha no carregamento: " + error);
+    }
+
+    finally {
+      this.promotionForm.enable();
+      this.promotionForm.get('productIds')?.disable();
+    }
+  }
+
+  private async loadPromotionData(): Promise<void> {
+    const response = await this.getPromotion();
+    if (!response.ok) {
+      this.handleError(response.status, 'promoção');
+      return;
+    }
+
+    const { promotion } = await response.json();
+    this.alreadyInListProducts.push(...promotion.products);
+
+    this.promotionForm.patchValue({
+      name: promotion.name,
+      percentage: (promotion.percentage * 100).toString(),
+      startsAt: promotion.startsAt,
+      endsAt: promotion.endsAt,
+    });
+  }
+
+  private async loadProductData(): Promise<void> {
+    const response = await this.getAllProducts();
+    if (!response.ok) {
+      this.handleError(response.status, 'produtos');
+      return;
+    }
+
+    const { products } = await response.json();
+    this.allProducts = products;
+  }
+
+  private handleError(status: number, type: string): void {
+    let message = `Erro ao buscar ${type}`;
+    switch (status) {
+      case 401:
+        message = `Você não tem permissão para buscar ${type}`;
+        break;
+      case 404:
+        message = `${type.charAt(0).toUpperCase() + type.slice(1)} não encontrado`;
+        break;
+      case 400:
+        message = `Erro ao buscar ${type}: Dados inválidos`;
+        break;
+      case 403:
+        message = `Você não tem permissão para buscar ${type}`;
+        break;
+    }
+    alert(message);
+  }
+
+  public onSelectionChange(selected: any[], product: any) {
+    this.selectedVariants[product.id] = selected;
+    // console.log('Seleção Atualizada:', this.selectedVariants);
+
+    this.productIds = Object.values(this.selectedVariants)
+      .flatMap(items => items.map(item => item.id));
+
+    this.promotionForm.patchValue({
+      productIds: this.productIds
+    });
+  }
+
+  public getErrorMessage(controlName: string): string | null {
+    return this.validationErrorMessage.getValidationErrorMessage(this.promotionForm.get(controlName)!);
+  }
+
+  private async updatePromotion() {
+    const promotionId = this.route.snapshot.paramMap.get('id')!;
+
+    this.promotionForm.value.percentage = (Number(this.promotionForm.value.percentage) / 100).toString();
+    this.promotionForm.value.productIds = this.productIds;
+
+    return await fetch(API_URL + "/promotions/" + promotionId, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      },
+      body: JSON.stringify(this.promotionForm.value),
+    });
   }
 
   public async onSubmit(event: SubmitEvent) {
@@ -57,25 +155,11 @@ export class UpdatePromotionFormPageComponent {
       const response = await this.updatePromotion();
 
       if (!response.ok) {
-        switch (response.status) {
-          case 401:
-            alert('Você não tem permissão para atualizar produtos');
-            break;
-
-          case 404:
-            alert('Produto não encontrado');
-            break;
-
-          default:
-            alert('Erro ao atualizar produto');
-            break;
-        }
-
+        this.handleError(response.status, 'promoção');
         return;
       }
 
       alert('Promoção atualizada com sucesso');
-
       this.router.navigate(['/home']);
 
     }
@@ -86,56 +170,8 @@ export class UpdatePromotionFormPageComponent {
     }
   }
 
-
-  public async ngOnInit(): Promise<void> {
-    this.promotionForm.disable();
-
-
-
-    try {
-      const response = await this.getPromotion();
-
-      if (!response.ok) {
-        switch (response.status) {
-          case 401:
-            alert('Você não tem permissão para atualizar promoções');
-            break;
-
-          case 404:
-            alert('Promoção não encontrada');
-            break;
-
-          default:
-            alert('Erro ao atualizar promoção');
-            break;
-        }
-
-        return;
-      }
-
-      const { promotion } = await response.json();
-
-      this.promotionForm.setValue({
-        name: promotion.name,
-        percentage: (promotion.percentage * 100).toString(),
-        startsAt: promotion.startsAt,
-        endsAt: promotion.endsAt,
-      });
-    }
-
-    catch (error) {
-      console.error('Erro ao buscar promoção', error);
-      alert('Erro ao buscar promoção');
-    }
-
-    finally {
-      this.promotionForm.enable();
-    }
-  }
-
-  public async getPromotion() {
+  private async getPromotion() {
     const promotionId = this.route.snapshot.paramMap.get('id')!;
-
     return await fetch(API_URL + "/promotions/" + promotionId, {
       method: 'GET',
       headers: {
@@ -144,22 +180,16 @@ export class UpdatePromotionFormPageComponent {
         'Authorization': `Bearer ${localStorage.getItem('token')}`
       },
     });
-
   }
 
-  public async updatePromotion() {
-    const promotionId = this.route.snapshot.paramMap.get('id')!;
-
-    return await fetch(API_URL + "/promotions/" + promotionId, {
-      method: 'PUT',
+  private async getAllProducts() {
+    return await fetch(API_URL + "/products", {
+      method: 'GET',
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
         'Authorization': `Bearer ${localStorage.getItem('token')}`
       },
-      body: JSON.stringify(this.promotionForm.value),
     });
   }
-
-
 }
