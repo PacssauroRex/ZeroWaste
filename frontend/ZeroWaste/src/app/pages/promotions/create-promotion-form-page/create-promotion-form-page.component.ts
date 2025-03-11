@@ -56,7 +56,7 @@ export class CreatePromotionFormPageComponent {
     try {
       await this.savePromotion(this.promotionForm.value)
       alert('Promoção salva com sucesso');
-      this.router.navigate(['/home']);
+      this.router.navigate(['/promotions/']);
     } catch (error) {
       console.error('Erro ao salvar promoção', error);
       alert('Erro ao salvar promoção');
