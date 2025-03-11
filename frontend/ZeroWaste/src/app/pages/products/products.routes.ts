@@ -10,29 +10,31 @@ export const routes: Routes = [
     path: 'products',
     children: [
       {
+        path: '',
+        title: 'Products',
+        component: ListProductPageComponent,
+      },
+      {
         path: 'create',
         title: 'Create Product',
         component: CreateProductFormPageComponent,
         canActivate: [authGuard],
-      },
-      {
-        path: '',
-        title: 'Products',
-        component: ListProductPageComponent,
-        canActivate: [authGuard]
+        data: { role: 'ADMIN' },
       },
       {
         path: ':id',
         title: 'Product detailing',
         component: DetailProductPageComponent,
-        canActivate: [authGuard]
+        canActivate: [authGuard],
+        data: { role: 'ADMIN' },
       },
       {
         path: 'update/:id',
         title: 'Update Product',
         component: UpdateProductFormPageComponent,
         canActivate: [authGuard],
+        data: { role: 'ADMIN' },
       }
-    ]
+    ],
   }
 ];

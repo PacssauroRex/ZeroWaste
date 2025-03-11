@@ -23,7 +23,6 @@ import { InputWithSymbolComponent } from '../../../components/form/input-with-sy
   styleUrl: './detail-promotion-page.component.css'
 })
 export class DetailPromotionPageComponent {
-
   fb = inject(FormBuilder);
   promotionService: PromotionService = inject(PromotionService);
   route: ActivatedRoute = inject(ActivatedRoute);
