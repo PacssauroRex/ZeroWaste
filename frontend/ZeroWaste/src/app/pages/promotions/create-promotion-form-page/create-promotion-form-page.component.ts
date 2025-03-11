@@ -8,7 +8,7 @@ import { TextareaComponent } from "../../../components/form/textarea/textarea.co
 import { SelectComponent } from "../../../components/form/select/select.component";
 import { ButtonComponent } from "../../../components/form/button/button.component";
 import { ValidationErrorMessage } from '../../../services/ValidationErrorMessage';
-import { API_URL } from '../../../utils/contants';
+import { API_URL } from '../../../utils/constants';
 
 @Component({
   selector: 'app-create-promotion-form-page',
@@ -24,7 +24,6 @@ import { API_URL } from '../../../utils/contants';
   styleUrl: './create-promotion-form-page.component.css'
 })
 export class CreatePromotionFormPageComponent {
-
   private fb = inject(FormBuilder);
   private validationErrorMessage = inject(ValidationErrorMessage);
   private router = inject(Router);
@@ -46,6 +45,10 @@ export class CreatePromotionFormPageComponent {
 
   public async onSubmit(event: SubmitEvent) {
     event.preventDefault();
+
+    Object.values(this.promotionForm.controls).forEach(control => {
+      control.markAsTouched();
+    });
 
     if (this.promotionForm.invalid) {
       return;

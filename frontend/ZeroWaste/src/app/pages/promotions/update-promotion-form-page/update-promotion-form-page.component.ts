@@ -7,7 +7,7 @@ import { InputWithSymbolComponent } from '../../../components/form/input-with-sy
 import { TextareaComponent } from '../../../components/form/textarea/textarea.component';
 import { ButtonComponent } from '../../../components/form/button/button.component';
 import { ValidationErrorMessage } from '../../../services/ValidationErrorMessage';
-import { API_URL } from '../../../utils/contants';
+import { API_URL } from '../../../utils/constants';
 import { MultiSelectComponent } from '../../../components/form/multi-select/multi-select.component';
 
 @Component({
@@ -148,6 +148,10 @@ export class UpdatePromotionFormPageComponent {
 
   public async onSubmit(event: SubmitEvent) {
     event.preventDefault();
+
+    Object.values(this.promotionForm.controls).forEach(control => {
+      control.markAsTouched();
+    });
 
     if (this.promotionForm.invalid) {
       return;
