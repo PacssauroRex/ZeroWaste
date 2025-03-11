@@ -78,7 +78,7 @@ export class UpdatePromotionFormPageComponent {
 
     this.promotionForm.patchValue({
       name: promotion.name,
-      percentage: (promotion.percentage * 100).toString(),
+      percentage: (promotion.percentage).toString(),
       startsAt: promotion.startsAt,
       endsAt: promotion.endsAt,
     });
@@ -133,7 +133,7 @@ export class UpdatePromotionFormPageComponent {
   private async updatePromotion() {
     const promotionId = this.route.snapshot.paramMap.get('id')!;
 
-    this.promotionForm.value.percentage = (Number(this.promotionForm.value.percentage) / 100).toString();
+    this.promotionForm.value.percentage = (Number(this.promotionForm.value.percentage)).toString();
     this.promotionForm.value.productIds = this.productIds;
 
     return await fetch(API_URL + "/promotions/" + promotionId, {
@@ -163,7 +163,7 @@ export class UpdatePromotionFormPageComponent {
       }
 
       alert('Promoção atualizada com sucesso');
-      this.router.navigate(['/home']);
+      this.router.navigate(['/promotions/']);
 
     }
 
