@@ -6,8 +6,10 @@ import { API_URL } from "../utils/contants";
   providedIn: 'root'
 })
 export class ProductService {
-  public async getAllProducts(): Promise<Product[]> {
-    const response = await fetch(API_URL + '/products', {
+  public async getAllProducts(daysToExpire: number | null = null): Promise<Product[]> {
+    const url = `${API_URL}/products${daysToExpire ? `?daysToExpire=${daysToExpire}` : ''}`;
+
+    const response = await fetch(url, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
