@@ -3,16 +3,26 @@ package com.zerowaste.dtos.promotions;
 import java.time.LocalDate;
 
 public class PromotionDTO {
+    private Long id;
     private String name;
     private Double percentage;
     private LocalDate startsAt;
     private LocalDate endsAt;
 
-    public PromotionDTO(String name, Double percentage, LocalDate startsAt, LocalDate endsAt) {
+    public PromotionDTO(Long id, String name, Double percentage, LocalDate startsAt, LocalDate endsAt) {
+        this.id = id;
         this.name = name;
         this.percentage = percentage;
         this.startsAt = startsAt;
         this.endsAt = endsAt;
+    }
+
+    public Long getId() {
+        return this.id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
