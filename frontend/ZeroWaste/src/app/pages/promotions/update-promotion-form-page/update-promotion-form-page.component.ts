@@ -78,7 +78,7 @@ export class UpdatePromotionFormPageComponent {
 
     this.promotionForm.patchValue({
       name: promotion.name,
-      percentage: (promotion.percentage * 100).toString(),
+      percentage: (promotion.percentage).toString(),
       startsAt: promotion.startsAt,
       endsAt: promotion.endsAt,
     });
