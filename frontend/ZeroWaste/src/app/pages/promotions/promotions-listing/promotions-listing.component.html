@@ -1,0 +1,124 @@
+<section class="container">
+  <app-card>
+    <app-card-header>
+      <h2>Filtros</h2>
+    </app-card-header>
+
+    <app-card-content>
+      <form class="filters" [formGroup]="filters" (ngSubmit)="onSubmitFilterForm($event)" style="max-width: 300px;">
+        <div class="row">
+          <div class="form-group">
+            <label for="name">
+              Filtrar por desconto
+            </label>
+            <app-input
+              [type]="'number'"
+              [name]="'percentage'"
+              [id]="'percentage'"
+              [placeholder]="'Buscar por desconto...'"
+              formControlName="percentage"
+            />
+            <small *ngIf="filters.get('percentage')?.touched && getErrorMessage('percentage') as errorMessage" class="invalid-feedback">
+              {{errorMessage}}
+            </small>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="form-group">
+            <app-button [type]="'submit'" [block]="true">Filtrar</app-button>
+          </div>
+        </div>
+      </form>
+    </app-card-content>
+  </app-card>
+ 
+  <app-card>
+    <app-card-header>
+      <h2>Lista de Promoções</h2>
+    </app-card-header>
+
+    <app-card-content>
+      <div class="table">
+          <table>
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>Desconto</th>
+                <th>Data de início</th>
+                <th>Data de fim</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              @if (!promotions().length) {
+                <tr>
+                  <td colspan="5" style="text-align: center;">
+                    Nenhum produto encontrado.
+                  </td>
+                </tr>
+              } @else {
+                @for (promotion of promotions(); track promotion.id) {
+                  <tr>
+                    <td>{{ promotion.name }}</td>
+                    <td>{{ promotion.percentage }}%</td>
+                    <td>{{ promotion.startsAt | date: "dd/MM/yyyy" }}</td>
+                    <td>{{ promotion.endsAt | date: "dd/MM/yyyy" }}</td>
+                    <td>
+                      <a
+                        [routerLink]="['/promotions/', promotion.id]"
+                        title="Detalhar promoção"
+                        >
+                        <app-button [type]="'button'" [variant]="'outline'">
+                          <img src="info.png" alt="detail promotion" />
+                        </app-button>
+                      </a>
+                      <a
+                        [routerLink]="['/promotions/update', promotion.id]"
+                        title="Editar promoção"
+                      >
+                        <app-button [type]="'button'" [variant]="'outline'">
+                          <img src="editar.png" alt="edit promotion" />
+                        </app-button>
+                      </a>
+                      <a routerLink="/promotions/" title="Deletar produto">
+                        <app-button [type]="'button'" [variant]="'outline'" (click)="modal.openModal()">
+                          <img src="deletar.png" alt="delete promotion" />
+                        </app-button>
+
+                        <app-modal #modal>
+                          <app-card>
+                            <app-card-header>
+                              <h2>
+                                Você tem certeza que deseja deletar está promoção?
+                              </h2>
+                            </app-card-header>
+
+                            <app-card-content>
+                              Essa ação não pode ser desfeita. Clique em "Confirmar" para deletar a promoção.
+                            </app-card-content>
+
+                            <app-card-footer>
+                              <app-button [variant]="'outline'" style="margin-right: 8px;" (click)="modal.closeModal()">
+                                Cancelar
+                              </app-button>
+                              <app-button (click)="onDeletePromotionConfirmation(promotion.id)">
+                                Confirmar
+                              </app-button>
+                            </app-card-footer>
+                          </app-card>
+                        </app-modal>
+                      </a>
+                    </td>
+                  </tr>
+                }
+              }
+            </tbody>
+          </table>
+        </div>
+        <a routerLink="/promotions/create">
+          <app-button [type]="'button'" [block]="true"> Criar promoção </app-button>
+        </a>
+    </app-card-content>
+  </app-card>
+</section>
