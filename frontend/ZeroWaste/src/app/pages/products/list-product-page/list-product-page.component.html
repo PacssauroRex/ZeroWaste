@@ -43,8 +43,8 @@
           <table>
             <thead>
               <tr>
-                <th>Nome</th>
                 <th>Id</th>
+                <th>Nome</th>
                 <th>Marca</th>
                 <th>Preço Unit.</th>
                 <th>Validade</th>
@@ -61,8 +61,8 @@
               } @else {
                 @for (product of products(); track product.id) {
                   <tr>
-                    <td>{{ product.name }}</td>
                     <td>{{ product.id }}</td>
+                    <td>{{ product.name }}</td>
                     <td>{{ product.brand }}</td>
                     <td>R${{ product.unitPrice | number : "1.2-2" }}</td>
                     <td>{{ product.expiresAt | date : "dd/MM/yyyy" }}</td>
