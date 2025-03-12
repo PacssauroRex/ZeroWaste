@@ -49,7 +49,7 @@ export class DetailPromotionPageComponent {
 
       this.promotionForm.setValue({
         name: this.promotion.name,
-        percentage: (this.promotion.percentage * 100).toString(),
+        percentage: (this.promotion.percentage).toString(),
         startsAt: formatDate(this.promotion.startsAt, 'yyyy-MM-dd', 'en-US'),
         endsAt: formatDate(this.promotion.startsAt, 'yyyy-MM-dd', 'en-US'),
         products: this.promotion.products.map(product => product.name).join(', ')
