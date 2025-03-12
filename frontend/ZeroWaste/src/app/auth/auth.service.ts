@@ -2,13 +2,13 @@ import { Injectable } from '@angular/core';
 import { jwtDecode } from 'jwt-decode';
 import { User } from './user';
 
-type JWTPayload = {
+export type JWTPayload = {
   exp: number;
   iss: string;
   sub: string;
 };
 
-type UserPayload = {
+export type UserPayload = {
   role: "ADMIN" | "USER";
   email: string;
 };
@@ -33,7 +33,10 @@ export class AuthService {
       }
 
       const data = await resposta.json();
+      const userPayload = JSON.parse(jwtDecode(data.token).sub!);
+
       localStorage.setItem('token', data.token);
+      localStorage.setItem('user', JSON.stringify(userPayload));
       return true;
     } catch (error) {
       console.error('Erro ao logar', error);
@@ -52,9 +55,7 @@ export class AuthService {
       return false;
     }
     try {
-      const decodedToken: JWTPayload = jwtDecode(token);
-
-      const userData: UserPayload = JSON.parse(decodedToken.sub);
+      const userData: UserPayload = JSON.parse(localStorage.getItem('user')!);
 
       return userData.role === requiredRole;
     } catch (error) {
@@ -86,5 +87,6 @@ export class AuthService {
 
   logout(): void {
     localStorage.removeItem('token');
+    localStorage.removeItem('user');
   }
 }
