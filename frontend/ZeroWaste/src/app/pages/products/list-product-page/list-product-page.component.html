@@ -44,6 +44,7 @@
             <thead>
               <tr>
                 <th>Nome</th>
+                <th>Id</th>
                 <th>Marca</th>
                 <th>Preço Unit.</th>
                 <th>Validade</th>
@@ -61,6 +62,7 @@
                 @for (product of products(); track product.id) {
                   <tr>
                     <td>{{ product.name }}</td>
+                    <td>{{ product.id }}</td>
                     <td>{{ product.brand }}</td>
                     <td>R${{ product.unitPrice | number : "1.2-2" }}</td>
                     <td>{{ product.expiresAt | date : "dd/MM/yyyy" }}</td>
