@@ -1,9 +1,7 @@
-import { Component, ElementRef, Input, Output, ViewChild } from '@angular/core';
-import { CardComponent } from "../card/card.component";
+import { Component, ElementRef, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-modal',
-  imports: [CardComponent],
   templateUrl: './modal.component.html',
   styleUrl: './modal.component.css',
   standalone: true,

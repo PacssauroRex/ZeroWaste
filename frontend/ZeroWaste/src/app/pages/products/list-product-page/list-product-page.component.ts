@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, ViewChild, inject, signal } from '@angular/core';
 import { ButtonComponent } from '../../../components/form/button/button.component';
-import { RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Product } from '../product';
 import { ProductService } from '../../../services/ProductService';
 import { ModalComponent } from "../../../components/modal/modal.component";
@@ -9,6 +9,7 @@ import { CardComponent, CardHeaderComponent, CardContentComponent, CardFooterCom
 import { InputComponent } from "../../../components/form/input/input.component";
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ValidationErrorMessage } from '../../../services/ValidationErrorMessage';
+import { UserPayload } from '../../../auth/auth.service';
 
 @Component({
   selector: 'app-list-product-page',
@@ -31,10 +32,12 @@ export class ListProductPageComponent implements OnInit {
   public productsService: ProductService = inject(ProductService);
   public fb = inject(FormBuilder);
   private validationErrorMessage = inject(ValidationErrorMessage);
+  public route = inject(ActivatedRoute);
   public products = signal<Product[]>([]);
   public filters = this.fb.group({
     daysToExpire: [null, Validators.min(0)],
   });
+  @ViewChild(ModalComponent) modal!: ModalComponent;
 
   public async onSubmitFilterForm(event: SubmitEvent) {
     event.preventDefault();
@@ -60,6 +63,16 @@ export class ListProductPageComponent implements OnInit {
   }
 
   public async onDeleteProductConfirmation(productId: number): Promise<void> {
+    const user: UserPayload = JSON.parse(localStorage.getItem('user')!);
+
+    if (user.role !== 'ADMIN') {
+      alert('Você não tem permissão para deletar produtos');
+
+      this.modal.closeModal();
+
+      return;
+    }
+
     try {
       await this.productsService.deleteProduct(productId);
 
@@ -80,5 +93,4 @@ export class ListProductPageComponent implements OnInit {
 
     return validationErrorMessage;
   }
-
 }
