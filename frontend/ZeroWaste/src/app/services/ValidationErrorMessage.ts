@@ -9,6 +9,7 @@ export const validationDictionary = {
   ['max']: 'Esse campo deve ser no máximo {max}',
   ['pattern']: 'Esse campo está em um formato inválido',
   ['email']: 'Esse campo deve ser um email válido',
+  ['futureDate']: 'Essa data deve ser no futuro',
 } as const;
 
 export type ValidationDictionary = typeof validationDictionary;
@@ -48,6 +49,10 @@ export class ValidationErrorMessage {
 
       case control.hasError('email'): {
         return validationDictionary.email;
+      }
+
+      case control.hasError('futureDate'): {
+        return validationDictionary.futureDate;
       }
 
       default: return null;

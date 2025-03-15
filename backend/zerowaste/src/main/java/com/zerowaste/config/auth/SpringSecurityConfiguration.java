@@ -41,19 +41,20 @@ public class SpringSecurityConfiguration {
             .requestMatchers(HttpMethod.OPTIONS, "/users", "/users/login").permitAll()
             .requestMatchers(HttpMethod.GET, "/users/check-auth-token").hasRole("USER")
             //Products
+            .requestMatchers(HttpMethod.GET, "/products", "/products/**").hasAnyRole("ADMIN", "USER")
             .requestMatchers(HttpMethod.POST, "/products").hasRole("ADMIN")
-            .requestMatchers(HttpMethod.GET, "/products", "/products/**").hasRole("ADMIN")
             .requestMatchers(HttpMethod.PUT, "/products/**").hasRole("ADMIN")
             .requestMatchers(HttpMethod.DELETE, "/products/**").hasRole("ADMIN")
             //Promotions
+            .requestMatchers(HttpMethod.GET, "/promotions", "/promotions/**").hasAnyRole("ADMIN", "USER")
             .requestMatchers(HttpMethod.POST, "/promotions/").hasRole("ADMIN")
-            .requestMatchers(HttpMethod.GET, "/promotions/", "/promotions/**").hasRole("ADMIN")
+            .requestMatchers(HttpMethod.PUT, "/promotions/**").hasRole("ADMIN")
+            .requestMatchers(HttpMethod.DELETE, "/promotions/**").hasRole("ADMIN")
+            //Promotions filters
             .requestMatchers(HttpMethod.GET, "/promotions/percentageFilter/**").hasAnyRole("USER", "ADMIN")
             .requestMatchers(HttpMethod.GET, "/promotions/productFilter/**").hasAnyRole("USER", "ADMIN")
             .requestMatchers(HttpMethod.DELETE, "/promotions/percentageFilter/**").hasRole("ADMIN")
             .requestMatchers(HttpMethod.DELETE, "/promotions/productFilter/**").hasRole("ADMIN")
-            .requestMatchers(HttpMethod.PUT, "/promotions/**").hasRole("ADMIN")
-            .requestMatchers(HttpMethod.DELETE, "/promotions/**").hasRole("ADMIN")
         )
         .addFilterBefore(authenticationUserService, UsernamePasswordAuthenticationFilter.class)
         .build();

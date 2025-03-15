@@ -7,7 +7,8 @@ import { InputComponent } from "../../../components/form/input/input.component";
 import { TextareaComponent } from "../../../components/form/textarea/textarea.component";
 import { SelectComponent } from "../../../components/form/select/select.component";
 import { ButtonComponent } from "../../../components/form/button/button.component";
-import { API_URL } from '../../../utils/contants';
+import { API_URL } from '../../../utils/constants';
+import { futureDateValidator } from '../../../utils/validators/future-date';
 
 @Component({
   selector: 'app-create-product-form-page',
@@ -35,7 +36,7 @@ export class CreateProductFormPageComponent {
     category: ['', [Validators.required]],
     unitPrice: ['', [Validators.required, Validators.min(0.00)]],
     stock: ['', [Validators.required, Validators.min(0)]],
-    expiresAt: ['', [Validators.pattern(/^\d{4}-\d{2}-\d{2}$/)]],
+    expiresAt: ['', [Validators.pattern(/^\d{4}-\d{2}-\d{2}$/), futureDateValidator()]],
   });
 
   public getErrorMessage(controlName: string): string | null {
@@ -46,6 +47,10 @@ export class CreateProductFormPageComponent {
 
   public async onSubmit(event: SubmitEvent) {
     event.preventDefault();
+
+    Object.values(this.productForm.controls).forEach(control => {
+      control.markAsTouched();
+    });
 
     if (this.productForm.invalid) {
       return;

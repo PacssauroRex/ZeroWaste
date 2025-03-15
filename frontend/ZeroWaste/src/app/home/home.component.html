@@ -1,15 +1,18 @@
-
-<h1>Home Page</h1>
-<app-logout></app-logout>
 <div class="container">
-    <a routerLink="/products">
-        <app-button [type]="'button'" [block]="true">
-          Produtos
-        </app-button>
-    </a>
-    <a routerLink="/promotions/">
-      <app-button [type]="'button'" [block]="true">
-        Promoções
-      </app-button>
+  <h1>Home Page</h1>
+
+  <app-logout></app-logout>
+  <!-- Botão para a página de produtos -->
+  <a routerLink="/products">
+    <app-button [type]="'button'" [block]="true">
+      Produtos
+    </app-button>
+  </a>
+
+  <!-- Botão para a página de promoções -->
+  <a routerLink="/promotions">
+    <app-button [type]="'button'" [block]="true">
+      Promoções
+    </app-button>
   </a>
 </div>

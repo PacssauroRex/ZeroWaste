@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, ViewChild, inject, signal } from '@angular/core';
 import { ButtonComponent } from '../../../components/form/button/button.component';
-import { RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { Promotion } from '../promotion';
 import { PromotionService } from '../../../services/PromotionService';
 import { ModalComponent } from "../../../components/modal/modal.component";
@@ -9,6 +9,7 @@ import { CardComponent, CardHeaderComponent, CardContentComponent, CardFooterCom
 import { InputComponent } from "../../../components/form/input/input.component";
 import { FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
 import { ValidationErrorMessage } from '../../../services/ValidationErrorMessage';
+import { UserPayload } from '../../../auth/auth.service';
 
 @Component({
   selector: 'app-promotions-listing',
@@ -32,13 +33,19 @@ export class PromotionsListingComponent implements OnInit {
   public promotionService: PromotionService = inject(PromotionService);
   public fb = inject(FormBuilder);
   private validationErrorMessage = inject(ValidationErrorMessage);
+  public route = inject(ActivatedRoute);
   public promotions = signal<Promotion[]>([]);
+  @ViewChild(ModalComponent) modal!: ModalComponent;
+  
   public filtersPercentage = this.fb.group({
     percentage: [null, Validators.min(0)],
   });
+
   public filtersID = this.fb.group({
     id: [null, Validators.min(0)],
   });
+
+  
 
   public async ngOnInit(): Promise<void> {
     const promotions = await this.promotionService.getAllPromotions();
@@ -80,6 +87,16 @@ export class PromotionsListingComponent implements OnInit {
   }
 
   public async onDeletePromotionConfirmation(id: number): Promise<void> {
+    const user: UserPayload = JSON.parse(localStorage.getItem('user')!);
+
+    if (user.role !== 'ADMIN') {
+      alert('Você não tem permissão para deletar promoções');
+
+      this.modal.closeModal();
+
+      return;
+    }
+
     try {
       await this.promotionService.deletePromotion(id);
 
