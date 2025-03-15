@@ -5,7 +5,7 @@
     </app-card-header>
 
     <app-card-content>
-      <form class="filters" [formGroup]="filters" (ngSubmit)="onSubmitFilterForm($event)" style="max-width: 300px;">
+      <form class="filtersPercentage" [formGroup]="filtersPercentage" (ngSubmit)="onSubmitFilterFormPercentage($event)" style="max-width: 300px;">
         <div class="row">
           <div class="form-group">
             <label for="name">
@@ -18,7 +18,32 @@
               [placeholder]="'Buscar por desconto...'"
               formControlName="percentage"
             />
-            <small *ngIf="filters.get('percentage')?.touched && getErrorMessage('percentage') as errorMessage" class="invalid-feedback">
+            <small *ngIf="filtersPercentage.get('percentage')?.touched && getErrorMessagePercentage('percentage') as errorMessage" class="invalid-feedback">
+              {{errorMessage}}
+            </small>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="form-group">
+            <app-button [type]="'submit'" [block]="true">Filtrar</app-button>
+          </div>
+        </div>
+      </form>
+      <form class="filtersId" [formGroup]="filtersID" (ngSubmit)="onSubmitFilterFormProduct($event)" style="max-width: 300px;">
+        <div class="row">
+          <div class="form-group">
+            <label for="name">
+              Filtrar por ID de produto
+            </label>
+            <app-input
+              [type]="'number'"
+              [name]="'id'"
+              [id]="'id'"
+              [placeholder]="'Buscar por Id de produto...'"
+              formControlName="id"
+            />
+            <small *ngIf="filtersID.get('id')?.touched && getErrorMessageId('id') as errorMessage" class="invalid-feedback">
               {{errorMessage}}
             </small>
           </div>
@@ -32,7 +57,7 @@
       </form>
     </app-card-content>
   </app-card>
- 
+
   <app-card>
     <app-card-header>
       <h2>Lista de Promoções</h2>

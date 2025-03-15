@@ -38,7 +38,7 @@ export class PromotionService {
     return promotions ?? {};
   }
 
-  public async getPromotionByProductId(id: number): Promise<Promotion[]> {
+  public async getPromotionByProductId(id: number | null = null): Promise<Promotion[]> {
     const url = `${API_URL}/promotions/productFilter/${id}`;
 
     const response = await fetch(url, {
@@ -50,7 +50,7 @@ export class PromotionService {
     });
 
     const { promotions } = await response.json();
-    return promotions ?? {};
+    return promotions ?? [];
   }
 
   public async getPromotionByPercentage(percentage: number | null = null): Promise<Promotion[]> {

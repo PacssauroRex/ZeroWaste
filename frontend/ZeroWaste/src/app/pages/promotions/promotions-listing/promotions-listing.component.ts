@@ -35,26 +35,50 @@ export class PromotionsListingComponent implements OnInit {
   private validationErrorMessage = inject(ValidationErrorMessage);
   public route = inject(ActivatedRoute);
   public promotions = signal<Promotion[]>([]);
-  public filters = this.fb.group({
+  @ViewChild(ModalComponent) modal!: ModalComponent;
+  
+  public filtersPercentage = this.fb.group({
     percentage: [null, Validators.min(0)],
   });
-  @ViewChild(ModalComponent) modal!: ModalComponent;
+
+  public filtersID = this.fb.group({
+    id: [null, Validators.min(0)],
+  });
+
+  
 
   public async ngOnInit(): Promise<void> {
     const promotions = await this.promotionService.getAllPromotions();
     this.promotions.set(promotions);
   }
 
-  public async onSubmitFilterForm(event: SubmitEvent) {
+  public async onSubmitFilterFormPercentage(event: SubmitEvent) {
     event.preventDefault();
 
-    if (this.filters.invalid) {
+    if (this.filtersPercentage.invalid) {
       return;
     }
 
     try {
-      const percentage = this.filters.get('percentage')?.value;
+      const percentage = this.filtersPercentage.get('percentage')?.value;
       const filteredPromotions = await this.promotionService.getPromotionByPercentage(percentage);
+      this.promotions.set(filteredPromotions);
+    } catch (error) {
+      console.error('Erro ao buscar promoções', error);
+      alert('Erro ao buscar promoções');
+    }
+  }
+
+  public async onSubmitFilterFormProduct(event: SubmitEvent) {
+    event.preventDefault();
+
+    if (this.filtersID.invalid) {
+      return;
+    }
+
+    try {
+      const id = this.filtersID.get('id')?.value;
+      const filteredPromotions = await this.promotionService.getPromotionByProductId(id);
       this.promotions.set(filteredPromotions);
     } catch (error) {
       console.error('Erro ao buscar promoções', error);
@@ -88,11 +112,16 @@ export class PromotionsListingComponent implements OnInit {
     }
   }
 
-  public getErrorMessage(controlName: string): string | null {
-    const validationErrorMessage = this.validationErrorMessage.getValidationErrorMessage(this.filters.get(controlName)!);
+  public getErrorMessagePercentage(controlName: string): string | null {
+    const validationErrorMessage = this.validationErrorMessage.getValidationErrorMessage(this.filtersPercentage.get(controlName)!);
 
     return validationErrorMessage;
   }
-  
-} 
+  public getErrorMessageId(controlName: string): string | null {
+    const validationErrorMessage = this.validationErrorMessage.getValidationErrorMessage(this.filtersID.get(controlName)!);
+
+    return validationErrorMessage;
+  }
+
+}
 
