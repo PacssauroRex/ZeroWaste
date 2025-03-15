@@ -12,8 +12,8 @@ export const authGuard: CanActivateFn = (route: ActivatedRouteSnapshot) => {
   }
 
   if(requiredRole && !authService.hasRole(requiredRole)) {
-    return router.createUrlTree(['unauthorized'])
+    return router.createUrlTree(['/home'])
   }
-  
+
   return true;
 };
