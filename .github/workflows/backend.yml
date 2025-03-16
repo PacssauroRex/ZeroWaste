@@ -1,0 +1,27 @@
+name: Continous Deployment Backend
+
+on:
+  # pull_request:
+  #   types: [closed]
+  #   branches: [main]
+  push:
+    branches: [task/#100]
+
+env:
+  CHANGES: 'false'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Login to DockerHub
+        run: echo "${{ secrets.DOCKERHUB_ACCESS_TOKEN }}" | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+
+      - name: Build Docker image
+        run: docker build -f ./docker/backend.dockerfile -t ${{ secrets.DOCKERHUB_USERNAME }}/backend:latest .
+
+      - name: Push Docker image
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/backend:latest
