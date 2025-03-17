@@ -9,6 +9,22 @@ env:
   CHANGES: 'false'
 
 jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure JDK 21
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+          cache: maven
+
+      - name: Compile and run tests with test profile
+        run: mvn -f backend/zerowaste/pom.xml clean verify -Dspring.profiles.active=test
+  
   deploy:
     runs-on: ubuntu-latest
     steps:
