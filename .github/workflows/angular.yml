@@ -25,7 +25,7 @@ jobs:
        run: npm install -g @angular/cli
 
      - name: Build of the Angular App
-       run: npx ng build -- --configuration=production
+       run: ng build -- --configuration=production
 
      - name: Deploy for Render
        env:
