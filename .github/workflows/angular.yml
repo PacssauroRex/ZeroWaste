@@ -19,11 +19,17 @@ jobs:
          node-version: 18
 
      - name: Install dependencies
-       run: npm ci
-
-     - name: Install Angular CLI
-       run: npm install -g @angular/cli
+       run: |
+         cd frontend/ZeroWaste
+         npm ci
 
      - name: Build of the Angular App
-       run: ng build -- --configuration=production
+       run: |
+         cd frontend/ZeroWaste
+         ng build -- --configuration=production
 
+     - name: Deploy for Render
+       env:
+         RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+       run: |
+         curl -X POST "https://api.render.com/deploy/srv-cvard3dsvqrc73c1f990key=${{ secrets.RENDER_API_KEY }}"
