@@ -8,6 +8,7 @@
 
 O sistema permite que supermercados e restaurantes registrem, acompanhem e analisem o estoque de alimentos próximos à data de vencimento. Além disso, fornece sugestões para o uso eficiente dos produtos, evitando desperdício e promovendo uma gestão mais consciente e sustentável.
 
+
 Principais funcionalidades:
 
 - 📋 **Registro de estoque:** Cadastro de produtos com datas de validade.
