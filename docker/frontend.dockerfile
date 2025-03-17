@@ -7,7 +7,9 @@ RUN npm install
 
 COPY ./frontend/ZeroWaste .
 
-RUN npm run build --prod
+RUN npm install -g @angular/cli
+
+RUN ng build --configuration=production
 
 FROM nginx:alpine
 
