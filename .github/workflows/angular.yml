@@ -24,14 +24,12 @@ jobs:
          npm ci
 
      - name: Install Angular CLI
-       run: | 
-         cd frontend/ZeroWaste
-         npm install -g @angular/cli
+       run: npm install -g @angular/cli
 
      - name: Build of the Angular App
        run: |
          cd frontend/ZeroWaste
-         npx ng build -- --configuration=production
+         npx ng build --configuration=production
 
      - name: Deploy for Render
        env:
