@@ -1,0 +1,46 @@
+.navbar {
+  background-color: #0f172b;
+  color: white;
+  padding: 1rem;
+}
+
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar-logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-decoration: none;
+  color: white;
+}
+
+.navbar-links {
+  list-style: none;
+  display: flex;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  flex-direction: row;
+  align-items: center;
+  margin-left: 1rem;
+  /* Adicionado para posicionar ao lado do logotipo */
+}
+
+.navbar-links a {
+  text-decoration: none;
+  color: white;
+  font-size: 1rem;
+  transition: color 0.3s;
+}
+
+.navbar-links a:hover {
+  color: #d4f1d4;
+}
+
+app-logout {
+  margin-left: auto;
+  /* Move o componente de logout para o final */
+}
