@@ -1,0 +1,57 @@
+name: Continous Deployment Frontend - Test
+
+on:
+  push:
+    branches: [test]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Login to DockerHub
+        run: echo "${{ secrets.DOCKERHUB_ACCESS_TOKEN }}" | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+
+      - name: Build Docker image
+        run: docker build -f ./docker/frontend.dockerfile -t ${{ secrets.DOCKERHUB_USERNAME }}/frontend:latest .
+
+      - name: Push Docker image
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/frontend:latest
+
+      - name: Trigger and Check Deploy Status for Test Environment
+        run: |
+          DEPLOY_ID=$(curl \
+            --request POST \
+            --url https://api.render.com/v1/services/${{secrets.FRONTEND_RENDER_TEST_SERVICE_ID}}/deploys \
+            --header 'authorization: Bearer ${{secrets.RENDER_API_KEY}}' \
+            --header 'accept: application/json' \
+            --header 'content-type: application/json' \
+            --data '{ "clearCache": "do_not_clear" }' | jq -r '.id')
+          
+          previous_status=""
+          while true; do
+            sleep 10
+            status=$(curl -s \
+              --request GET \
+              --url "https://api.render.com/v1/services/${{ secrets.FRONTEND_RENDER_TEST_SERVICE_ID }}/deploys/$DEPLOY_ID" \
+              --header "Authorization: Bearer ${{secrets.RENDER_API_KEY}}" \
+              --header "Content-Type: application/json" | jq -r '.status')
+
+            if [[ "$status" != "$previous_status" ]]; then
+              echo "Deploy status: $status"
+              previous_status="$status"
+            fi
+
+            if [[ "$status" == *"failed"* ]] || [[ "$status" == "canceled" ]] || [[ "$status" == "deactivated" ]]; then
+              echo "Deploy status: $status"
+              echo "Deployment failed"
+              exit 1
+            fi
+
+            if [[ "$status" == "live" ]]; then
+              echo "Deploy finished successfully"
+              exit 0
+            fi
+          done
