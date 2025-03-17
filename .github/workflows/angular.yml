@@ -25,7 +25,9 @@ jobs:
        run: npm install -g @angular/cli
 
      - name: Build of the Angular App
-       run: ng build -- --configuration=production
+       run: | 
+       cd frontend\ZeroWaste
+       ng build -- --configuration=production
 
      - name: Deploy for Render
        env:
