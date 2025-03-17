@@ -1,15 +1,9 @@
 name: Continous Deployment Frontend
 
 on:
-  push:
-    branches:
-      - config-frontend-deploy
-  ##pull_request:
-  ##types: [closed]
-  ##branches: [main]
-
-env:
-  CHANGES: 'false'
+  pull_request:
+    types: [closed]
+    branches: [main]
 
 jobs:
   deploy:

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { jwtDecode } from 'jwt-decode';
 import { User } from './user';
+import { API_URL } from '../utils/constants';
 
 export type JWTPayload = {
   exp: number;
@@ -17,10 +18,9 @@ export type UserPayload = {
   providedIn: 'root'
 })
 export class AuthService {
-  private apiURL = "http://localhost:8080";
 
   async login(email: string, password: string): Promise<boolean> {
-    const url = this.apiURL + '/users/login'
+    const url = API_URL + '/users/login'
     try {
       const resposta = await fetch(url, {
         method: 'POST',
@@ -70,7 +70,7 @@ export class AuthService {
   }
 
   async register(user: User): Promise<User | null> {
-    const url = this.apiURL + '/users';
+    const url = API_URL + '/users';
     try {
       const response = await fetch(url, {
         method: 'POST',
