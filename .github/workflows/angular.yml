@@ -22,7 +22,7 @@ jobs:
        run: npm ci
 
      - name: Build of the Angular App
-       run: ng build -- --configuration=production
+       run: npx ng build -- --configuration=production
 
      - name: Deploy for Render
        env:
