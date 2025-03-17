@@ -44,12 +44,12 @@
       <label for="products">Produtos em promoção</label>
       <select name="products" id="products">
         @if (!products.length){
-          <option value="none">Nenhum produto vinculado a esta promoção</option>
+        <option value="none">Nenhum produto vinculado a esta promoção</option>
         }
         @else {
-          @for (product of products; track product.id) {
-          <option value="{{product.id}}">{{product.id}}: {{product.name}}</option>
-          }
+        @for (product of products; track product.id) {
+        <option value="{{product.id}}">{{product.name}}</option>
+        }
         }
       </select>
     </div>
