@@ -1,12 +1,23 @@
 package com.zerowaste.services.users;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTCreationException;
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.zerowaste.dtos.AuthenticateUserDTO;
+import com.zerowaste.models.user.User;
+import com.zerowaste.repositories.UsersRepository;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,21 +30,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.JWTCreationException;
-import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.zerowaste.dtos.AuthenticateUserDTO;
-import com.zerowaste.models.user.User;
-import com.zerowaste.repositories.UsersRepository;
-
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-
 @Service
 public class AuthenticateUserService extends OncePerRequestFilter implements UserDetailsService {
     @Value("${app.jwt.secret}")
@@ -42,12 +38,14 @@ public class AuthenticateUserService extends OncePerRequestFilter implements Use
     @Value("${app.gmt.offset}")
     public String gmtOffset;
 
-    @Autowired
-    private UsersRepository usersRepository;
-
+    private final UsersRepository usersRepository;
     @Lazy
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
+
+    public AuthenticateUserService(UsersRepository usersRepository, AuthenticationManager authenticationManager) {
+        this.usersRepository = usersRepository;
+        this.authenticationManager = authenticationManager;
+    }
 
     public String execute(AuthenticateUserDTO data) throws AuthenticationException {
         var authToken = new UsernamePasswordAuthenticationToken(data.email(), data.password());
