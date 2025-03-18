@@ -1,18 +1,19 @@
 package com.zerowaste.services.products;
 
-import java.time.LocalDate;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.zerowaste.models.product.Product;
 import com.zerowaste.repositories.ProductsRepository;
 import com.zerowaste.services.products.exceptions.ProductNotFoundException;
+import java.time.LocalDate;
+import org.springframework.stereotype.Service;
 
 @Service
 public class DeleteProductService {
-    @Autowired
-    private ProductsRepository productsRepository;
+    
+    private final ProductsRepository productsRepository;
+
+    public DeleteProductService(ProductsRepository productsRepository) {
+        this.productsRepository = productsRepository;
+    }
 
     public void execute (Long id) throws ProductNotFoundException {
         Product p = productsRepository.findById(id).get();

@@ -2,7 +2,6 @@ package com.zerowaste.services.promotions;
 
 import java.time.LocalDate;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.zerowaste.dtos.promotions.AddPromotionDTO;
@@ -12,8 +11,12 @@ import com.zerowaste.services.promotions.exceptions.InvalidDatePeriodException;
 
 @Service
 public class CreatePromotionService {
-    @Autowired
-    private PromotionsRepository promotionsRepository;
+
+    private final PromotionsRepository promotionsRepository;
+
+    public CreatePromotionService(PromotionsRepository promotionsRepository) {
+        this.promotionsRepository = promotionsRepository;
+    }
 
     public void execute(AddPromotionDTO dto) throws InvalidDatePeriodException {
 
