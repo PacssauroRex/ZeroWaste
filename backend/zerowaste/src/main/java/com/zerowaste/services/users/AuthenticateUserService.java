@@ -19,10 +19,8 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -39,17 +37,17 @@ public class AuthenticateUserService extends OncePerRequestFilter implements Use
     public String gmtOffset;
 
     private final UsersRepository usersRepository;
-    @Lazy
-    private final AuthenticationManager authenticationManager;
+    private final AuthenticationConfiguration authenticationConfiguration;
 
-    public AuthenticateUserService(UsersRepository usersRepository, AuthenticationManager authenticationManager) {
+    public AuthenticateUserService(UsersRepository usersRepository, AuthenticationConfiguration authenticationConfiguration) {
         this.usersRepository = usersRepository;
-        this.authenticationManager = authenticationManager;
+        this.authenticationConfiguration  = authenticationConfiguration;
     }
 
-    public String execute(AuthenticateUserDTO data) throws AuthenticationException {
+    public String execute(AuthenticateUserDTO data) throws Exception {
         var authToken = new UsernamePasswordAuthenticationToken(data.email(), data.password());
 
+        var authenticationManager = authenticationConfiguration.getAuthenticationManager();
         var auth = authenticationManager.authenticate(authToken);
 
         var token = generateToken((User) auth.getPrincipal());

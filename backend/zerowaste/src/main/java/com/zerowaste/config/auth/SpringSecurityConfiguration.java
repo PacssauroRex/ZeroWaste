@@ -1,7 +1,6 @@
 package com.zerowaste.config.auth;
 
 import com.zerowaste.services.users.AuthenticateUserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -18,8 +17,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 public class SpringSecurityConfiguration {
-    @Autowired
-    private AuthenticateUserService authenticationUserService;
+    
+    private final AuthenticateUserService authenticationUserService;
+
+    public SpringSecurityConfiguration(AuthenticateUserService authenticationUserService) {
+        this.authenticationUserService = authenticationUserService;
+    }
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
