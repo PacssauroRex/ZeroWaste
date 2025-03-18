@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class GetPromotionProductService {
 
-    private final PromotionsRepository promotionsRepository;
+    private PromotionsRepository promotionsRepository;
 
     public GetPromotionProductService(PromotionsRepository promotionsRepository) {
         this.promotionsRepository = promotionsRepository;

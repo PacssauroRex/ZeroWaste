@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class GetProductIdService {
 
-    private final ProductsRepository productsRepository;
+    private ProductsRepository productsRepository;
 
     public GetProductIdService(ProductsRepository productsRepository) {
         this.productsRepository = productsRepository;

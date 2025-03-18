@@ -1,18 +1,16 @@
 package com.zerowaste.services.promotions;
 
-import java.time.LocalDate;
-
-import org.springframework.stereotype.Service;
-
 import com.zerowaste.dtos.promotions.AddPromotionDTO;
 import com.zerowaste.models.promotion.Promotion;
 import com.zerowaste.repositories.PromotionsRepository;
 import com.zerowaste.services.promotions.exceptions.InvalidDatePeriodException;
+import java.time.LocalDate;
+import org.springframework.stereotype.Service;
 
 @Service
 public class CreatePromotionService {
 
-    private final PromotionsRepository promotionsRepository;
+    private PromotionsRepository promotionsRepository;
 
     public CreatePromotionService(PromotionsRepository promotionsRepository) {
         this.promotionsRepository = promotionsRepository;

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class DeleteProductService {
     
-    private final ProductsRepository productsRepository;
+    private ProductsRepository productsRepository;
 
     public DeleteProductService(ProductsRepository productsRepository) {
         this.productsRepository = productsRepository;
