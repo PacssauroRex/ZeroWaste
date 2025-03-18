@@ -1,32 +1,32 @@
 package com.zerowaste.zerowaste.services.products;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-
+import com.zerowaste.dtos.products.CreateProductDTO;
+import com.zerowaste.models.product.Product;
+import com.zerowaste.models.product.ProductCategory;
+import com.zerowaste.repositories.ProductsRepository;
+import com.zerowaste.services.products.CreateProductService;
 import java.time.LocalDate;
-
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.zerowaste.dtos.products.CreateProductDTO;
-import com.zerowaste.models.product.Product;
-import com.zerowaste.models.product.ProductCategory;
-import com.zerowaste.repositories.ProductsRepository;
-import com.zerowaste.services.products.CreateProductService;
 
 @ExtendWith(MockitoExtension.class)
 public class CreateProductServiceTest {
-    @Autowired
+
     @InjectMocks
-    private CreateProductService sut;
+    private final CreateProductService sut;
+
+    public CreateProductServiceTest() {
+        this.sut = new CreateProductService(productsRepository);
+    }
 
     @Mock
     private ProductsRepository productsRepository;
