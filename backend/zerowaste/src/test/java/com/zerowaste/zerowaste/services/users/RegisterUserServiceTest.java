@@ -1,34 +1,34 @@
 package com.zerowaste.zerowaste.services.users;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.util.ReflectionTestUtils;
-
 import com.zerowaste.dtos.RegisterUserDTO;
 import com.zerowaste.models.user.User;
 import com.zerowaste.models.user.UserRole;
 import com.zerowaste.repositories.UsersRepository;
 import com.zerowaste.services.users.RegisterUserService;
 import com.zerowaste.services.users.exceptions.UserWithSameEmailAlreadyExistsException;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.util.ReflectionTestUtils;
 
 @ExtendWith(MockitoExtension.class)
 public class RegisterUserServiceTest {
-    @Autowired
     @InjectMocks
-    private RegisterUserService registerUserService;
+    private final RegisterUserService registerUserService;
+
+    public RegisterUserServiceTest() {
+        this.registerUserService = new RegisterUserService(usersRepository);
+    }
 
     @Mock
     private UsersRepository usersRepository;
