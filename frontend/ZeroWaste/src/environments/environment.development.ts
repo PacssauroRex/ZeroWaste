@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  apiUrl: 'https://backend-tvni.onrender.com'
+  apiUrl: 'https://localhost:8080'
 };

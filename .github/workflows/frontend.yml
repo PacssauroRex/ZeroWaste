@@ -1,6 +1,7 @@
 name: Continous Deployment Frontend
 
 on:
+  workflow_dispatch:
   pull_request_target:
     types: [closed]
     branches: [main]

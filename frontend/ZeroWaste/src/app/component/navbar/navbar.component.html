@@ -1,0 +1,11 @@
+<nav class="navbar" *ngIf="isAuthenticated()">
+  <div class="navbar-container">
+    <a class="navbar-logo" href="/home">ZeroWaste</a>
+    <ul class="navbar-links">
+      <li *ngFor="let link of links">
+        <a [href]="link.url">{{ link.name }}</a>
+      </li>
+    </ul>
+    <app-logout></app-logout>
+  </div>
+</nav>

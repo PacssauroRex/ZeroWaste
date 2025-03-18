@@ -1,23 +1,24 @@
 package com.zerowaste.services.users;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Service;
-
 import com.zerowaste.dtos.RegisterUserDTO;
 import com.zerowaste.models.user.User;
 import com.zerowaste.models.user.UserRole;
 import com.zerowaste.repositories.UsersRepository;
 import com.zerowaste.services.users.exceptions.UserWithSameEmailAlreadyExistsException;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
 
 @Service
 public class RegisterUserService {
     @Value("${app.bcrypt.encoder.strength}")
     private int bcryptEncoderStrength;
 
-    @Autowired
-    private UsersRepository usersRepository;
+    private final UsersRepository usersRepository;
+
+    public RegisterUserService(UsersRepository usersRepository) {
+        this.usersRepository = usersRepository;
+    }
 
     public void execute(RegisterUserDTO dto) throws UserWithSameEmailAlreadyExistsException {
         User user = usersRepository.findByEmail(dto.email());

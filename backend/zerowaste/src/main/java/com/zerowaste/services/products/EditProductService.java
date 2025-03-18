@@ -1,27 +1,26 @@
 package com.zerowaste.services.products;
 
-import java.time.LocalDate;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.zerowaste.dtos.products.EditProductDTO;
 import com.zerowaste.models.product.ProductCategory;
 import com.zerowaste.models.promotion.Promotion;
 import com.zerowaste.repositories.ProductsRepository;
 import com.zerowaste.repositories.PromotionsRepository;
 import com.zerowaste.services.products.exceptions.ProductNotFoundException;
+import java.time.LocalDate;
+import java.util.Set;
+import java.util.stream.Collectors;
+import org.springframework.stereotype.Service;
 
 @Service
 public class EditProductService {
     
-    @Autowired
-    private ProductsRepository productsRepository;
+    private final ProductsRepository productsRepository;
+    private final PromotionsRepository promotionsRepository;
 
-    @Autowired
-    private PromotionsRepository promotionsRepository;
+    public EditProductService(ProductsRepository productsRepository, PromotionsRepository promotionsRepository) {
+        this.productsRepository = productsRepository;
+        this.promotionsRepository = promotionsRepository;
+    }
 
     public void execute (Long id, EditProductDTO dto) throws ProductNotFoundException {
         var product = productsRepository.findById(id).orElseThrow(() -> new ProductNotFoundException("Produto não encontrado"));

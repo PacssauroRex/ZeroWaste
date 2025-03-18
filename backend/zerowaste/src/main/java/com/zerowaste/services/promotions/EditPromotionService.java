@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.zerowaste.dtos.promotions.EditPromotionDTO;
@@ -13,23 +12,30 @@ import com.zerowaste.models.promotion.Promotion;
 import com.zerowaste.repositories.ProductsRepository;
 import com.zerowaste.repositories.PromotionsRepository;
 import com.zerowaste.services.products.exceptions.ProductNotFoundException;
+import com.zerowaste.services.promotions.exceptions.InvalidDatePeriodException;
 import com.zerowaste.services.promotions.exceptions.PromotionNotFoundException;
 
 @Service
 public class EditPromotionService {
 
-    @Autowired
-    private PromotionsRepository promotionsRepository;
+    private final PromotionsRepository promotionsRepository;
+    private final ProductsRepository productRepository;
 
-    @Autowired
-    private ProductsRepository productRepository;
+    public EditPromotionService(PromotionsRepository promotionsRepository, ProductsRepository productRepository) {
+        this.promotionsRepository = promotionsRepository;
+        this.productRepository = productRepository;
+    }
 
-    public void execute(Long id, EditPromotionDTO dto) throws PromotionNotFoundException, ProductNotFoundException {
+    public void execute(Long id, EditPromotionDTO dto)
+            throws PromotionNotFoundException, ProductNotFoundException, InvalidDatePeriodException {
 
         Promotion p = promotionsRepository.findById(id).get();
 
         if (p == null || p.getDeletedAt() != null)
             throw new PromotionNotFoundException("Promoção não encontrada!");
+
+        if (dto.startsAt().isAfter(dto.endsAt()))
+            throw new InvalidDatePeriodException("The start date must be before the end date.");
 
         p.setName(dto.name());
         p.setPercentage(dto.percentage());
@@ -50,7 +56,10 @@ public class EditPromotionService {
 
         // Atualiza o preço promocional dos produtos
         for (Product product : products) {
-            double promotionPrice = product.getUnitPrice() - (product.getUnitPrice() * p.getPercentage());
+            double percentage = p.getPercentage() / 100; // valor entre 0 e 1
+            double unitPrice = product.getUnitPrice();
+
+            double promotionPrice = unitPrice - (unitPrice * percentage);
             product.setPromotionPrice(promotionPrice);
             productRepository.save(product);
         }
