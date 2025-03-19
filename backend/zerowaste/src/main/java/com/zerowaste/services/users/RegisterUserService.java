@@ -14,7 +14,7 @@ public class RegisterUserService {
     @Value("${app.bcrypt.encoder.strength}")
     private int bcryptEncoderStrength;
 
-    private final UsersRepository usersRepository;
+    private UsersRepository usersRepository;
 
     public RegisterUserService(UsersRepository usersRepository) {
         this.usersRepository = usersRepository;

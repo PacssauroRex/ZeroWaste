@@ -36,7 +36,7 @@ public class AuthenticateUserService extends OncePerRequestFilter implements Use
     @Value("${app.gmt.offset}")
     public String gmtOffset;
 
-    private final UsersRepository usersRepository;
+    private UsersRepository usersRepository;
     private final AuthenticationConfiguration authenticationConfiguration;
 
     public AuthenticateUserService(UsersRepository usersRepository, AuthenticationConfiguration authenticationConfiguration) {

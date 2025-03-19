@@ -18,7 +18,7 @@ import com.zerowaste.services.promotions.exceptions.PromotionNotFoundException;
 @Service
 public class EditPromotionService {
 
-    private final PromotionsRepository promotionsRepository;
+    private PromotionsRepository promotionsRepository;
     private final ProductsRepository productRepository;
 
     public EditPromotionService(PromotionsRepository promotionsRepository, ProductsRepository productRepository) {

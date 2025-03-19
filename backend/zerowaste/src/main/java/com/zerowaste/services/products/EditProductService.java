@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class EditProductService {
     
-    private final ProductsRepository productsRepository;
+    private ProductsRepository productsRepository;
     private final PromotionsRepository promotionsRepository;
 
     public EditProductService(ProductsRepository productsRepository, PromotionsRepository promotionsRepository) {
