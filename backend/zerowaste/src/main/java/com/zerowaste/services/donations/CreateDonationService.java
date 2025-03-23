@@ -34,7 +34,7 @@ public class CreateDonationService {
         List<Product> products = new ArrayList<>();
         for (Long id : dto.productsId()) {
             Optional<Product> product = productsRepository.findById(id);
-            if(product.isPresent())
+            if(product.isPresent() && product.get().getDeletedAt() == null)
                 products.add(product.get());
             else 
                 throw new ProductNotFoundException("Produto com id " + id + " não encontrado");
