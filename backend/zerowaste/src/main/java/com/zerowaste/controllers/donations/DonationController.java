@@ -4,7 +4,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.zerowaste.dtos.donations.CreateDonationDTO;
+import com.zerowaste.dtos.donations.EditDonationDTO;
 import com.zerowaste.services.donations.CreateDonationService;
+import com.zerowaste.services.donations.EditDonationService;
 import com.zerowaste.services.donations.GetDonationIdService;
 import com.zerowaste.services.donations.GetDonationService;
 import com.zerowaste.services.donations.exceptions.DonationNotFoundException;
@@ -20,6 +22,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+
 
 
 @RestController
@@ -29,11 +33,14 @@ public class DonationController {
     private final CreateDonationService createDonationService;
     private final GetDonationService getDonationService;
     private final GetDonationIdService getDonationIdService;
+    private final EditDonationService editDonationService;
 
-    public DonationController (CreateDonationService createDonationService, GetDonationService getDonationService, GetDonationIdService getDonationIdService) {
+    public DonationController (CreateDonationService createDonationService, GetDonationService getDonationService, GetDonationIdService getDonationIdService,
+                               EditDonationService editDonationService) {
         this.createDonationService = createDonationService;
         this.getDonationService = getDonationService;
         this.getDonationIdService = getDonationIdService;
+        this.editDonationService = editDonationService;
     }
 
     @PostMapping()
@@ -83,5 +90,22 @@ public class DonationController {
         }
     }
     
+    @PutMapping("/{id}")
+    public ResponseEntity<Map<String, ?>> editDonation(@PathVariable Long id, @RequestBody EditDonationDTO dto) {
+        try {
+            editDonationService.execute(id, dto);
+            return ResponseEntity.ok(Map.of("message", "Doação editada com sucesso!"));
+        } 
+        catch (DonationNotFoundException|ProductNotFoundException err) {
+            return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(Map.of("message", err.getMessage()));
+        }
+        catch(Exception err) {
+            return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(Map.of("message", err.getMessage()));
+        }
+    }
     
 }
