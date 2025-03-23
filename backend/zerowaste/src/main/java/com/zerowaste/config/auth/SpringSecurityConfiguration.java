@@ -61,6 +61,7 @@ public class SpringSecurityConfiguration {
             //Donations
             .requestMatchers(HttpMethod.POST, "/donations").hasAnyRole("USER", "ADMIN")
             .requestMatchers(HttpMethod.GET, "/donations", "/donations/**").hasAnyRole("USER", "ADMIN")
+            .requestMatchers(HttpMethod.PUT, "/donations/**").hasAnyRole("USER", "ADMIN")
         )
         .addFilterBefore(authenticationUserService, UsernamePasswordAuthenticationFilter.class)
         .build();
