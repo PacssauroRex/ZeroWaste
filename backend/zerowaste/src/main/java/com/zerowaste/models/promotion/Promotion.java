@@ -1,11 +1,9 @@
 package com.zerowaste.models.promotion;
 
 import com.zerowaste.models.product.Product;
-
+import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.Set;
-
-import jakarta.persistence.*;
 
 @Table(name = "promotions")
 @Entity(name = "promotions")
@@ -140,4 +138,22 @@ public class Promotion {
     public void removeProduct(Product product) {
         this.products.remove(product);
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Promotion other = (Promotion) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        return true;
+    }
 }
+
