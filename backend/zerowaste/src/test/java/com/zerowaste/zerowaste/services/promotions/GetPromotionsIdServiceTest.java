@@ -40,7 +40,7 @@ public class GetPromotionsIdServiceTest {
         Promotion promotion = new Promotion();
         promotion.setId(id);
         promotion.setName("Promotion Name");
-        promotion.setPercentage(15.0);
+        promotion.setPercentage(15);
         promotion.setStartsAt(java.time.LocalDate.now().minusDays(1));
         promotion.setEndsAt(java.time.LocalDate.now().plusDays(1));
 

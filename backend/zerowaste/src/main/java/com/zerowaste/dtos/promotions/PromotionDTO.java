@@ -5,11 +5,11 @@ import java.time.LocalDate;
 public class PromotionDTO {
     private Long id;
     private String name;
-    private Double percentage;
+    private int percentage;
     private LocalDate startsAt;
     private LocalDate endsAt;
 
-    public PromotionDTO(Long id, String name, Double percentage, LocalDate startsAt, LocalDate endsAt) {
+    public PromotionDTO(Long id, String name, int percentage, LocalDate startsAt, LocalDate endsAt) {
         this.id = id;
         this.name = name;
         this.percentage = percentage;
@@ -33,11 +33,11 @@ public class PromotionDTO {
         this.name = name;
     }
 
-    public Double getPercentage() {
+    public int getPercentage() {
         return this.percentage;
     }
 
-    public void setPercentage(Double percentage) {
+    public void setPercentage(int percentage) {
         this.percentage = percentage;
     }
 

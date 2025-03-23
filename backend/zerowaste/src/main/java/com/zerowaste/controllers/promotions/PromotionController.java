@@ -112,7 +112,7 @@ public class PromotionController {
     }
 
     @GetMapping("/percentageFilter/{percentage}")
-    public ResponseEntity<Map<String, ?>> getPromotionByPercentage(@PathVariable Double percentage) {
+    public ResponseEntity<Map<String, ?>> getPromotionByPercentage(@PathVariable int percentage) {
         try{
             return ResponseEntity.ok(Map.of("promotions", getPromotionPercentageService.execute(percentage)));
         } 

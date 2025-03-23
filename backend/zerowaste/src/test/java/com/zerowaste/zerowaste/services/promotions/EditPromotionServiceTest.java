@@ -46,7 +46,7 @@ public class EditPromotionServiceTest {
          // Arrange
         var dto = new AddPromotionDTO(
             "Promotion Name",
-            15.0,
+            15,
             LocalDate.now().minusDays(1),
             LocalDate.now().plusDays(1)
         );
@@ -63,7 +63,7 @@ public class EditPromotionServiceTest {
 
         var dtoEdit = new EditPromotionDTO(
             "Promotion Ed Name",
-            20.0,
+            20,
             java.time.LocalDate.now().minusDays(2),
             java.time.LocalDate.now().plusDays(2), 
             Set.of()

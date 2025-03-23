@@ -37,7 +37,7 @@ public class GetPromotionPercentageServiceTest {
     @DisplayName("It should be able to get a promotion by Percentage")
     public void itShouldGetPromotionByPercentage() {
         // Arrange
-        Double percentage = 15.0;
+        int percentage = 15;
         Promotion promotion = new Promotion();
         promotion.setId(1L);
         promotion.setName("Promotion Name");

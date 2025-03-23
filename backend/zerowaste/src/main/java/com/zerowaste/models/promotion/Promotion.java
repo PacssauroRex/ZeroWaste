@@ -13,7 +13,7 @@ public class Promotion {
     public Promotion() {
     }
 
-    public Promotion(Long id, Set<Product> products, String name, Double percentage, LocalDate startsAt, LocalDate endsAt,
+    public Promotion(Long id, Set<Product> products, String name, int percentage, LocalDate startsAt, LocalDate endsAt,
                     LocalDate createdAt, LocalDate updatedAt, LocalDate deletedAt) {
         this.id = id;
         this.products = products;
@@ -36,7 +36,7 @@ public class Promotion {
     private String name;
 
     @Column(name = "percentage", nullable = false)
-    private Double percentage;
+    private int percentage;
 
     @Column(name = "starts_at", nullable = false)
     private LocalDate startsAt;
@@ -74,11 +74,11 @@ public class Promotion {
         this.name = name;
     }
 
-    public Double getPercentage() {
+    public int getPercentage() {
         return percentage;
     }
 
-    public void setPercentage(Double percentage) {
+    public void setPercentage(int percentage) {
         this.percentage = percentage;
     }
 

@@ -37,7 +37,7 @@ public class CreatePromotionServiceTest {
         // Arrange
         var dto = new AddPromotionDTO(
             "Promotion Name",
-            15.0,
+            15,
             LocalDate.now().minusDays(1),
             LocalDate.now().plusDays(1)
 
