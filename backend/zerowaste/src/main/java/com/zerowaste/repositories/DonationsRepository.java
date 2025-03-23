@@ -13,5 +13,5 @@ import com.zerowaste.models.donation.Donation;
 public interface DonationsRepository extends JpaRepository<Donation, Long> {
     @NativeQuery("SELECT * FROM donations WHERE deleted_at IS NULL")
     List<Donation> findAllNotDeleted();
-    //Optional<Donation> findById(Long id);
+    Optional<Donation> findById(Long id);
 }
