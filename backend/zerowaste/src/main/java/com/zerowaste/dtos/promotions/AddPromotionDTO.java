@@ -15,7 +15,7 @@ public record AddPromotionDTO (
 
     @Min(0)
     @Max(100)
-    Double percentage,
+    int percentage,
 
     @FutureOrPresent
     LocalDate startsAt,

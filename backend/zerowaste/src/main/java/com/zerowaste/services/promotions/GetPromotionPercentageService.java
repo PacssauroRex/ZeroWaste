@@ -15,7 +15,7 @@ public class GetPromotionPercentageService {
         this.promotionsRepository = promotionsRepository;
     }
 
-    public List<Promotion> execute(Double percentage) throws PromotionNotFoundException {
+    public List<Promotion> execute(int percentage) throws PromotionNotFoundException {
         List<Promotion> promotions = promotionsRepository.findByPercentage(percentage);
         if (promotions.isEmpty() || promotions.stream().allMatch(promo -> promo.getDeletedAt() != null)) {
             throw new PromotionNotFoundException("Nenhuma promoção encontrada para a porcentagem indicada.");

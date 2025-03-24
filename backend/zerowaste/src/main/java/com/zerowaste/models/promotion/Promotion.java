@@ -1,11 +1,9 @@
 package com.zerowaste.models.promotion;
 
 import com.zerowaste.models.product.Product;
-
+import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.Set;
-
-import jakarta.persistence.*;
 
 @Table(name = "promotions")
 @Entity(name = "promotions")
@@ -15,7 +13,7 @@ public class Promotion {
     public Promotion() {
     }
 
-    public Promotion(Long id, Set<Product> products, String name, Double percentage, LocalDate startsAt, LocalDate endsAt,
+    public Promotion(Long id, Set<Product> products, String name, int percentage, LocalDate startsAt, LocalDate endsAt,
                     LocalDate createdAt, LocalDate updatedAt, LocalDate deletedAt) {
         this.id = id;
         this.products = products;
@@ -38,7 +36,7 @@ public class Promotion {
     private String name;
 
     @Column(name = "percentage", nullable = false)
-    private Double percentage;
+    private int percentage;
 
     @Column(name = "starts_at", nullable = false)
     private LocalDate startsAt;
@@ -76,11 +74,11 @@ public class Promotion {
         this.name = name;
     }
 
-    public Double getPercentage() {
+    public int getPercentage() {
         return percentage;
     }
 
-    public void setPercentage(Double percentage) {
+    public void setPercentage(int percentage) {
         this.percentage = percentage;
     }
 
@@ -140,4 +138,22 @@ public class Promotion {
     public void removeProduct(Product product) {
         this.products.remove(product);
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Promotion other = (Promotion) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        return true;
+    }
 }
+

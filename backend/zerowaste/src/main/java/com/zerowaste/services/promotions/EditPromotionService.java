@@ -56,10 +56,10 @@ public class EditPromotionService {
 
         // Atualiza o preço promocional dos produtos
         for (Product product : products) {
-            double percentage = p.getPercentage() / 100; // valor entre 0 e 1
+            int percentage = p.getPercentage();
             double unitPrice = product.getUnitPrice();
 
-            double promotionPrice = unitPrice - (unitPrice * percentage);
+            double promotionPrice = unitPrice - (unitPrice * percentage)/100;
             product.setPromotionPrice(promotionPrice);
             productRepository.save(product);
         }
