@@ -3,9 +3,12 @@ package com.zerowaste.zerowaste.services.promotions;
 import com.zerowaste.models.promotion.Promotion;
 import com.zerowaste.repositories.PromotionsRepository;
 import com.zerowaste.services.promotions.GetPromotionsIdService;
+import com.zerowaste.services.promotions.exceptions.PromotionNotFoundException;
 import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -51,5 +54,15 @@ public class GetPromotionsIdServiceTest {
 
         assertEquals(promotion, result);
         verify(this.promotionsRepository, times(1)).findById(id);
+    }
+
+    @Test
+    @DisplayName("It should throw PromotionNotFoundException")
+    public void itShouldThrowExceptionForPromotionNotFound() {
+        // Arrange
+        Long id = 2l;
+        when(promotionsRepository.findById(id)).thenReturn(Optional.empty());
+        // Act & Assert
+        assertThrows(PromotionNotFoundException.class, () -> sut.execute(id));
     }
 }
