@@ -44,8 +44,8 @@ public class EditProductService {
                                                         .stream()
                                                         .collect(Collectors.toSet());
             
-            if (!promotions.isEmpty()) {
-                throw new IllegalArgumentException("Um ou mais IDs de promoção são inválidos: " + promotions);
+            if (promotions.isEmpty()) {
+                throw new IllegalArgumentException("Um ou mais IDs de promoção são inválidos: " + dto.promotionsIds());
             }
 
             product.setPromotions(promotions);
