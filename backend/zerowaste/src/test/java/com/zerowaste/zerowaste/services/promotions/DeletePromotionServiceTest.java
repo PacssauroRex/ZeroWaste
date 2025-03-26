@@ -3,9 +3,11 @@ package com.zerowaste.zerowaste.services.promotions;
 import com.zerowaste.models.promotion.Promotion;
 import com.zerowaste.repositories.PromotionsRepository;
 import com.zerowaste.services.promotions.DeletePromotionService;
+import com.zerowaste.services.promotions.exceptions.PromotionNotFoundException;
 import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -52,4 +54,24 @@ public class DeletePromotionServiceTest {
         verify(this.promotionsRepository, times(1)).findById(id);
         assertEquals(promotion.getDeletedAt(), java.time.LocalDate.now());
     }
+
+    @Test
+    @DisplayName("It should throw PromotionNotFoundException")
+    public void itShouldThrowExceptionForPromotionNotFound() {
+        // Arrange
+        Long id = null;
+        Promotion promotion = new Promotion();
+        promotion.setId(id);
+        promotion.setName("Promotion Name");
+        promotion.setPercentage(15);
+        promotion.setStartsAt(java.time.LocalDate.now().minusDays(1));
+        promotion.setEndsAt(java.time.LocalDate.now().plusDays(1));
+
+        when(promotionsRepository.findById(id)).thenReturn(Optional.of(promotion));
+        
+        // Act & Assert
+        assertDoesNotThrow(() -> sut.execute(id));
+        assertThrows(PromotionNotFoundException.class, () -> sut.execute(id));
+    }
+
 }

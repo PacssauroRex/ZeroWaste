@@ -64,4 +64,6 @@ public class CreateProductServiceTest {
         assertDoesNotThrow(() -> sut.execute(dto));
         verify(this.productsRepository, times(1)).save(product);
     }
+
+    
 }

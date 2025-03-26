@@ -4,8 +4,10 @@ import com.zerowaste.dtos.promotions.AddPromotionDTO;
 import com.zerowaste.models.promotion.Promotion;
 import com.zerowaste.repositories.PromotionsRepository;
 import com.zerowaste.services.promotions.CreatePromotionService;
+import com.zerowaste.services.promotions.exceptions.InvalidDatePeriodException;
 import java.time.LocalDate;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,6 +16,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -54,5 +57,21 @@ public class CreatePromotionServiceTest {
         // Act & Assert
         assertDoesNotThrow(() -> sut.execute(dto));
         verify(this.promotionsRepository, times(1)).save(promotion);
+    }
+
+    @Test
+    @DisplayName("It should throw InvalidDatePeriodException")
+    public void itShouldThrowExceptionForInvalidDateRange() {
+        // Arrange
+        var dto = new AddPromotionDTO(
+            "Promotion Name",
+            15,
+            LocalDate.now().plusDays(5),
+            LocalDate.now().plusDays(2)
+
+        );
+        
+        // Act & Assert
+        assertThrows(InvalidDatePeriodException.class, () -> sut.execute(dto));
     }
 }
