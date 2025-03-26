@@ -4,9 +4,11 @@ import com.zerowaste.models.product.Product;
 import com.zerowaste.models.product.ProductCategory;
 import com.zerowaste.repositories.ProductsRepository;
 import com.zerowaste.services.products.GetProductIdService;
+import com.zerowaste.services.products.exceptions.ProductNotFoundException;
 import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -55,5 +57,16 @@ public class GetProductIdServiceTest {
 
         assertEquals(product, result);
         verify(this.productsRepository, times(1)).findById(productId);
+    }
+
+    @Test
+    @DisplayName("It should throw ProductNotFoundException")
+    public void itShouldThrowExceptionForProductNotFound() {
+        // Arrange
+        Long productId = null;
+        when(productsRepository.findById(productId)).thenReturn(Optional.empty());
+
+        // Act & Assert
+        assertThrows(ProductNotFoundException.class, () -> sut.execute(productId));
     }
 }

@@ -5,10 +5,15 @@ import com.zerowaste.models.product.ProductCategory;
 import com.zerowaste.models.promotion.Promotion;
 import com.zerowaste.repositories.PromotionsRepository;
 import com.zerowaste.services.promotions.GetPromotionProductService;
+import com.zerowaste.services.promotions.exceptions.PromotionNotFoundException;
+
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -67,5 +72,15 @@ public class GetPromotionProductServiceTest {
 
         assertEquals(promotion, result.get(0));
         verify(this.promotionsRepository, times(1)).findByProducts_Id(productId);
+    }
+
+    @Test
+    @DisplayName("It should throw PromotionNotFoundException")
+    public void itShouldThrowExceptionForPromotionNotFound() {
+        // Arrange
+        Long productId = 2l;
+        when(promotionsRepository.findByProducts_Id(productId)).thenReturn(Collections.emptyList());
+        // Act & Assert
+        assertThrows(PromotionNotFoundException.class, () -> sut.execute(productId));
     }
 }
