@@ -96,7 +96,7 @@ public class UpdateDonationPointServiceTest {
         verify(donationPointsRepository, times(0)).save(any(DonationPoint.class));
 
     }
-    
+
     @Test
     @DisplayName("It should not be able to update a donation point with invalid time period")
     public void shouldThrowDonationPointNotFoundExceptionIfAlreadyDeleted() {
@@ -117,7 +117,7 @@ public class UpdateDonationPointServiceTest {
                 "updated");
 
         // Mocking
-        when(this.donationPointsRepository.findById(id)).thenReturn(Optional.empty());
+        when(this.donationPointsRepository.findById(id)).thenReturn(Optional.of(donationPoint));
 
         // Act & Assert
         assertThrows(DonationPointNotFoundException.class, () -> sut.execute(id, updatedDTO));

@@ -8,6 +8,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -63,6 +64,26 @@ public class GetDonationPointByIdServiceTest {
 
         // Mocking
         when(this.donationPointsRepository.findById(id)).thenReturn(Optional.empty());
+
+        // Act & Assert
+        assertThrows(DonationPointNotFoundException.class, () -> sut.execute(id));
+
+        // Verify
+        verify(donationPointsRepository, times(1)).findById(id);
+    }
+
+    @Test
+    @DisplayName("It should throw DonationPointNotFoundException")
+    public void shouldThrowDonationPointNotFoundExceptionIfAlreadyDeleted() {
+        // Arrange
+        Long id = 1L;
+
+        DonationPoint donationPoint = new DonationPoint();
+        donationPoint.setId(id);
+        donationPoint.setDeletedAt(LocalDate.now());
+
+        // Mocking
+        when(this.donationPointsRepository.findById(id)).thenReturn(Optional.of(donationPoint));
 
         // Act & Assert
         assertThrows(DonationPointNotFoundException.class, () -> sut.execute(id));
