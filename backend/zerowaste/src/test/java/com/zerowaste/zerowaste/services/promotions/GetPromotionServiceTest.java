@@ -35,7 +35,7 @@ public class GetPromotionServiceTest {
     }
 
     @Test
-    @DisplayName("It should be able to get a promotion by Percentage")
+    @DisplayName("It should be able to get a promotion")
     public void itShouldGetPromotion() {
         // Arrange
         Promotion promotion = new Promotion();
@@ -66,4 +66,5 @@ public class GetPromotionServiceTest {
         
         verify(this.promotionsRepository, times(1)).findAllNotDeleted();
     }
+    
 }
