@@ -58,8 +58,68 @@ public class BroadcastList {
     @Enumerated(EnumType.STRING)
     private BroadcastListSendProtocol sendProtocol;
 
+    @Column(name = "send_type", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private BroadcastListSendType sendType;
+
     @ManyToMany
     @JoinTable(name = "broadcast_emails_broadcast_lists", joinColumns = @JoinColumn(name = "broadcast_lists_id"), inverseJoinColumns = @JoinColumn(name = "broadcast_emails_id"))
     private Set<BroadcastEmail> broadcastEmails;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public LocalDate getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDate createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDate getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDate updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public LocalDate getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(LocalDate deletedAt) {
+        this.deletedAt = deletedAt;
+    }
+
+    public BroadcastListSendProtocol getSendProtocol() {
+        return sendProtocol;
+    }
+
+    public void setSendProtocol(BroadcastListSendProtocol sendProtocol) {
+        this.sendProtocol = sendProtocol;
+    }
+
+    public Set<BroadcastEmail> getBroadcastEmails() {
+        return broadcastEmails;
+    }
+
+    public void setBroadcastEmails(Set<BroadcastEmail> broadcastEmails) {
+        this.broadcastEmails = broadcastEmails;
+    }
 }
 
