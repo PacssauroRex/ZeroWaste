@@ -21,7 +21,7 @@ public class SetProductStatusService {
     public void execute (Long id, ProductStatus status) throws ProductNotFoundException, ProductNotAvaliableException {
         Optional<Product> productOpt = productsRepository.findById(id);
 
-        if(!productOpt.isPresent())
+        if(!productOpt.isPresent() || productOpt.get().getDeletedAt() != null)
             throw new ProductNotFoundException("Produto não encontrado!");
         
         if (productOpt.get().getStatus() != ProductStatus.AVALIABLE)
