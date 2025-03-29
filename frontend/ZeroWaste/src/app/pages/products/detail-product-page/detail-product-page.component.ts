@@ -26,6 +26,7 @@ export class DetailProductPageComponent {
   productService: ProductService = inject(ProductService);
   route: ActivatedRoute = inject(ActivatedRoute);
   product: Product | undefined;
+  public productId: number = 0;
 
   public productForm = this.fb.group({
     name: [''],
@@ -36,13 +37,14 @@ export class DetailProductPageComponent {
     promotionPrice: [''],
     stock: [''],
     expiresAt: [''],
+    status: [''],
   });
 
   public ngOnInit(): void {
     this.productForm.disable();
 
-    const productId = Number(this.route.snapshot.params['id'])
-    this.productService.getProductById(productId).then((productResponse => {
+    this.productId = Number(this.route.snapshot.params['id'])
+    this.productService.getProductById(this.productId).then((productResponse => {
       this.product = productResponse;
 
       var promoPrice;
@@ -50,6 +52,12 @@ export class DetailProductPageComponent {
         promoPrice = "Sem preço promocional"
       else
         promoPrice = 'R$' + this.product.promotionPrice;
+
+      var statusFinal = "Disponível"
+      if (this.product.status == "DONATED")
+        statusFinal = "Doado"
+      else if (this.product.status == "DISCARDED")
+        statusFinal = "Descartado"
       
       this.productForm.setValue({
         name: this.product.name,
@@ -59,7 +67,8 @@ export class DetailProductPageComponent {
         unitPrice: 'R$' + this.product.unitPrice,
         promotionPrice: promoPrice,
         stock: String(this.product.stock),
-        expiresAt: formatDate(this.product.expiresAt, 'dd/MM/yyyy', 'en-US')
+        expiresAt: formatDate(this.product.expiresAt, 'dd/MM/yyyy', 'en-US'),
+        status: statusFinal
       });
     }))
 
