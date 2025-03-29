@@ -48,6 +48,8 @@ public class SpringSecurityConfiguration {
             .requestMatchers(HttpMethod.POST, "/products").hasRole("ADMIN")
             .requestMatchers(HttpMethod.PUT, "/products/**").hasRole("ADMIN")
             .requestMatchers(HttpMethod.DELETE, "/products/**").hasRole("ADMIN")
+            .requestMatchers(HttpMethod.PATCH, "/products/donate/**").hasRole("ADMIN")
+            .requestMatchers(HttpMethod.PATCH, "/products/discard/**").hasRole("ADMIN")
             //Promotions
             .requestMatchers(HttpMethod.GET, "/promotions", "/promotions/**").hasAnyRole("ADMIN", "USER")
             .requestMatchers(HttpMethod.POST, "/promotions/").hasRole("ADMIN")

@@ -27,8 +27,8 @@ public class Product {
     }
 
     public Product(Long id, String name, String description, String brand, ProductCategory category, Double unitPrice,
-            Double promotionPrice, Integer stock, LocalDate expiresAt, LocalDate createdAt, LocalDate updatedAt,
-            LocalDate deletedAt) {
+            Double promotionPrice, Integer stock, LocalDate expiresAt, ProductStatus status, LocalDate createdAt, 
+            LocalDate updatedAt, LocalDate deletedAt) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -38,6 +38,7 @@ public class Product {
         this.promotionPrice = promotionPrice;
         this.stock = stock;
         this.expiresAt = expiresAt;
+        this.status = status;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.deletedAt = deletedAt;
@@ -72,6 +73,10 @@ public class Product {
 
     @Column(name = "expires_at")
     private LocalDate expiresAt;
+
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
+    private ProductStatus status;
 
     @Column(name = "created_at")
     private LocalDate createdAt;
@@ -166,6 +171,14 @@ public class Product {
 
     public void setExpiresAt(LocalDate expiresAt) {
         this.expiresAt = expiresAt;
+    }
+
+    public ProductStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(ProductStatus status) {
+        this.status = status;
     }
 
     public Set<Promotion> getPromotions() {
