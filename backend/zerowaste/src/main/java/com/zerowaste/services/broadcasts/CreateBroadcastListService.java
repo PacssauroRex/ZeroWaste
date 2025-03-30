@@ -19,9 +19,9 @@ import jakarta.transaction.Transactional;
 
 @Service
 public class CreateBroadcastListService {
-    private final BroadcastListsRepository broadcastListRepository;
-    private final BroadcastEmailsRepository broadcastEmailsRepository;
-    private final ProductsRepository productsRepository;
+    private BroadcastListsRepository broadcastListRepository;
+    private BroadcastEmailsRepository broadcastEmailsRepository;
+    private ProductsRepository productsRepository;
 
     public CreateBroadcastListService(
         BroadcastListsRepository broadcastListRepository,
