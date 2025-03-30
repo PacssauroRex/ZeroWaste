@@ -6,6 +6,7 @@ import com.zerowaste.services.products.exceptions.ProductNotFoundException;
 import com.zerowaste.services.promotions.CreatePromotionService;
 import com.zerowaste.services.promotions.DeletePromotionService;
 import com.zerowaste.services.promotions.EditPromotionService;
+import com.zerowaste.services.promotions.GetActivePromotionsService;
 import com.zerowaste.services.promotions.GetPromotionPercentageService;
 import com.zerowaste.services.promotions.GetPromotionProductService;
 import com.zerowaste.services.promotions.GetPromotionService;
@@ -37,8 +38,11 @@ public class PromotionController {
         private final GetPromotionPercentageService getPromotionPercentageService;
         private final GetPromotionProductService getPromotionProductService;
         private final GetPromotionService getPromotionService;
+        private final GetActivePromotionsService getActivePromotionsService;
 
-        public PromotionController(CreatePromotionService createPromotionService, DeletePromotionService deletePromotionService, EditPromotionService editPromotionService, GetPromotionsIdService getPromotionsIdService, GetPromotionPercentageService getPromotionPercentageService, GetPromotionProductService getPromotionProductService, GetPromotionService getPromotionService) {
+        public PromotionController(CreatePromotionService createPromotionService, DeletePromotionService deletePromotionService, EditPromotionService editPromotionService,
+                                GetPromotionsIdService getPromotionsIdService, GetPromotionPercentageService getPromotionPercentageService, GetPromotionProductService getPromotionProductService, 
+                                GetPromotionService getPromotionService, GetActivePromotionsService getActivePromotionsService) {
             this.createPromotionService = createPromotionService;
             this.deletePromotionService = deletePromotionService;
             this.editPromotionService = editPromotionService;
@@ -46,6 +50,7 @@ public class PromotionController {
             this.getPromotionPercentageService = getPromotionPercentageService;
             this.getPromotionProductService = getPromotionProductService;
             this.getPromotionService = getPromotionService;
+            this.getActivePromotionsService = getActivePromotionsService;
         }
 
     @PostMapping("/")
@@ -161,5 +166,16 @@ public class PromotionController {
         }
     }
 
+    @GetMapping("/active")
+    public ResponseEntity<Map<String, ?>> getAllActivePromotions() {
+        try {
+            return ResponseEntity.ok(Map.of("promotions", getActivePromotionsService.execute()));
+        }
+        catch(Exception err) {
+            return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(Map.of(Constants.message, Constants.generalExceptionCatchText + err.getMessage()));
+        }
+    }
     
 }
