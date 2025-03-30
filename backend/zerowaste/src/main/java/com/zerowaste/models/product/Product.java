@@ -82,6 +82,10 @@ public class Product {
     @Column(name = "expires_at")
     private LocalDate expiresAt;
 
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
+    private ProductStatus status;
+
     @Column(name = "created_at")
     private LocalDate createdAt;
 
@@ -179,6 +183,14 @@ public class Product {
 
     public void setExpiresAt(LocalDate expiresAt) {
         this.expiresAt = expiresAt;
+    }
+
+    public ProductStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(ProductStatus status) {
+        this.status = status;
     }
 
     public Set<Promotion> getPromotions() {

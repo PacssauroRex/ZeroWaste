@@ -21,6 +21,7 @@ import com.zerowaste.dtos.donations.EditDonationDTO;
 import com.zerowaste.models.donation.Donation;
 import com.zerowaste.models.product.Product;
 import com.zerowaste.models.product.ProductCategory;
+import com.zerowaste.models.product.ProductStatus;
 import com.zerowaste.repositories.DonationsRepository;
 import com.zerowaste.repositories.ProductsRepository;
 import com.zerowaste.services.donations.EditDonationService;
@@ -64,6 +65,7 @@ public class EditDonationServiceTest {
             8.0,
             20,
             LocalDate.now().plusDays(1),
+            ProductStatus.AVALIABLE,
             LocalDate.now(),
             null,
             null
@@ -160,6 +162,7 @@ public class EditDonationServiceTest {
                 8.0,
                 20,
                 LocalDate.now().plusDays(1),
+                ProductStatus.AVALIABLE,
                 LocalDate.now(),
                 null,
                 null

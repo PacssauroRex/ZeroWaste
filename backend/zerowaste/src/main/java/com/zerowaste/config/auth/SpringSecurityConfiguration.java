@@ -48,6 +48,8 @@ public class SpringSecurityConfiguration {
             .requestMatchers(HttpMethod.POST, "/products").hasRole("ADMIN")
             .requestMatchers(HttpMethod.PUT, "/products/**").hasRole("ADMIN")
             .requestMatchers(HttpMethod.DELETE, "/products/**").hasRole("ADMIN")
+            .requestMatchers(HttpMethod.PATCH, "/products/donate/**").hasRole("ADMIN")
+            .requestMatchers(HttpMethod.PATCH, "/products/discard/**").hasRole("ADMIN")
             //Promotions
             .requestMatchers(HttpMethod.GET, "/promotions", "/promotions/**").hasAnyRole("ADMIN", "USER")
             .requestMatchers(HttpMethod.POST, "/promotions/").hasRole("ADMIN")
@@ -65,7 +67,7 @@ public class SpringSecurityConfiguration {
             .requestMatchers(HttpMethod.DELETE, "/donations/**").hasAnyRole("USER", "ADMIN")
             //Donation Points
             .requestMatchers(HttpMethod.POST, "/donation-points/**").hasRole("ADMIN")
-            .requestMatchers(HttpMethod.GET, "/donation-points/**").hasRole("ADMIN")
+            .requestMatchers(HttpMethod.GET, "/donation-points", "/donation-points/**").hasRole("ADMIN")
             .requestMatchers(HttpMethod.PUT, "/donation-points/**").hasRole("ADMIN")
             .requestMatchers(HttpMethod.DELETE, "/donation-points/**").hasRole("ADMIN")
             // Broadcasts

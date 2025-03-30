@@ -1,0 +1,87 @@
+<section class="container">
+  <header>
+    <h1>Detalhes do ponto de doação #{{route.snapshot.paramMap.get("id")}}</h1>
+  </header>
+
+  <form [formGroup]="donationPointForm">
+    <div class="form-group">
+      <label for="name">Nome</label>
+      <app-input [id]="'name'" [name]="'name'" [type]="'text'" formControlName="name" />
+    </div>
+
+    <div class="form-group">
+      <label for="email">Nome</label>
+      <app-input [id]="'email'" [name]="'email'" [type]="'text'" formControlName="email" />
+    </div>
+
+    <div class="form-group">
+      <label for="street">Rua</label>
+      <app-input [id]="'street'" [name]="'street'" [type]="'text'" formControlName="street" />
+    </div>
+
+    <div class="form-group">
+      <label for="number">Número</label>
+      <app-input [id]="'number'" [name]="'number'" [type]="'number'" formControlName="number" />
+    </div>
+
+    <div class="form-group">
+      <label for="city">Cidade</label>
+      <app-input [id]="'city'" [name]="'city'" [type]="'text'" formControlName="city" />
+    </div>
+
+    <div class="row">
+      <div class="form-group">
+        <label for="openingTime">Horário de abertura do ponto</label>
+        <app-input [id]="'openingTime'" [name]="'openingTime'" [type]="'time'" formControlName="openingTime" />
+      </div>
+
+      <div class="form-group">
+        <label for="closingTime">Horário de fechamento do ponto</label>
+        <app-input [id]="'closingTime'" [name]="'closingTime'" [type]="'time'" formControlName="closingTime" />
+      </div>
+    </div>
+
+    <footer style="display: flex; justify-content: space-between; width: 100%;">
+      <div style="display: flex; gap: 8px;">
+      <a [routerLink]="['/donation-points/update', donationPointId]">
+        <app-button [type]="'button'" [variant]="'outline'">
+          <img src="editar.png" alt="edit donation point" />
+        </app-button>
+      </a>
+      <a title="Deletar ponto de doação">
+        <app-button [type]="'button'" [variant]="'outline'" (click)="modal.openModal()">
+          <img src="deletar.png" alt="delete donation point" />
+        </app-button>
+
+        <app-modal #modal>
+          <app-card>
+            <app-card-header>
+              <h2>
+                Você tem certeza que deseja deletar este ponto de doação?
+              </h2>
+            </app-card-header>
+
+            <app-card-content>
+              Essa ação não pode ser desfeita. Clique em "Confirmar" para deletar o ponto de doação.
+            </app-card-content>
+
+            <app-card-footer>
+              <app-button [variant]="'outline'" style="margin-right: 8px;" (click)="modal.closeModal()">
+                Cancelar
+              </app-button>
+              <app-button (click)="onDeleteDonationPointConfirmation(donationPointId)">
+                Confirmar
+              </app-button>
+            </app-card-footer>
+          </app-card>
+        </app-modal>
+      </a>
+    </div>
+      <a routerLink="/donation-points/" class="mr-2">
+        <app-button [type]="'button'" [block]="true" [variant]="'outline'">
+          Voltar
+        </app-button>
+      </a>
+    </footer>
+  </form>
+</section>
