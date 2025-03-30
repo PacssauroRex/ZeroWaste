@@ -15,6 +15,8 @@ import com.zerowaste.services.products.EditProductService;
 import com.zerowaste.services.products.GetProductIdService;
 import com.zerowaste.services.products.GetProductService;
 import com.zerowaste.services.products.exceptions.ProductNotFoundException;
+import com.zerowaste.utils.Constants;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -219,7 +221,7 @@ class ProductControllerTest {
         // Então, executamos a requisição GET para buscar o produto
         mockMvc.perform(get("/products/{id}", 999L))
                 .andExpect(status().isNotFound()) // Espera-se um código 404
-                .andExpect(jsonPath("$.error").value("Produto não encontrado")); // Verifica a mensagem de erro
+                .andExpect(jsonPath("$." + Constants.message).value("Produto não encontrado")); // Verifica a mensagem de erro
         
         // Verifica que o serviço foi chamado uma vez com o ID do produto
         verify(getProductIdService, times(1)).execute((999L));
