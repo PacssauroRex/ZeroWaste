@@ -65,7 +65,7 @@ public class SpringSecurityConfiguration {
             .requestMatchers(HttpMethod.DELETE, "/donations/**").hasAnyRole("USER", "ADMIN")
             //Donation Points
             .requestMatchers(HttpMethod.POST, "/donation-points/**").hasRole("ADMIN")
-            .requestMatchers(HttpMethod.GET, "/donation-points/**").hasRole("ADMIN")
+            .requestMatchers(HttpMethod.GET, "/donation-points", "/donation-points/**").hasRole("ADMIN")
             .requestMatchers(HttpMethod.PUT, "/donation-points/**").hasRole("ADMIN")
             .requestMatchers(HttpMethod.DELETE, "/donation-points/**").hasRole("ADMIN")
         )
