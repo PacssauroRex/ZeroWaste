@@ -13,11 +13,11 @@ import jakarta.validation.constraints.Size;
 
 public record CreateBroadcastListDTO(
         @NotBlank(message = "O campo \"name\" é obrigatório")
-        @Size(max = 100, message = "O campo \"name\" deve ter entre 3 e 100 caracteres")
+        @Size(min = 3, max = 100, message = "O campo \"name\" deve ter entre 3 e 100 caracteres")
         String name,
 
         @NotBlank(message = "O campo \"description\" é obrigatório")
-        @Size(max = 255, message = "O campo \"description\" deve ter entre 3 e 255 caracteres")
+        @Size(min = 3, max = 255, message = "O campo \"description\" deve ter entre 3 e 255 caracteres")
         String description,
 
         @NotBlank(message = "O campo \"sendType\" é obrigatório")
