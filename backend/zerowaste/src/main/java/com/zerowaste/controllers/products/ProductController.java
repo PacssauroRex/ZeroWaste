@@ -7,6 +7,7 @@ import com.zerowaste.models.product.ProductStatus;
 import com.zerowaste.services.products.CreateProductService;
 import com.zerowaste.services.products.DeleteProductService;
 import com.zerowaste.services.products.EditProductService;
+import com.zerowaste.services.products.GetExpiringProductsService;
 import com.zerowaste.services.products.GetProductIdService;
 import com.zerowaste.services.products.GetProductService;
 import com.zerowaste.services.products.SetProductStatusService;
@@ -27,6 +28,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 @RequestMapping("/products")
@@ -38,15 +41,18 @@ public class ProductController {
     private final GetProductIdService getProductIdService;
     private final GetProductService getProductService;
     private final SetProductStatusService setProductStatusService;
+    private final GetExpiringProductsService getExpiringProductsService;
 
     public ProductController(CreateProductService createProductService, DeleteProductService deleteProductService, EditProductService editProductService, 
-                            GetProductIdService getProductIdService, GetProductService getProductService, SetProductStatusService setProductStatusService) {
+                            GetProductIdService getProductIdService, GetProductService getProductService, SetProductStatusService setProductStatusService,
+                            GetExpiringProductsService getExpiringProductsService) {
         this.createProductService = createProductService;
         this.deleteProductService = deleteProductService;
         this.editProductService = editProductService;
         this.getProductIdService = getProductIdService;
         this.getProductService = getProductService;
         this.setProductStatusService = setProductStatusService;
+        this.getExpiringProductsService = getExpiringProductsService;
     }
     
     @PostMapping()
@@ -174,5 +180,18 @@ public class ProductController {
                 .body(Map.of(Constants.message, Constants.generalExceptionCatchText + err.getMessage()));
         }
     }
+
+    @GetMapping("/expiring")
+    public ResponseEntity<Map<String, String>> getExpiringProducts() {
+        try {
+            return ResponseEntity.ok(Map.of("expiring_products", getExpiringProductsService.execute()));
+        }
+        catch(Exception err) {
+            return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(Map.of(Constants.message, Constants.generalExceptionCatchText + err.getMessage()));
+        }
+    }
+    
 }
 
