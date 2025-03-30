@@ -12,6 +12,7 @@ import com.zerowaste.services.donations.GetDonationIdService;
 import com.zerowaste.services.donations.GetDonationService;
 import com.zerowaste.services.donations.exceptions.DonationNotFoundException;
 import com.zerowaste.services.products.exceptions.ProductNotFoundException;
+import com.zerowaste.utils.Constants;
 
 import jakarta.validation.Valid;
 
@@ -36,10 +37,6 @@ public class DonationController {
     private final EditDonationService editDonationService;
     private final DeleteDonationService deleteDonationService;
 
-    //Constants
-    private final String message = "message";
-    private final String generalExceptionCatchText = "Houve algum problema interno: ";
-
     public DonationController (CreateDonationService createDonationService, GetDonationService getDonationService, GetDonationIdService getDonationIdService,
                                EditDonationService editDonationService, DeleteDonationService deleteDonationService) {
         this.createDonationService = createDonationService;
@@ -53,17 +50,17 @@ public class DonationController {
     public ResponseEntity<Map<String, String>> createDonation(@RequestBody @Valid CreateDonationDTO dto) {
         try {
             createDonationService.execute(dto);
-            return ResponseEntity.ok(Map.of(message, "Doação cadastrada com sucesso!"));
+            return ResponseEntity.ok(Map.of(Constants.message, "Doação cadastrada com sucesso!"));
         } 
         catch (ProductNotFoundException err) {
             return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
-                .body(Map.of(message, err.getMessage()));
+                .body(Map.of(Constants.message, err.getMessage()));
         }
         catch(Exception err) {
             return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Map.of(generalExceptionCatchText, err.getMessage()));
+                .body(Map.of(Constants.generalExceptionCatchText, err.getMessage()));
         }
     }
  
@@ -75,7 +72,7 @@ public class DonationController {
         catch(Exception err) {
             return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Map.of(generalExceptionCatchText, err.getMessage()));
+                .body(Map.of(Constants.generalExceptionCatchText, err.getMessage()));
         }
     }
 
@@ -87,12 +84,12 @@ public class DonationController {
         catch (DonationNotFoundException err) {
             return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
-                .body(Map.of(message, err.getMessage()));
+                .body(Map.of(Constants.message, err.getMessage()));
         }
         catch(Exception err) {
             return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Map.of(generalExceptionCatchText, err.getMessage()));
+                .body(Map.of(Constants.generalExceptionCatchText, err.getMessage()));
         }
     }
     
@@ -100,17 +97,17 @@ public class DonationController {
     public ResponseEntity<Map<String, String>> editDonation(@PathVariable Long id, @RequestBody @Valid EditDonationDTO dto) {
         try {
             editDonationService.execute(id, dto);
-            return ResponseEntity.ok(Map.of(message, "Doação editada com sucesso!"));
+            return ResponseEntity.ok(Map.of(Constants.message, "Doação editada com sucesso!"));
         } 
         catch (DonationNotFoundException|ProductNotFoundException err) {
             return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
-                .body(Map.of(message, err.getMessage()));
+                .body(Map.of(Constants.message, err.getMessage()));
         }
         catch(Exception err) {
             return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Map.of(generalExceptionCatchText, err.getMessage()));
+                .body(Map.of(Constants.generalExceptionCatchText, err.getMessage()));
         }
     }
     
@@ -118,17 +115,17 @@ public class DonationController {
     public ResponseEntity<Map<String, String>> deleteDonation(@PathVariable Long id) {
         try {
             deleteDonationService.execute(id);
-            return ResponseEntity.ok(Map.of(message, "Doação deletada com sucesso!"));
+            return ResponseEntity.ok(Map.of(Constants.message, "Doação deletada com sucesso!"));
         } 
         catch (DonationNotFoundException err) {
             return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
-                .body(Map.of(message, err.getMessage()));
+                .body(Map.of(Constants.message, err.getMessage()));
         }
         catch(Exception err) {
             return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Map.of(generalExceptionCatchText, err.getMessage()));
+                .body(Map.of(Constants.generalExceptionCatchText, err.getMessage()));
         }
     }
 }

@@ -21,16 +21,16 @@ public class SpringSecurityConfiguration {
     private final AuthenticateUserService authenticationUserService;
 
     //Constants
-    private final String userRole = "USER";
-    private final String adminRole = "ADMIN";
+    private static final String userRole = "USER";
+    private static final String adminRole = "ADMIN";
 
-    private final String userPath = "/users";
-    private final String productPath = "/products";
-    private final String promotionPath = "/promotions";
-    private final String donationPath = "/donations";
-    private final String donationPointPath = "/donation-points";
+    private static final String userPath = "/users";
+    private static final String productPath = "/products";
+    private static final String promotionPath = "/promotions";
+    private static final String donationPath = "/donations";
+    private static final String donationPointPath = "/donation-points";
     
-    private final String anyPath = "/**";
+    private static final String anyPath = "/**";
 
     public SpringSecurityConfiguration(AuthenticateUserService authenticationUserService) {
         this.authenticationUserService = authenticationUserService;
