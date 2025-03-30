@@ -5,6 +5,8 @@ import com.zerowaste.dtos.RegisterUserDTO;
 import com.zerowaste.services.users.AuthenticateUserService;
 import com.zerowaste.services.users.RegisterUserService;
 import com.zerowaste.services.users.exceptions.UserWithSameEmailAlreadyExistsException;
+import com.zerowaste.utils.Constants;
+
 import jakarta.validation.Valid;
 import java.util.Map;
 import org.springframework.http.HttpStatus;
@@ -32,16 +34,17 @@ public class UserController {
     public ResponseEntity<Map<String, ?>> handle(@RequestBody @Valid RegisterUserDTO dto) {
         try {
             registerUserService.execute(dto);
-
-            return ResponseEntity.ok(Map.of("message", "User registered successfully"));
-        } catch (UserWithSameEmailAlreadyExistsException e) {
+            return ResponseEntity.ok(Map.of(Constants.message, "User registered successfully"));
+        } 
+        catch (UserWithSameEmailAlreadyExistsException e) {
             return ResponseEntity
                 .status(HttpStatus.CONFLICT)
-                .body(Map.of("message", e.getMessage()));
-        } catch (Exception e) {
+                .body(Map.of(Constants.message, e.getMessage()));
+        } 
+        catch (Exception e) {
             return ResponseEntity
             .status(HttpStatus.INTERNAL_SERVER_ERROR)
-            .body(Map.of("message", "Internal server error"));
+            .body(Map.of(Constants.message, Constants.generalExceptionCatchText + "Internal server error"));
         }
     }
 
@@ -54,11 +57,11 @@ public class UserController {
         } catch (AuthenticationException e) {
             return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
-                .body(Map.of("message", e.getMessage()));
+                .body(Map.of(Constants.message, e.getMessage()));
         } catch (Exception e) {
             return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Map.of("message", "Internal server error"));
+                .body(Map.of(Constants.message, Constants.generalExceptionCatchText + "Internal server error"));
         }
     }
 

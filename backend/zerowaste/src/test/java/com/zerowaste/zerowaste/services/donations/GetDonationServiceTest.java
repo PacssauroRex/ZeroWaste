@@ -20,20 +20,20 @@ import com.zerowaste.models.donation.Donation;
 import com.zerowaste.repositories.DonationsRepository;
 import com.zerowaste.services.donations.GetDonationService;
 
-public class GetDonationServiceTest {
+class GetDonationServiceTest {
     @Mock
     private DonationsRepository donationsRepository;
 
     private GetDonationService getDonationService;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         MockitoAnnotations.openMocks(this);
         getDonationService = new GetDonationService(donationsRepository);
     }
 
     @Test
-    public void getDonationsTest() { //Buscando doações com sucesso
+    void getDonationsTest() { //Buscando doações com sucesso
         //Criando doações
         Long donationId1 = 1L;
         Long donationId2 = 2L;

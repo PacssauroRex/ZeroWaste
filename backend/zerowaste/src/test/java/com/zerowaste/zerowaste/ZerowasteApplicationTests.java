@@ -8,6 +8,7 @@ class ZerowasteApplicationTests {
 
 	@Test
 	void contextLoads() {
+		//Método gerado automaticamente pelo Spring
 	}
 
 }

@@ -20,20 +20,20 @@ import com.zerowaste.repositories.DonationsRepository;
 import com.zerowaste.services.donations.GetDonationIdService;
 import com.zerowaste.services.donations.exceptions.DonationNotFoundException;
 
-public class GetDonationIdServiceTest {
+class GetDonationIdServiceTest {
     @Mock
     private DonationsRepository donationsRepository;
 
     private GetDonationIdService getDonationIdService;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         MockitoAnnotations.openMocks(this);
         getDonationIdService = new GetDonationIdService(donationsRepository);
     }
 
     @Test
-    public void getDonationByIdTest() throws DonationNotFoundException { //Busca realizada com sucesso
+    void getDonationByIdTest() throws DonationNotFoundException { //Busca realizada com sucesso
         //Criando doação
         Long donationId = 1L;
         Donation donation = new Donation();
@@ -57,7 +57,7 @@ public class GetDonationIdServiceTest {
     }
 
     @Test
-    public void getDonationByIdFailTest1() { //Buscando doação com id inválido (não existente)
+    void getDonationByIdFailTest1() { //Buscando doação com id inválido (não existente)
         Long donationId = 1L;
         when(donationsRepository.findById(donationId)).thenReturn(Optional.empty());
 
@@ -71,7 +71,7 @@ public class GetDonationIdServiceTest {
     }
 
     @Test
-    public void getDonationByIdFailTest2() { //Buscando doação deletada
+    void getDonationByIdFailTest2() { //Buscando doação deletada
         //Criando doação
         Long donationId = 1L;
         Donation donation = new Donation();

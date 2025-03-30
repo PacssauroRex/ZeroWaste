@@ -19,7 +19,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class CreateProductServiceTest {
+class CreateProductServiceTest {
 
     @InjectMocks
     private final CreateProductService sut;
@@ -32,13 +32,13 @@ public class CreateProductServiceTest {
     private ProductsRepository productsRepository;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         MockitoAnnotations.openMocks(this);
     }
 
     @Test
     @DisplayName("It should be able to create a product")
-    public void itShouldCreateProduct() {
+    void itShouldCreateProduct() {
         // Arrange
         var dto = new CreateProductDTO(
             "Product Name",
@@ -63,7 +63,5 @@ public class CreateProductServiceTest {
         // Act & Assert
         assertDoesNotThrow(() -> sut.execute(dto));
         verify(this.productsRepository, times(1)).save(product);
-    }
-
-    
+    }    
 }

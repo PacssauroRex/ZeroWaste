@@ -22,7 +22,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class GetPromotionsIdServiceTest {
+class GetPromotionsIdServiceTest {
 
     @InjectMocks
     private GetPromotionsIdService sut;
@@ -31,13 +31,13 @@ public class GetPromotionsIdServiceTest {
     private PromotionsRepository promotionsRepository;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         MockitoAnnotations.openMocks(this);
     }
 
     @Test
     @DisplayName("It should be able to get a promotion by Id")
-    public void itShouldGetPromotionById() {
+    void itShouldGetPromotionById() {
         // Arrange
         Long id = 1l;
         Promotion promotion = new Promotion();
@@ -58,7 +58,7 @@ public class GetPromotionsIdServiceTest {
 
     @Test
     @DisplayName("It should throw PromotionNotFoundException")
-    public void itShouldThrowExceptionForPromotionNotFound() {
+    void itShouldThrowExceptionForPromotionNotFound() {
         // Arrange
         Long id = 2l;
         when(promotionsRepository.findById(id)).thenReturn(Optional.empty());

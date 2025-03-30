@@ -25,7 +25,7 @@ import com.zerowaste.services.donation_points.GetDonationPointByIdService;
 import com.zerowaste.services.donation_points.exceptions.DonationPointNotFoundException;
 
 @ExtendWith(MockitoExtension.class)
-public class GetDonationPointByIdServiceTest {
+class GetDonationPointByIdServiceTest {
 
     @InjectMocks
     private GetDonationPointByIdService sut;
@@ -34,13 +34,13 @@ public class GetDonationPointByIdServiceTest {
     private DonationPointsRepository donationPointsRepository;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         this.sut = new GetDonationPointByIdService(donationPointsRepository);
     }
 
     @Test
     @DisplayName("It should be able to get a donation point by id")
-    public void shouldGetDonationPointById() {
+    void shouldGetDonationPointById() {
         // Arrange
         Long id = 1L;
 
@@ -58,7 +58,7 @@ public class GetDonationPointByIdServiceTest {
 
     @Test
     @DisplayName("It should throw DonationPointNotFoundException")
-    public void shouldThrowDonationPointNotFoundException() {
+    void shouldThrowDonationPointNotFoundException() {
         // Arrange
         Long id = 1L;
 
@@ -74,7 +74,7 @@ public class GetDonationPointByIdServiceTest {
 
     @Test
     @DisplayName("It should throw DonationPointNotFoundException")
-    public void shouldThrowDonationPointNotFoundExceptionIfAlreadyDeleted() {
+    void shouldThrowDonationPointNotFoundExceptionIfAlreadyDeleted() {
         // Arrange
         Long id = 1L;
 
