@@ -2,9 +2,11 @@ package com.zerowaste.models.product;
 
 import java.time.LocalDate;
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.zerowaste.models.broadcast.BroadcastList;
 import com.zerowaste.models.promotion.Promotion;
 
 import jakarta.persistence.Column;
@@ -14,6 +16,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
@@ -23,12 +27,22 @@ import jakarta.persistence.Table;
 @Table(name = "products")
 @Entity(name = "products")
 public class Product {
-    public Product() {
-    }
+    public Product() {}
 
-    public Product(Long id, String name, String description, String brand, ProductCategory category, Double unitPrice,
-            Double promotionPrice, Integer stock, LocalDate expiresAt, LocalDate createdAt, LocalDate updatedAt,
-            LocalDate deletedAt) {
+    public Product(
+        Long id,
+        String name,
+        String description,
+        String brand,
+        ProductCategory category,
+        Double unitPrice,
+        Double promotionPrice,
+        Integer stock,
+        LocalDate expiresAt,
+        LocalDate createdAt,
+        LocalDate updatedAt,
+        LocalDate deletedAt
+    ) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -85,6 +99,10 @@ public class Product {
     @ManyToMany(mappedBy = "products")
     @JsonIgnore
     private Set<Promotion> promotions;
+
+    @ManyToMany
+    @JoinTable(name = "broadcast_lists_products", joinColumns = @JoinColumn(name = "products_id"), inverseJoinColumns = @JoinColumn(name = "broadcast_lists_id"))
+    private List<BroadcastList> broadcastLists;
 
     @PrePersist
     public void prePersist() {
@@ -177,6 +195,14 @@ public class Product {
             throw new IllegalArgumentException("Promoções não podem ser nulas.");
         }
         this.promotions = Collections.unmodifiableSet(promotions2);
+    }
+
+    public List<BroadcastList> getBroadcastLists() {
+        return broadcastLists;
+    }
+
+    public void setBroadcastLists(List<BroadcastList> broadcastLists) {
+        this.broadcastLists = broadcastLists;
     }
 
     public LocalDate getCreatedAt() {
