@@ -58,7 +58,7 @@ public class ProductController {
         catch (Exception e) {
             return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Map.of(Constants.generalExceptionCatchText, e.getMessage()));
+                .body(Map.of(Constants.message, Constants.generalExceptionCatchText + e.getMessage()));
         }
     }
 
@@ -77,7 +77,7 @@ public class ProductController {
         catch(Exception err) {
             return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Map.of(Constants.generalExceptionCatchText, err.getMessage()));
+                .body(Map.of(Constants.message, Constants.generalExceptionCatchText + err.getMessage()));
         }
     }
 
@@ -96,7 +96,7 @@ public class ProductController {
         catch(Exception err) {
             return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Map.of(Constants.generalExceptionCatchText, err.getMessage()));
+                .body(Map.of(Constants.message, Constants.generalExceptionCatchText + err.getMessage()));
         }
     }
 
@@ -113,7 +113,7 @@ public class ProductController {
         catch(Exception err) {
             return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Map.of(Constants.generalExceptionCatchText, err.getMessage()));
+                .body(Map.of(Constants.message, Constants.generalExceptionCatchText + err.getMessage()));
         }
     }
 
@@ -125,7 +125,7 @@ public class ProductController {
         catch (Exception err) {
             return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Map.of(Constants.generalExceptionCatchText, err.getMessage()));
+                .body(Map.of(Constants.message, Constants.generalExceptionCatchText + err.getMessage()));
         }
     }
 
@@ -148,7 +148,7 @@ public class ProductController {
         catch(Exception err) {
             return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Map.of(Constants.generalExceptionCatchText, err.getMessage()));
+                .body(Map.of(Constants.message, Constants.generalExceptionCatchText + err.getMessage()));
         }
     }
 
@@ -171,7 +171,7 @@ public class ProductController {
         catch(Exception err) {
             return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Map.of(Constants.generalExceptionCatchText, err.getMessage()));
+                .body(Map.of(Constants.message, Constants.generalExceptionCatchText + err.getMessage()));
         }
     }
 }

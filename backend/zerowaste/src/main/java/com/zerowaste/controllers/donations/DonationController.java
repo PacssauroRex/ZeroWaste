@@ -60,7 +60,7 @@ public class DonationController {
         catch(Exception err) {
             return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Map.of(Constants.generalExceptionCatchText, err.getMessage()));
+                .body(Map.of(Constants.message, Constants.generalExceptionCatchText + err.getMessage()));
         }
     }
  
@@ -72,7 +72,7 @@ public class DonationController {
         catch(Exception err) {
             return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Map.of(Constants.generalExceptionCatchText, err.getMessage()));
+                .body(Map.of(Constants.message, Constants.generalExceptionCatchText + err.getMessage()));
         }
     }
 
@@ -89,7 +89,7 @@ public class DonationController {
         catch(Exception err) {
             return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Map.of(Constants.generalExceptionCatchText, err.getMessage()));
+                .body(Map.of(Constants.message, Constants.generalExceptionCatchText + err.getMessage()));
         }
     }
     
@@ -107,7 +107,7 @@ public class DonationController {
         catch(Exception err) {
             return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Map.of(Constants.generalExceptionCatchText, err.getMessage()));
+                .body(Map.of(Constants.message, Constants.generalExceptionCatchText + err.getMessage()));
         }
     }
     
@@ -125,7 +125,7 @@ public class DonationController {
         catch(Exception err) {
             return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Map.of(Constants.generalExceptionCatchText, err.getMessage()));
+                .body(Map.of(Constants.message, Constants.generalExceptionCatchText + err.getMessage()));
         }
     }
 }

@@ -44,7 +44,7 @@ public class UserController {
         catch (Exception e) {
             return ResponseEntity
             .status(HttpStatus.INTERNAL_SERVER_ERROR)
-            .body(Map.of(Constants.generalExceptionCatchText, "Internal server error"));
+            .body(Map.of(Constants.message, Constants.generalExceptionCatchText + "Internal server error"));
         }
     }
 
@@ -61,7 +61,7 @@ public class UserController {
         } catch (Exception e) {
             return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Map.of(Constants.generalExceptionCatchText, "Internal server error"));
+                .body(Map.of(Constants.message, Constants.generalExceptionCatchText + "Internal server error"));
         }
     }
 
