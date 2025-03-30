@@ -29,6 +29,7 @@ public class SpringSecurityConfiguration {
     private static final String promotionPath = "/promotions";
     private static final String donationPath = "/donations";
     private static final String donationPointPath = "/donation-points";
+    private static final String broadcastPath = "/broadcasts";
     
     private static final String anyPath = "/**";
 
@@ -84,6 +85,8 @@ public class SpringSecurityConfiguration {
             .requestMatchers(HttpMethod.POST, donationPointPath + anyPath).hasRole(adminRole)
             .requestMatchers(HttpMethod.PUT, donationPointPath + anyPath).hasRole(adminRole)
             .requestMatchers(HttpMethod.DELETE, donationPointPath + anyPath).hasRole(adminRole)
+            // Broadcasts
+            .requestMatchers(HttpMethod.POST, broadcastPath).hasRole(adminRole)
         )
         .addFilterBefore(authenticationUserService, UsernamePasswordAuthenticationFilter.class)
         .build();
