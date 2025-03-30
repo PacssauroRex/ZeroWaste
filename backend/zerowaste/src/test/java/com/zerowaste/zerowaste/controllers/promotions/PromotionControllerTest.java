@@ -61,6 +61,9 @@ class PromotionControllerTest {
     @Mock
     private GetPromotionsIdService getPromotionsIdService;
 
+    @Mock
+    private GetActivePromotionsService getActivePromotionsService;
+
    @BeforeEach
     void setUp() {
         mockMvc = MockMvcBuilders.standaloneSetup(promotionController).build();
@@ -218,6 +221,29 @@ class PromotionControllerTest {
 
         // Verificação do mock
         verify(getPromotionService, times(1)).execute();
+    }
+
+    @Test
+    void getAllActivePromotionsTest() throws Exception {
+        //Criando promoção ativa
+        Long promotionId = 1L;
+        Promotion promotion = new Promotion();
+        promotion.setId(promotionId);
+        promotion.setName("promotion teste");
+        promotion.setStartsAt(LocalDate.now());
+        promotion.setEndsAt(LocalDate.now().plusDays(3));
+
+        //Mockando comportamento do service
+        when(getActivePromotionsService.execute()).thenReturn(List.of(promotion));
+
+        //Realizando a requisição e verificando
+        mockMvc.perform(get("/promotions/active"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.promotions[0].id").value(promotionId))
+                .andExpect(jsonPath("$.promotions[0].name").value(promotion.getName()));
+
+        //Verificando se o service foi executado corretamente
+        verify(getActivePromotionsService, times(1)).execute();
     }
 }
 
