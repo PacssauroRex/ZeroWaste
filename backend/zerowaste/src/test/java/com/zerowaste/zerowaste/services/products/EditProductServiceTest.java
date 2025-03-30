@@ -32,7 +32,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class EditProductServiceTest {
+class EditProductServiceTest {
 
     @InjectMocks
     private EditProductService sut;
@@ -44,13 +44,13 @@ public class EditProductServiceTest {
     private PromotionsRepository promotionsRepository;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         MockitoAnnotations.openMocks(this);
     }
 
     @Test
     @DisplayName("It should be able to edit a product")
-    public void itShouldEditProduct() {
+    void itShouldEditProduct() {
 
         // Arrange
         var dto = new CreateProductDTO(
@@ -102,7 +102,7 @@ public class EditProductServiceTest {
 
     @Test
     @DisplayName("It should throw ProductNotFoundException")
-    public void itShouldThrowExceptionForProductNotFound() {
+    void itShouldThrowExceptionForProductNotFound() {
         // Arrange
 
         Long id = null;
@@ -127,7 +127,7 @@ public class EditProductServiceTest {
 
     @Test
     @DisplayName("It should find promotions by IDs")
-    public void itShouldFindPromotionsByIds() {
+    void itShouldFindPromotionsByIds() {
         // Arrange
         Long idPromo = 1L;
         var dtopro = new AddPromotionDTO(
@@ -156,7 +156,7 @@ public class EditProductServiceTest {
 
     @Test
     @DisplayName("It should throw IllegalArgumentException when promotions are not found")
-    public void itShouldThrowIllegalArgumentExceptionWhenPromotionsNotFound() {
+    void itShouldThrowIllegalArgumentExceptionWhenPromotionsNotFound() {
         // Arrange
         Long idPromo = 999L;
         Long id = 1L;

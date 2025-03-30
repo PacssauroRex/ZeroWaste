@@ -21,7 +21,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class GetPromotionServiceTest {
+class GetPromotionServiceTest {
 
     @InjectMocks
     private GetPromotionService sut;
@@ -30,13 +30,13 @@ public class GetPromotionServiceTest {
     private PromotionsRepository promotionsRepository;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         MockitoAnnotations.openMocks(this);
     }
 
     @Test
     @DisplayName("It should be able to get a promotion")
-    public void itShouldGetPromotion() {
+    void itShouldGetPromotion() {
         // Arrange
         Promotion promotion = new Promotion();
         promotion.setId(1L);

@@ -20,6 +20,18 @@ public class SpringSecurityConfiguration {
     
     private final AuthenticateUserService authenticationUserService;
 
+    //Constants
+    private static final String userRole = "USER";
+    private static final String adminRole = "ADMIN";
+
+    private static final String userPath = "/users";
+    private static final String productPath = "/products";
+    private static final String promotionPath = "/promotions";
+    private static final String donationPath = "/donations";
+    private static final String donationPointPath = "/donation-points";
+    
+    private static final String anyPath = "/**";
+
     public SpringSecurityConfiguration(AuthenticateUserService authenticationUserService) {
         this.authenticationUserService = authenticationUserService;
     }
@@ -40,36 +52,36 @@ public class SpringSecurityConfiguration {
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(authorize -> authorize
             //Users
-            .requestMatchers(HttpMethod.POST, "/users", "/users/login").permitAll()
-            .requestMatchers(HttpMethod.OPTIONS, "/users", "/users/login").permitAll()
-            .requestMatchers(HttpMethod.GET, "/users/check-auth-token").hasRole("USER")
+            .requestMatchers(HttpMethod.POST, userPath, userPath + "/login").permitAll()
+            .requestMatchers(HttpMethod.OPTIONS, userPath, userPath + "/login").permitAll()
+            .requestMatchers(HttpMethod.GET, userPath + "/check-auth-token").hasRole(userRole)
             //Products
-            .requestMatchers(HttpMethod.GET, "/products", "/products/**").hasAnyRole("ADMIN", "USER")
-            .requestMatchers(HttpMethod.POST, "/products").hasRole("ADMIN")
-            .requestMatchers(HttpMethod.PUT, "/products/**").hasRole("ADMIN")
-            .requestMatchers(HttpMethod.DELETE, "/products/**").hasRole("ADMIN")
-            .requestMatchers(HttpMethod.PATCH, "/products/donate/**").hasRole("ADMIN")
-            .requestMatchers(HttpMethod.PATCH, "/products/discard/**").hasRole("ADMIN")
+            .requestMatchers(HttpMethod.GET, productPath, productPath + anyPath).hasAnyRole(userRole, adminRole)
+            .requestMatchers(HttpMethod.POST, productPath).hasRole(adminRole)
+            .requestMatchers(HttpMethod.PUT, productPath + anyPath).hasRole(adminRole)
+            .requestMatchers(HttpMethod.DELETE, productPath + anyPath).hasRole(adminRole)
+            .requestMatchers(HttpMethod.PATCH, productPath + "/donate/**").hasRole(adminRole)
+            .requestMatchers(HttpMethod.PATCH, productPath + "/discard/**").hasRole(adminRole)
             //Promotions
-            .requestMatchers(HttpMethod.GET, "/promotions", "/promotions/**").hasAnyRole("ADMIN", "USER")
-            .requestMatchers(HttpMethod.POST, "/promotions/").hasRole("ADMIN")
-            .requestMatchers(HttpMethod.PUT, "/promotions/**").hasRole("ADMIN")
-            .requestMatchers(HttpMethod.DELETE, "/promotions/**").hasRole("ADMIN")
+            .requestMatchers(HttpMethod.GET, promotionPath, promotionPath + anyPath).hasAnyRole(userRole, adminRole)
+            .requestMatchers(HttpMethod.POST, promotionPath + "/").hasRole(adminRole)
+            .requestMatchers(HttpMethod.PUT, promotionPath + anyPath).hasRole(adminRole)
+            .requestMatchers(HttpMethod.DELETE, promotionPath + anyPath).hasRole(adminRole)
             //Promotions filters
-            .requestMatchers(HttpMethod.GET, "/promotions/percentageFilter/**").hasAnyRole("USER", "ADMIN")
-            .requestMatchers(HttpMethod.GET, "/promotions/productFilter/**").hasAnyRole("USER", "ADMIN")
-            .requestMatchers(HttpMethod.DELETE, "/promotions/percentageFilter/**").hasRole("ADMIN")
-            .requestMatchers(HttpMethod.DELETE, "/promotions/productFilter/**").hasRole("ADMIN")
+            .requestMatchers(HttpMethod.GET, promotionPath + "/percentageFilter/**").hasAnyRole(userRole, adminRole)
+            .requestMatchers(HttpMethod.GET, promotionPath + "/productFilter/**").hasAnyRole(userRole, adminRole)
+            .requestMatchers(HttpMethod.DELETE, promotionPath + "/percentageFilter/**").hasRole(adminRole)
+            .requestMatchers(HttpMethod.DELETE, promotionPath + "/productFilter/**").hasRole(adminRole)
             //Donations
-            .requestMatchers(HttpMethod.POST, "/donations").hasAnyRole("USER", "ADMIN")
-            .requestMatchers(HttpMethod.GET, "/donations", "/donations/**").hasAnyRole("USER", "ADMIN")
-            .requestMatchers(HttpMethod.PUT, "/donations/**").hasAnyRole("USER", "ADMIN")
-            .requestMatchers(HttpMethod.DELETE, "/donations/**").hasAnyRole("USER", "ADMIN")
+            .requestMatchers(HttpMethod.POST, donationPath).hasAnyRole(userRole, adminRole)
+            .requestMatchers(HttpMethod.GET, donationPath, donationPath + anyPath).hasAnyRole(userRole, adminRole)
+            .requestMatchers(HttpMethod.PUT, donationPath + anyPath).hasAnyRole(userRole, adminRole)
+            .requestMatchers(HttpMethod.DELETE, donationPath + anyPath).hasAnyRole(userRole, adminRole)
             //Donation Points
-            .requestMatchers(HttpMethod.POST, "/donation-points/**").hasRole("ADMIN")
-            .requestMatchers(HttpMethod.GET, "/donation-points", "/donation-points/**").hasRole("ADMIN")
-            .requestMatchers(HttpMethod.PUT, "/donation-points/**").hasRole("ADMIN")
-            .requestMatchers(HttpMethod.DELETE, "/donation-points/**").hasRole("ADMIN")
+            .requestMatchers(HttpMethod.GET, donationPointPath, donationPointPath + anyPath).hasRole(adminRole)
+            .requestMatchers(HttpMethod.POST, donationPointPath + anyPath).hasRole(adminRole)
+            .requestMatchers(HttpMethod.PUT, donationPointPath + anyPath).hasRole(adminRole)
+            .requestMatchers(HttpMethod.DELETE, donationPointPath + anyPath).hasRole(adminRole)
         )
         .addFilterBefore(authenticationUserService, UsernamePasswordAuthenticationFilter.class)
         .build();

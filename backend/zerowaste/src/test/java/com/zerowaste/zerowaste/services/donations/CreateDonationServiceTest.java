@@ -28,7 +28,7 @@ import com.zerowaste.services.donations.CreateDonationService;
 import com.zerowaste.services.products.exceptions.ProductNotFoundException;
 
 @ExtendWith(MockitoExtension.class)
-public class CreateDonationServiceTest {
+class CreateDonationServiceTest {
     
     private CreateDonationService createDonationService;
 
@@ -39,13 +39,13 @@ public class CreateDonationServiceTest {
     private ProductsRepository productsRepository;
 
     @BeforeEach
-    public void setUp () {
+    void setUp () {
         MockitoAnnotations.openMocks(this);
         this.createDonationService = new CreateDonationService(donationsRepository, productsRepository);
     }
 
     @Test
-    public void createDonationTest() throws ProductNotFoundException { //Criação de doação bem sucedida
+    void createDonationTest() throws ProductNotFoundException { //Criação de doação bem sucedida
         Long productId = 1L;
         Product product = new Product(
             productId,
@@ -75,7 +75,7 @@ public class CreateDonationServiceTest {
     }
 
     @Test
-    public void createDonationFailTest() { //Tentativa de criação de doação com produto inválido
+    void createDonationFailTest() { //Tentativa de criação de doação com produto inválido
         Long productId = 1L;
         CreateDonationDTO dto = new CreateDonationDTO("Doação teste", Arrays.asList(productId), LocalDate.now());
 
