@@ -13,9 +13,9 @@ import com.zerowaste.models.broadcast.BroadcastListSendType;
 import com.zerowaste.repositories.BroadcastEmailsRepository;
 import com.zerowaste.repositories.BroadcastListsRepository;
 import com.zerowaste.repositories.ProductsRepository;
+import com.zerowaste.services.broadcasts.errors.BroadcastListProductsNotFoundException;
 
 import jakarta.transaction.Transactional;
-
 
 @Service
 public class CreateBroadcastListService {
@@ -34,21 +34,16 @@ public class CreateBroadcastListService {
     }
 
     @Transactional
-    public void execute(CreateBroadcastListDTO dto) {
+    public void execute(CreateBroadcastListDTO dto) throws BroadcastListProductsNotFoundException {
         var products = productsRepository.findAllById(dto.productsIds());
 
-        if (products.isEmpty()) {
-            throw new RuntimeException("Produtos não encontrados");
-        }
-
         if (products.size() != dto.productsIds().size()) {
-            String notFoundProducts = dto.productsIds().stream()
+            List<String> notFoundProducts = dto.productsIds().stream()
                 .filter(id -> products.stream().noneMatch(product -> product.getId().equals(id)))
                 .map(String::valueOf)
-                .reduce((acc, id) -> acc + ", " + id)
-                .orElse("");
+                .toList();
 
-            throw new RuntimeException(String.format("Alguns produtos não foram encontrados: %s", notFoundProducts));
+            throw new BroadcastListProductsNotFoundException(notFoundProducts);
         }
 
         var broadcastEmails = broadcastEmailsRepository.findAllByEmailIn(dto.emails());
@@ -59,7 +54,7 @@ public class CreateBroadcastListService {
              notFoundBroadcastEmails = dto.emails().stream()
                 .filter(email -> broadcastEmails.stream().noneMatch(broadcastEmail -> broadcastEmail.getEmail().equals(email)))
                 .map(BroadcastEmail::new)
-                .collect(Collectors.toList());
+                .toList();
 
             broadcastEmailsRepository.saveAll(notFoundBroadcastEmails);
         }

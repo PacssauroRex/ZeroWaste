@@ -43,7 +43,6 @@ public class Product {
         LocalDate updatedAt,
         LocalDate deletedAt
     ) {
-        this.id = id;
         this.name = name;
         this.description = description;
         this.brand = brand;
@@ -51,10 +50,6 @@ public class Product {
         this.unitPrice = unitPrice;
         this.promotionPrice = promotionPrice;
         this.stock = stock;
-        this.expiresAt = expiresAt;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-        this.deletedAt = deletedAt;
     }
 
     @Id
