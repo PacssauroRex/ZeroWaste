@@ -99,16 +99,44 @@
         </div>
     
         <footer style="display: flex;">
-          <a [routerLink]="['/products/status', productId]" class="mr-2">
-            <app-button [type]="'button'" [block]="true" [variant]="'outline'">
-              Alterar Disponibilidade
-            </app-button>
-          </a>
+          <app-button [type]="'button'" [block]="true" [variant]="'outline'" (click)="modal.openModal()">
+            Alterar Disponibilidade
+          </app-button>
           <a routerLink="/products" class="mr-2">
             <app-button [type]="'button'" [block]="true" [variant]="'outline'">
               Voltar
             </app-button>
           </a>
         </footer>
+
+        <app-modal #modal>
+          <app-card>
+            <app-card-header>
+              <h2>
+                Selecione a nova disponibilidade
+              </h2>
+            </app-card-header>
+
+            <app-card-content>
+              <form [formGroup]="statusForm">
+                  <div class="form-group">
+                    <app-select [id]="'status'" [name]="'status'" [placeholder]="'Disponibilidade'" formControlName="status">
+                      <option value="DONATED">Doado</option>
+                      <option value="DISCARDED">Descartado</option>
+                    </app-select>
+                  </div>
+              </form>
+            </app-card-content>
+
+            <app-card-footer>
+              <app-button [variant]="'outline'" style="margin-right: 8px;" (click)="modal.closeModal()">
+                Cancelar
+              </app-button>
+              <app-button (click)="onChangeStatusConfirmation()">
+                Confirmar
+              </app-button>
+            </app-card-footer>
+          </app-card>
+        </app-modal>
     </form>
 </section>

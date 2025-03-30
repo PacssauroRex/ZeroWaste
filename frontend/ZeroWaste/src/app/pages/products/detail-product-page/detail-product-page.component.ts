@@ -1,12 +1,15 @@
 import { CommonModule, formatDate } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { ProductService } from '../../../services/ProductService';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Product } from '../product';
 import { ButtonComponent } from '../../../components/form/button/button.component';
 import { InputComponent } from '../../../components/form/input/input.component';
 import { TextareaComponent } from '../../../components/form/textarea/textarea.component';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ModalComponent } from '../../../components/modal/modal.component';
+import { CardComponent, CardContentComponent, CardFooterComponent, CardHeaderComponent } from '../../../components/card/card.component';
+import { SelectComponent } from '../../../components/form/select/select.component';
 
 @Component({
   selector: 'app-detail-product-page',
@@ -16,6 +19,12 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
     ButtonComponent,
     InputComponent,
     TextareaComponent,
+    ModalComponent,
+    SelectComponent,
+    CardComponent,
+    CardHeaderComponent,
+    CardContentComponent,
+    CardFooterComponent,
     RouterModule
   ],
   templateUrl: './detail-product-page.component.html',
@@ -25,9 +34,11 @@ export class DetailProductPageComponent {
   fb = inject(FormBuilder);
   productService: ProductService = inject(ProductService);
   route: ActivatedRoute = inject(ActivatedRoute);
+  private router: Router = inject(Router);
   product: Product | undefined;
   public productId: number = 0;
 
+  //Amostragem de informações
   public productForm = this.fb.group({
     name: [''],
     description: [''],
@@ -38,6 +49,11 @@ export class DetailProductPageComponent {
     stock: [''],
     expiresAt: [''],
     status: [''],
+  });
+
+  //Mudança de status
+  public statusForm = this.fb.group({
+    status: ['', Validators.required]
   });
 
   public ngOnInit(): void {
@@ -71,7 +87,21 @@ export class DetailProductPageComponent {
         status: statusFinal
       });
     }))
+  }
 
-
+  public async onChangeStatusConfirmation(): Promise<void> {
+    try {
+      if(this.statusForm.get('status')?.value == "DONATED")
+        await this.productService.setDonatedStatusProduct(this.productId);
+  
+      else if(this.statusForm.get('status')?.value == "DISCARDED")
+        await this.productService.setDiscardedStatusProduct(this.productId);
+      
+      this.router.navigate(["/products/" + this.productId]);
+    }
+    catch(error) {
+      console.error('Erro ao modificar disponilbilidade: ', error);
+      alert('Erro ao modificar disponilbilidade');
+    }
   }
 }
