@@ -39,6 +39,7 @@ public class Product {
         Double promotionPrice,
         Integer stock,
         LocalDate expiresAt,
+        ProductStatus status,
         LocalDate createdAt,
         LocalDate updatedAt,
         LocalDate deletedAt
@@ -50,6 +51,8 @@ public class Product {
         this.unitPrice = unitPrice;
         this.promotionPrice = promotionPrice;
         this.stock = stock;
+        this.expiresAt = expiresAt;
+        this.status = status;
     }
 
     @Id
