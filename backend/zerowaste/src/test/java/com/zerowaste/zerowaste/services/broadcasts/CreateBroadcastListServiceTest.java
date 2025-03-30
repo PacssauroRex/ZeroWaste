@@ -1,6 +1,7 @@
 package com.zerowaste.zerowaste.services.broadcasts;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
@@ -23,6 +24,7 @@ import com.zerowaste.repositories.BroadcastEmailsRepository;
 import com.zerowaste.repositories.BroadcastListsRepository;
 import com.zerowaste.repositories.ProductsRepository;
 import com.zerowaste.services.broadcasts.CreateBroadcastListService;
+import com.zerowaste.services.broadcasts.errors.BroadcastListProductsNotFoundException;
 
 @ExtendWith(MockitoExtension.class)
 public class CreateBroadcastListServiceTest {
@@ -73,13 +75,39 @@ public class CreateBroadcastListServiceTest {
             emails,
             productsIds
         );
+
         // Act & Assert
         assertDoesNotThrow(() -> sut.execute(dto));
     }
 
     @Test
-    @Disabled("It should not be able to create a broadcast list when products are not found")
+    @DisplayName("It should throw BroadcastListProductsNotFoundException when some products are not found")
     public void itShouldNotCreateBroadcastListWhenProductsAreNotFound() {
+        // Arrange
+        var product = new Product();
+
+        product.setId(1L);
+        product.setName("Product 1");
+        product.setDescription("Product 1 description");
+        product.setBrand("Brand 1");
+        product.setCategory(ProductCategory.HYGIENE);
+        product.setUnitPrice(10.0);
+        product.setStock(10);
+
+        when(productsRepository.findAllById(List.of(product.getId()))).thenReturn(List.of());
+
+        List<Long> productsIds = List.of(product.getId());
+        List<String> emails = List.of("john@doe.com");
+
+        var dto = new CreateBroadcastListDTO(
+                "Promoção de Páscoa",
+                "BOMBANDO! Produtos de Páscoa com até 50% de desconto",
+                BroadcastListSendType.MANUAL.toString(),
+                emails,
+                productsIds);
+
+        // Act & Assert
+        assertThrows(BroadcastListProductsNotFoundException.class, () -> sut.execute(dto));
     }
 
     @Test
