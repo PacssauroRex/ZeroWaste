@@ -28,7 +28,7 @@ import com.zerowaste.services.donations.EditDonationService;
 import com.zerowaste.services.donations.exceptions.DonationNotFoundException;
 import com.zerowaste.services.products.exceptions.ProductNotFoundException;
 
-public class EditDonationServiceTest {
+class EditDonationServiceTest {
     @Mock
     private DonationsRepository donationsRepository;
 
@@ -38,13 +38,13 @@ public class EditDonationServiceTest {
     private EditDonationService editDonationService;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         MockitoAnnotations.openMocks(this);
         editDonationService = new EditDonationService(donationsRepository, productsRepository);
     }
 
     @Test
-    public void editDonationTest() throws ProductNotFoundException, DonationNotFoundException { //Doação editada com sucesso
+    void editDonationTest() throws ProductNotFoundException, DonationNotFoundException { //Doação editada com sucesso
         //Criando doação inicial
         Long donationId = 1L;
         Donation existingDonation = new Donation();
@@ -93,7 +93,7 @@ public class EditDonationServiceTest {
     }
 
     @Test
-    public void editDonationFailTest1() { //Tentativa de edição para doação não existente
+    void editDonationFailTest1() { //Tentativa de edição para doação não existente
         Long donationId = 1L;
         EditDonationDTO dto = new EditDonationDTO("Doação nome", Arrays.asList(1L, 2L), LocalDate.now());
 
@@ -110,7 +110,7 @@ public class EditDonationServiceTest {
     }
 
     @Test
-    public void editDonationFailTest2() { //Tentativa de edição numa doação deletada
+    void editDonationFailTest2() { //Tentativa de edição numa doação deletada
         //Criando doação
         Long donationId = 1L;
         Donation deletedDonation = new Donation();
@@ -134,7 +134,7 @@ public class EditDonationServiceTest {
     }
 
     @Test
-    public void editDonationFailTest3() { //Tentativa de adição de um produto inválido
+    void editDonationFailTest3() { //Tentativa de adição de um produto inválido
         //Criando doação
         Long donationId = 1L;
         Donation existingDonation = new Donation();

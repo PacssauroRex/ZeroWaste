@@ -27,7 +27,7 @@ import com.zerowaste.services.donation_points.exceptions.DonationPointNotFoundEx
 import com.zerowaste.services.donation_points.exceptions.InvalidTimePeriodException;
 
 @ExtendWith(MockitoExtension.class)
-public class UpdateDonationPointServiceTest {
+class UpdateDonationPointServiceTest {
 
     @InjectMocks
     private UpdateDonationPointService sut;
@@ -36,13 +36,13 @@ public class UpdateDonationPointServiceTest {
     private DonationPointsRepository donationPointsRepository;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         this.sut = new UpdateDonationPointService(donationPointsRepository);
     }
 
     @Test
     @DisplayName("It should be able to update a donation point with valid data")
-    public void shouldUpdateDonationPoint() {
+    void shouldUpdateDonationPoint() {
 
         // Arrange
         Long id = 1L;
@@ -72,7 +72,7 @@ public class UpdateDonationPointServiceTest {
 
     @Test
     @DisplayName("It should not be able to update a donation point with invalid time period")
-    public void shouldThrowDonationPointNotFoundException() {
+    void shouldThrowDonationPointNotFoundException() {
 
         // Arrange
         Long id = 1L;
@@ -99,7 +99,7 @@ public class UpdateDonationPointServiceTest {
 
     @Test
     @DisplayName("It should not be able to update a donation point with invalid time period")
-    public void shouldThrowDonationPointNotFoundExceptionIfAlreadyDeleted() {
+    void shouldThrowDonationPointNotFoundExceptionIfAlreadyDeleted() {
 
         // Arrange
         Long id = 1L;
@@ -129,7 +129,7 @@ public class UpdateDonationPointServiceTest {
 
     @Test
     @DisplayName("It should not be able to update a donation point with invalid time period")
-    public void shouldThrowInvalidTimePeriodException() {
+    void shouldThrowInvalidTimePeriodException() {
 
         // Arrange
         Long id = 1L;

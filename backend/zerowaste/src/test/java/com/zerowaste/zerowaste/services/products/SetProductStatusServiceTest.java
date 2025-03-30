@@ -23,7 +23,7 @@ import com.zerowaste.services.products.exceptions.ProductNotAvaliableException;
 import com.zerowaste.services.products.exceptions.ProductNotFoundException;
 
 @ExtendWith(MockitoExtension.class)
-public class SetProductStatusServiceTest {
+class SetProductStatusServiceTest {
     
     private SetProductStatusService setProductStatusService;
 
@@ -31,13 +31,13 @@ public class SetProductStatusServiceTest {
     private ProductsRepository productsRepository;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         MockitoAnnotations.openMocks(this);
         this.setProductStatusService = new SetProductStatusService(productsRepository);
     }
 
     @Test
-    public void setDonatedStatusTest() { //Tentativa bem-sucedida de mudança da status (DONATED)
+    void setDonatedStatusTest() { //Tentativa bem-sucedida de mudança da status (DONATED)
         //Criando produto mockado
         Long productId = 1L;
         Product product = new Product();
@@ -60,7 +60,7 @@ public class SetProductStatusServiceTest {
     }
 
     @Test
-    public void setDiscardedStatusTest() { //Tentativa bem-sucedida de mudança da status (DISCARDED)
+    void setDiscardedStatusTest() { //Tentativa bem-sucedida de mudança da status (DISCARDED)
         //Criando produto mockado
         Long productId = 1L;
         Product product = new Product();
@@ -83,7 +83,7 @@ public class SetProductStatusServiceTest {
     }
 
     @Test
-    public void setStatusFail1Test () { //Tentativa mudança da status para produto inexistente
+    void setStatusFail1Test () { //Tentativa mudança da status para produto inexistente
         //Criando produto inexistente
         Long productId = 1L;
         Product product = new Product();
@@ -102,7 +102,7 @@ public class SetProductStatusServiceTest {
     }
 
     @Test
-    public void setStatusFail2Test () { //Tentativa mudança da status para produto sem status AVALIABLE
+    void setStatusFail2Test () { //Tentativa mudança da status para produto sem status AVALIABLE
         //Criando produto mockado
         Long productId = 1L;
         Product product = new Product();

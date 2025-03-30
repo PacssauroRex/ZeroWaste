@@ -21,7 +21,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class CreatePromotionServiceTest {
+class CreatePromotionServiceTest {
 
     @InjectMocks
     private CreatePromotionService sut;
@@ -30,13 +30,13 @@ public class CreatePromotionServiceTest {
     private PromotionsRepository promotionsRepository;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         MockitoAnnotations.openMocks(this);
     }
 
     @Test
     @DisplayName("It should be able to create a promotion")
-    public void itShouldCreatePromotion() {
+    void itShouldCreatePromotion() {
         // Arrange
         var dto = new AddPromotionDTO(
             "Promotion Name",
@@ -61,7 +61,7 @@ public class CreatePromotionServiceTest {
 
     @Test
     @DisplayName("It should throw InvalidDatePeriodException")
-    public void itShouldThrowExceptionForInvalidDateRange() {
+    void itShouldThrowExceptionForInvalidDateRange() {
         // Arrange
         var dto = new AddPromotionDTO(
             "Promotion Name",

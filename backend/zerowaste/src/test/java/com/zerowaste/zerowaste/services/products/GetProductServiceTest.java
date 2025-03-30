@@ -23,7 +23,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class GetProductServiceTest {
+class GetProductServiceTest {
 
     @InjectMocks
     private GetProductService sut;
@@ -32,13 +32,13 @@ public class GetProductServiceTest {
     private ProductsRepository productsRepository;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         MockitoAnnotations.openMocks(this);
     }
 
     @Test
     @DisplayName("It should be able to get a product by expiration days")
-    public void itShouldGetProduct() {
+    void itShouldGetProduct() {
         // Arrange
         var dto = new CreateProductDTO(
             "Product Name",

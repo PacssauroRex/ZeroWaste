@@ -21,7 +21,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class DeletePromotionServiceTest {
+class DeletePromotionServiceTest {
 
     @InjectMocks
     private DeletePromotionService sut;
@@ -30,13 +30,13 @@ public class DeletePromotionServiceTest {
     private PromotionsRepository promotionsRepository;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         MockitoAnnotations.openMocks(this);
     }
 
     @Test
     @DisplayName("It should be able to delete a promotion")
-    public void itShouldDeletePromotion() {
+    void itShouldDeletePromotion() {
         // Arrange
         Long id = 1l;
         Promotion promotion = new Promotion();
@@ -57,7 +57,7 @@ public class DeletePromotionServiceTest {
 
     @Test
     @DisplayName("It should throw PromotionNotFoundException")
-    public void itShouldThrowExceptionForPromotionNotFound() {
+    void itShouldThrowExceptionForPromotionNotFound() {
         // Arrange
         Long id = null;
         Promotion promotion = new Promotion();

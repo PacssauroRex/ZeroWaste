@@ -4,6 +4,7 @@ import com.zerowaste.controllers.promotions.PromotionController;
 import com.zerowaste.dtos.promotions.AddPromotionDTO;
 import com.zerowaste.dtos.promotions.EditPromotionDTO;
 import com.zerowaste.dtos.promotions.PromotionDTO;
+import com.zerowaste.models.promotion.Promotion;
 import com.zerowaste.services.promotions.*;
 import com.zerowaste.services.promotions.exceptions.InvalidDatePeriodException;
 import com.zerowaste.services.promotions.exceptions.PromotionNotFoundException;
@@ -65,9 +66,9 @@ class PromotionControllerTest {
     }
 
     @Test
-    void testCreatePromotionSuccess() throws Exception {
+    void testCreatePromotionSuccess() {
         AddPromotionDTO dto = new AddPromotionDTO("Promo1", 20, LocalDate.now(), LocalDate.now().plusDays(10));
-        ResponseEntity<Map<String, ?>> response = promotionController.createPromotion(dto);
+        ResponseEntity<Map<String, String>> response = promotionController.createPromotion(dto);
         assertEquals(HttpStatusCode.valueOf(200), response.getStatusCode());
         assertEquals("promoção criada com sucesso!", response.getBody().get("message"));
     }
@@ -76,14 +77,14 @@ class PromotionControllerTest {
     void testCreatePromotionInvalidDate() throws Exception {
         AddPromotionDTO dto = new AddPromotionDTO("Promo1", 20, LocalDate.now().plusDays(10), LocalDate.now());
         doThrow(new InvalidDatePeriodException("The start date must be before the end date.")).when(createPromotionService).execute(dto);
-        ResponseEntity<Map<String, ?>> response = promotionController.createPromotion(dto);
+        ResponseEntity<Map<String, String>> response = promotionController.createPromotion(dto);
         assertEquals(HttpStatusCode.valueOf(500), response.getStatusCode());
         assertEquals("The start date must be before the end date.", response.getBody().get("error"));
     }
 
     @Test
-    void testDeletePromotionSuccess() throws Exception {
-        ResponseEntity<Map<String, ?>> response = promotionController.delete(1L);
+    void testDeletePromotionSuccess() {
+        ResponseEntity<Map<String, String>> response = promotionController.deletePromotion(1L);
         assertEquals(HttpStatusCode.valueOf(200), response.getStatusCode());
         assertEquals("promoção deletada com sucesso!", response.getBody().get("message"));
     }
@@ -91,15 +92,15 @@ class PromotionControllerTest {
     @Test
     void testDeletePromotionNotFound() throws Exception {
         doThrow(new PromotionNotFoundException("Promoção não encontrada!")).when(deletePromotionService).execute(1L);
-        ResponseEntity<Map<String, ?>> response = promotionController.delete(1L);
+        ResponseEntity<Map<String, String>> response = promotionController.deletePromotion(1L);
         assertEquals(HttpStatusCode.valueOf(404), response.getStatusCode());
         assertEquals("Promoção não encontrada!", response.getBody().get("error"));
     }
 
     @Test
-    void testEditPromotionSuccess() throws Exception {
+    void testEditPromotionSuccess() {
         EditPromotionDTO dto = new EditPromotionDTO("PromoEdit", 15, LocalDate.now(), LocalDate.now().plusDays(5), null);
-        ResponseEntity<Map<String, ?>> response = promotionController.editPromotion(1L, dto);
+        ResponseEntity<Map<String, String>> response = promotionController.editPromotion(1L, dto);
         assertEquals(HttpStatusCode.valueOf(200), response.getStatusCode());
         assertEquals("Promoção editada com sucesso!", response.getBody().get("message"));
     }
@@ -109,7 +110,7 @@ class PromotionControllerTest {
         EditPromotionDTO dto = new EditPromotionDTO("PromoEdit", 15, LocalDate.now(), LocalDate.now().plusDays(5), null);
         doThrow(new PromotionNotFoundException("Promoção não encontrada!"))
                 .when(editPromotionService).execute(1L, dto);
-        ResponseEntity<Map<String, ?>> response = promotionController.editPromotion(1L, dto);
+        ResponseEntity<Map<String, String>> response = promotionController.editPromotion(1L, dto);
         assertEquals(HttpStatusCode.valueOf(404), response.getStatusCode());
         assertEquals("Promoção não encontrada!", response.getBody().get("error"));
     }
@@ -117,21 +118,22 @@ class PromotionControllerTest {
     @Test
     void testGetPromotionByIdSuccess() throws Exception {
         // Simulando o serviço retornando um objeto de promoção
-        List<PromotionDTO> promotions = new ArrayList<>();
-        promotions.add(new PromotionDTO(1L, "Promoção 1", 20, LocalDate.now(), LocalDate.now().plusDays(10)));
-        promotions.add(new PromotionDTO(2L, "Promoção 2", 30, LocalDate.now(), LocalDate.now().plusDays(5)));
+        Long promotionId = 1L;
+        Promotion promotion = new Promotion();
+        promotion.setId(promotionId);
+        promotion.setName("Promoção 1");
 
         // Simulando o serviço retornando a lista de promoções
-        when(getPromotionService.execute()).thenReturn(promotions);
+        when(getPromotionsIdService.execute(promotionId)).thenReturn(promotion);
 
         // Requisição e verificação
-        mockMvc.perform(get("/promotions/"))
+        mockMvc.perform(get("/promotions/" + promotionId))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.promotions[0].name").value("Promoção 1"))
-            .andExpect(jsonPath("$.promotions[1].name").value("Promoção 2"));
+            .andExpect(jsonPath("$.promotion.id").value(promotionId))
+            .andExpect(jsonPath("$.promotion.name").value("Promoção 1"));
 
         // Verificação do mock
-        verify(getPromotionService, times(1)).execute();
+        verify(getPromotionsIdService, times(1)).execute(promotionId);
 }
 
     @Test

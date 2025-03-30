@@ -1,4 +1,4 @@
-package com.zerowaste.zerowaste.controllers;
+package com.zerowaste.zerowaste.controllers.donations;
 
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
@@ -40,7 +40,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-public class DonationControllerTest {
+class DonationControllerTest {
     private MockMvc mockMvc;
 
     @Mock
