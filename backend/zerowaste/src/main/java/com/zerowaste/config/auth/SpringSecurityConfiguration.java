@@ -68,6 +68,7 @@ public class SpringSecurityConfiguration {
             .requestMatchers(HttpMethod.POST, promotionPath + "/").hasRole(adminRole)
             .requestMatchers(HttpMethod.PUT, promotionPath + anyPath).hasRole(adminRole)
             .requestMatchers(HttpMethod.DELETE, promotionPath + anyPath).hasRole(adminRole)
+            .requestMatchers(HttpMethod.GET, promotionPath + "/active").hasAnyRole(userRole, adminRole)
             //Promotions filters
             .requestMatchers(HttpMethod.GET, promotionPath + "/percentageFilter/**").hasAnyRole(userRole, adminRole)
             .requestMatchers(HttpMethod.GET, promotionPath + "/productFilter/**").hasAnyRole(userRole, adminRole)
