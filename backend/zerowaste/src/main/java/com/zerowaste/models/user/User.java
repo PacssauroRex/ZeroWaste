@@ -1,5 +1,6 @@
 package com.zerowaste.models.user;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -25,8 +26,8 @@ import jakarta.persistence.Table;
 public class User implements UserDetails {
     public User() {}
 
-    public User(Long id, String name, String email, String password, UserRole role, Date createdAt, Date updatedAt,
-        Date deletedAt) {
+    public User(Long id, String name, String email, String password, UserRole role, LocalDate createdAt, 
+                LocalDate updatedAt, LocalDate deletedAt) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -56,22 +57,22 @@ public class User implements UserDetails {
     private UserRole role;
 
     @Column(name = "created_at")
-    private Date createdAt;
+    private LocalDate createdAt;
 
     @Column(name = "updated_at", nullable = true)
-    private Date updatedAt;
+    private LocalDate updatedAt;
 
     @Column(name = "deleted_at", nullable = true)
-    private Date deletedAt;
+    private LocalDate deletedAt;
 
     @PrePersist
     public void prePersist() {
-        this.createdAt = new Date();
+        this.createdAt = LocalDate.now();
     }
 
     @PreUpdate
     public void preUpdate() {
-        this.updatedAt = new Date();
+        this.updatedAt = LocalDate.now();
     }
 
     public Long getId() {
@@ -149,27 +150,27 @@ public class User implements UserDetails {
         }
     }
 
-    public Date getCreatedAt() {
+    public LocalDate getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(LocalDate createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Date getUpdatedAt() {
+    public LocalDate getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Date updatedAt) {
+    public void setUpdatedAt(LocalDate updatedAt) {
         this.updatedAt = updatedAt;
     }
 
-    public Date getDeletedAt() {
+    public LocalDate getDeletedAt() {
         return deletedAt;
     }
 
-    public void setDeletedAt(Date deletedAt) {
+    public void setDeletedAt(LocalDate deletedAt) {
         this.deletedAt = deletedAt;
     }
 
