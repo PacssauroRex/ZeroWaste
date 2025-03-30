@@ -7,10 +7,11 @@ import com.zerowaste.models.product.ProductStatus;
 import com.zerowaste.services.products.CreateProductService;
 import com.zerowaste.services.products.DeleteProductService;
 import com.zerowaste.services.products.EditProductService;
+import com.zerowaste.services.products.GetExpiringProductsService;
 import com.zerowaste.services.products.GetProductIdService;
 import com.zerowaste.services.products.GetProductService;
 import com.zerowaste.services.products.SetProductStatusService;
-import com.zerowaste.services.products.exceptions.ProductNotAvaliableException;
+import com.zerowaste.services.products.exceptions.ProductNotAvailableException;
 import com.zerowaste.services.products.exceptions.ProductNotFoundException;
 import com.zerowaste.utils.Constants;
 
@@ -38,15 +39,18 @@ public class ProductController {
     private final GetProductIdService getProductIdService;
     private final GetProductService getProductService;
     private final SetProductStatusService setProductStatusService;
+    private final GetExpiringProductsService getExpiringProductsService;
 
     public ProductController(CreateProductService createProductService, DeleteProductService deleteProductService, EditProductService editProductService, 
-                            GetProductIdService getProductIdService, GetProductService getProductService, SetProductStatusService setProductStatusService) {
+                            GetProductIdService getProductIdService, GetProductService getProductService, SetProductStatusService setProductStatusService,
+                            GetExpiringProductsService getExpiringProductsService) {
         this.createProductService = createProductService;
         this.deleteProductService = deleteProductService;
         this.editProductService = editProductService;
         this.getProductIdService = getProductIdService;
         this.getProductService = getProductService;
         this.setProductStatusService = setProductStatusService;
+        this.getExpiringProductsService = getExpiringProductsService;
     }
     
     @PostMapping()
@@ -140,7 +144,7 @@ public class ProductController {
                 .status(HttpStatus.NOT_FOUND)
                 .body(Map.of(Constants.message, err.getMessage()));
         }
-        catch (ProductNotAvaliableException err) {
+        catch (ProductNotAvailableException err) {
             return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(Map.of(Constants.message, err.getMessage()));
@@ -163,7 +167,7 @@ public class ProductController {
                 .status(HttpStatus.NOT_FOUND)
                 .body(Map.of(Constants.message, err.getMessage()));
         }
-        catch (ProductNotAvaliableException err) {
+        catch (ProductNotAvailableException err) {
             return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(Map.of(Constants.message, err.getMessage()));
@@ -174,5 +178,18 @@ public class ProductController {
                 .body(Map.of(Constants.message, Constants.generalExceptionCatchText + err.getMessage()));
         }
     }
+
+    @GetMapping("/expiring")
+    public ResponseEntity<Map<String, String>> getExpiringProducts() {
+        try {
+            return ResponseEntity.ok(Map.of("expiring_products", getExpiringProductsService.execute()));
+        }
+        catch(Exception err) {
+            return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(Map.of(Constants.message, Constants.generalExceptionCatchText + err.getMessage()));
+        }
+    }
+    
 }
 

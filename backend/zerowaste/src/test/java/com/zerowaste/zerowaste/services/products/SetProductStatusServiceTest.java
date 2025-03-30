@@ -19,7 +19,7 @@ import com.zerowaste.models.product.Product;
 import com.zerowaste.models.product.ProductStatus;
 import com.zerowaste.repositories.ProductsRepository;
 import com.zerowaste.services.products.SetProductStatusService;
-import com.zerowaste.services.products.exceptions.ProductNotAvaliableException;
+import com.zerowaste.services.products.exceptions.ProductNotAvailableException;
 import com.zerowaste.services.products.exceptions.ProductNotFoundException;
 
 @ExtendWith(MockitoExtension.class)
@@ -115,7 +115,7 @@ class SetProductStatusServiceTest {
         when(productsRepository.findById(productId)).thenReturn(Optional.of(product));
 
         //Verificando se o método executa corretamente
-        assertThrows(ProductNotAvaliableException.class, () ->  {
+        assertThrows(ProductNotAvailableException.class, () ->  {
             setProductStatusService.execute(productId, ProductStatus.DISCARDED);
         });
 

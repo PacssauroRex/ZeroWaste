@@ -18,6 +18,9 @@ public interface ProductsRepository extends JpaRepository<Product, Long> {
     )
     List <Product> findAllNotDeleted(@Param("daysToExpire") Integer daysToExpire);
     
+    @NativeQuery ("SELECT COUNT(*) FROM products WHERE deleted_at IS NULL AND expires_at <= CAST(:targetDate AS DATE)")
+    Long countExpiringProducts(@Param("targetDate") String targetDate);
+
     Optional<Product> findById(Long id);
     List<Product> findAllByNameLike(String name);
 }
