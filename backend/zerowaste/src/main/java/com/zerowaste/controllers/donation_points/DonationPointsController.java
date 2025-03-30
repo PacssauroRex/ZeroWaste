@@ -29,11 +29,15 @@ import org.springframework.web.bind.annotation.PutMapping;
 public class DonationPointsController {
 
     private final UpdateDonationPointService updateDonationPointService;
-
     private final CreateDonationPointService createDonationPointService;
     private final GetDonationPointsService getDonationPointsService;
     private final GetDonationPointByIdService getDonationPointByIdService;
     private final DeleteDonationPointService deleteDonationPointService;
+
+    //Constants
+    private final String message = "message";
+    private final String generalExceptionCatchText = "Houve algum problema interno: ";
+
 
     public DonationPointsController(
             CreateDonationPointService createDonationPointService,
@@ -51,26 +55,26 @@ public class DonationPointsController {
 
     // Create
     @PostMapping("/")
-    public ResponseEntity<Map<String, ?>> createDonationPoint(@RequestBody CreateDonationPointDTO dto) {
+    public ResponseEntity<Map<String, String>> createDonationPoint(@RequestBody CreateDonationPointDTO dto) {
 
         try {
             createDonationPointService.execute(dto);
 
             return ResponseEntity
                     .status(HttpStatus.CREATED)
-                    .body(Map.of("message", "Ponto de doação criado com sucesso!"));
+                    .body(Map.of(message, "Ponto de doação criado com sucesso!"));
         }
 
         catch (InvalidTimePeriodException e) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
-                    .body(Map.of("message", e.getMessage()));
+                    .body(Map.of(message, e.getMessage()));
         }
 
         catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Map.of("message", "Houve algum problema: " + e.getMessage()));
+                    .body(Map.of(message, generalExceptionCatchText + e.getMessage()));
         }
     }
 
@@ -85,7 +89,7 @@ public class DonationPointsController {
         catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Map.of("message", "Houve algum problema interno: " + e.getMessage()));
+                    .body(Map.of(message, generalExceptionCatchText + e.getMessage()));
         }
 
     }
@@ -99,58 +103,58 @@ public class DonationPointsController {
         catch (DonationPointNotFoundException e) {
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
-                    .body(Map.of("message", e.getMessage()));
+                    .body(Map.of(message, e.getMessage()));
         }
 
         catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Map.of("message", "Houve algum problema interno: " + e.getMessage()));
+                    .body(Map.of(message, generalExceptionCatchText + e.getMessage()));
         }
     }
 
     // Update
     @PutMapping("/{id}")
-    public ResponseEntity<Map<String, ?>> updateDonationPoint(@PathVariable Long id,
+    public ResponseEntity<Map<String, String>> updateDonationPoint(@PathVariable Long id,
             @RequestBody UpdateDonationPointDTO dto) {
         try {
             updateDonationPointService.execute(id, dto);
-            return ResponseEntity.ok(Map.of("message", "Ponto de doação atualizado com sucesso!"));
+            return ResponseEntity.ok(Map.of(message, "Ponto de doação atualizado com sucesso!"));
         }
 
         catch (InvalidTimePeriodException e) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
-                    .body(Map.of("message", e.getMessage()));
+                    .body(Map.of(message, e.getMessage()));
         }
 
         catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Map.of("message", "Houve algum problema: " + e.getMessage()));
+                    .body(Map.of(message, generalExceptionCatchText + e.getMessage()));
         }
 
     }
 
     // Delete
     @DeleteMapping("/{id}")
-    public ResponseEntity<Map<String, ?>> deleteDonationPoint(@PathVariable Long id) {
+    public ResponseEntity<Map<String, String>> deleteDonationPoint(@PathVariable Long id) {
 
         try {
             deleteDonationPointService.execute(id);
-            return ResponseEntity.ok(Map.of("message", "Ponto de doação deletado com sucesso!"));
+            return ResponseEntity.ok(Map.of(message, "Ponto de doação deletado com sucesso!"));
         }
 
         catch (DonationPointNotFoundException e) {
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
-                    .body(Map.of("message", e.getMessage()));
+                    .body(Map.of(message, e.getMessage()));
         }
 
         catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Map.of("message", "Houve algum problema interno: " + e.getMessage()));
+                    .body(Map.of(message, generalExceptionCatchText + e.getMessage()));
         }
     }
 

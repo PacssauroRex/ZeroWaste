@@ -36,6 +36,10 @@ public class PromotionController {
         private final GetPromotionProductService getPromotionProductService;
         private final GetPromotionService getPromotionService;
 
+        //Constants
+        private final String message = "message";
+        private final String generalExceptionCatchText = "Houve algum problema interno: ";
+
         public PromotionController(CreatePromotionService createPromotionService, DeletePromotionService deletePromotionService, EditPromotionService editPromotionService, GetPromotionsIdService getPromotionsIdService, GetPromotionPercentageService getPromotionPercentageService, GetPromotionProductService getPromotionProductService, GetPromotionService getPromotionService) {
             this.createPromotionService = createPromotionService;
             this.deletePromotionService = deletePromotionService;
@@ -47,50 +51,52 @@ public class PromotionController {
         }
 
     @PostMapping("/")
-    public ResponseEntity<Map<String, ?>> createPromotion (@RequestBody @Valid AddPromotionDTO dto) {
+    public ResponseEntity<Map<String, String>> createPromotion (@RequestBody @Valid AddPromotionDTO dto) {
         try {
             createPromotionService.execute(dto);
-            return ResponseEntity.ok(Map.of("message", "promoção criada com sucesso!"));
+            return ResponseEntity.ok(Map.of(message, "promoção criada com sucesso!"));
         } 
         catch(Exception err) {
             return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Map.of("error", err.getMessage()));
+                .body(Map.of(generalExceptionCatchText, err.getMessage()));
         }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Map<String, ?>> delete(@PathVariable Long id) {
-
+    public ResponseEntity<Map<String, String>> deletePromotion(@PathVariable Long id) {
         try {
             deletePromotionService.execute(id);
-            return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "promoção deletada com sucesso!"));
+            return ResponseEntity.status(HttpStatus.OK).body(Map.of(message, "promoção deletada com sucesso!"));
         }
-
         catch (PromotionNotFoundException err) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", err.getMessage()));
+            return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(Map.of(message, err.getMessage()));
         }
-
         catch (Exception err) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", err.getMessage()));
+            return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(Map.of(generalExceptionCatchText, err.getMessage()));
         }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Map<String, ?>> editPromotion(
+    public ResponseEntity<Map<String, String>> editPromotion(
             @PathVariable Long id, @RequestBody @Valid EditPromotionDTO dto) {
-
         try {
             editPromotionService.execute(id, dto);
-            return ResponseEntity.ok(Map.of("message", "Promoção editada com sucesso!"));
+            return ResponseEntity.ok(Map.of(message, "Promoção editada com sucesso!"));
         }
-
         catch (PromotionNotFoundException | ProductNotFoundException err) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", err.getMessage()));
+            return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(Map.of(message, err.getMessage()));
         }
-
         catch (Exception err) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", err.getMessage()));
+            return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(Map.of(generalExceptionCatchText, err.getMessage()));
         }
     }
 
@@ -102,12 +108,12 @@ public class PromotionController {
         catch(PromotionNotFoundException err) {
             return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
-                .body(Map.of("error", err.getMessage()));
+                .body(Map.of(message, err.getMessage()));
         }
         catch(Exception err) {
             return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Map.of("error", err.getMessage()));
+                .body(Map.of(generalExceptionCatchText, err.getMessage()));
         }
     }
 
@@ -119,12 +125,12 @@ public class PromotionController {
         catch(PromotionNotFoundException err) {
             return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
-                .body(Map.of("error", err.getMessage()));
+                .body(Map.of(message, err.getMessage()));
         }
         catch(Exception err) {
             return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Map.of("error", err.getMessage()));
+                .body(Map.of(generalExceptionCatchText, err.getMessage()));
         }
     }
 
@@ -136,12 +142,12 @@ public class PromotionController {
         catch(PromotionNotFoundException err) {
             return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
-                .body(Map.of("error", err.getMessage()));
+                .body(Map.of(message, err.getMessage()));
         }
         catch(Exception err) {
             return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Map.of("error", err.getMessage()));
+                .body(Map.of(generalExceptionCatchText, err.getMessage()));
         }
     }
 
@@ -153,7 +159,7 @@ public class PromotionController {
         catch(Exception err) {
             return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Map.of("error", err.getMessage()));
+                .body(Map.of(generalExceptionCatchText, err.getMessage()));
         }
     }
 

@@ -23,6 +23,10 @@ public class UserController {
     private final RegisterUserService registerUserService;
     private final AuthenticateUserService authenticateUserService;
 
+    //Constants
+    private final String message = "message";
+    private final String generalExceptionCatchText = "Houve algum problema interno: ";
+
     public UserController(RegisterUserService registerUserService, AuthenticateUserService authenticateUserService) {
         this.registerUserService = registerUserService;
         this.authenticateUserService = authenticateUserService;
@@ -32,16 +36,17 @@ public class UserController {
     public ResponseEntity<Map<String, ?>> handle(@RequestBody @Valid RegisterUserDTO dto) {
         try {
             registerUserService.execute(dto);
-
-            return ResponseEntity.ok(Map.of("message", "User registered successfully"));
-        } catch (UserWithSameEmailAlreadyExistsException e) {
+            return ResponseEntity.ok(Map.of(message, "User registered successfully"));
+        } 
+        catch (UserWithSameEmailAlreadyExistsException e) {
             return ResponseEntity
                 .status(HttpStatus.CONFLICT)
-                .body(Map.of("message", e.getMessage()));
-        } catch (Exception e) {
+                .body(Map.of(message, e.getMessage()));
+        } 
+        catch (Exception e) {
             return ResponseEntity
             .status(HttpStatus.INTERNAL_SERVER_ERROR)
-            .body(Map.of("message", "Internal server error"));
+            .body(Map.of(generalExceptionCatchText, "Internal server error"));
         }
     }
 
@@ -54,11 +59,11 @@ public class UserController {
         } catch (AuthenticationException e) {
             return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
-                .body(Map.of("message", e.getMessage()));
+                .body(Map.of(message, e.getMessage()));
         } catch (Exception e) {
             return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Map.of("message", "Internal server error"));
+                .body(Map.of(generalExceptionCatchText, "Internal server error"));
         }
     }
 
