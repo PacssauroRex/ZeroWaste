@@ -15,7 +15,9 @@ export class NavbarComponent {
 
   links = [
     { name: 'Produtos', url: '/products' },
-    { name: 'Promoções', url: '/promotions' }
+    { name: 'Promoções', url: '/promotions' },
+    { name: 'Doações', url: '/donations' },
+    { name: 'Pontos de doação', url: '/donation-points' }
   ];
 
   isAuthenticated() {

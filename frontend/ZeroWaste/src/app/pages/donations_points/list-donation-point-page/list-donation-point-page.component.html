@@ -1,0 +1,94 @@
+<section class="container">
+
+  <app-card>
+    <app-card-header>
+      <h2>Lista de Pontos de Doações</h2>
+    </app-card-header>
+
+    <app-card-content>
+      <div class="table">
+          <table>
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>E-mail</th>
+                <th>Cidade</th>
+                <th>Horário de Abertura</th>
+                <th>Horário de Fechamento</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              @if (!donationsPoints().length) {
+                <tr>
+                  <td colspan="5" style="text-align: center;">
+                    Nenhum ponto de doação encontrado.
+                  </td>
+                </tr>
+              } @else {
+                @for (donationPoints of donationsPoints(); track donationPoints.id) {
+                  <tr>
+                    <td>{{ donationPoints.name }}</td>
+                    <td>{{ donationPoints.email }}</td>
+                    <td>{{ donationPoints.city }}</td>
+                    <td>{{ donationPoints.openingTime }}</td>
+                    <td>{{ donationPoints.closingTime }}</td>
+                    <td>
+                      <a
+                        [routerLink]="['/donation-points/', donationPoints.id]"
+                        title="Detalhar ponto de doação"
+                        >
+                        <app-button [type]="'button'" [variant]="'outline'">
+                          <img src="info.png" alt="detail donation point" />
+                        </app-button>
+                      </a>
+                      <a
+                        [routerLink]="['/donation-points/update', donationPoints.id]"
+                        title="Editar ponto de doação"
+                      >
+                        <app-button [type]="'button'" [variant]="'outline'">
+                          <img src="editar.png" alt="edit donation point" />
+                        </app-button>
+                      </a>
+                      <a routerLink="/donation-points/"
+                         title="Deletar ponto de doação">
+                        <app-button [type]="'button'" [variant]="'outline'" (click)="modal.openModal()">
+                          <img src="deletar.png" alt="delete donation point" />
+                        </app-button>
+
+                        <app-modal #modal>
+                          <app-card>
+                            <app-card-header>
+                              <h2>
+                                Você tem certeza que deseja deletar este ponto de doação?
+                              </h2>
+                            </app-card-header>
+
+                            <app-card-content>
+                              Essa ação não pode ser desfeita. Clique em "Confirmar" para deletar o ponto de doação.
+                            </app-card-content>
+
+                            <app-card-footer>
+                              <app-button [variant]="'outline'" style="margin-right: 8px;" (click)="modal.closeModal()">
+                                Cancelar
+                              </app-button>
+                              <app-button (click)="onDeleteDonationPointConfirmation(donationPoints.id)">
+                                Confirmar
+                              </app-button>
+                            </app-card-footer>
+                          </app-card>
+                        </app-modal>
+                      </a>
+                    </td>
+                  </tr>
+                }
+              }
+            </tbody>
+          </table>
+        </div>
+        <a routerLink="/donation-points/create">
+          <app-button [type]="'button'" [block]="true"> Cadastrar ponto de doação </app-button>
+        </a>
+    </app-card-content>
+  </app-card>
+</section>
