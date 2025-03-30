@@ -12,6 +12,7 @@ import com.zerowaste.models.product.ProductStatus;
 import com.zerowaste.services.products.CreateProductService;
 import com.zerowaste.services.products.DeleteProductService;
 import com.zerowaste.services.products.EditProductService;
+import com.zerowaste.services.products.GetExpiringProductsService;
 import com.zerowaste.services.products.GetProductIdService;
 import com.zerowaste.services.products.GetProductService;
 import com.zerowaste.services.products.exceptions.ProductNotFoundException;
@@ -55,6 +56,9 @@ class ProductControllerTest {
 
     @Mock 
     private GetProductService getProductService;
+
+    @Mock
+    private GetExpiringProductsService getExpiringProductsService;
 
     @InjectMocks
     private ProductController productController;
@@ -225,5 +229,19 @@ class ProductControllerTest {
         
         // Verifica que o serviço foi chamado uma vez com o ID do produto
         verify(getProductIdService, times(1)).execute((999L));
+    }
+
+    @Test
+    void getExpiringProductsTest() throws Exception {
+        //Mockando comportamento do service
+        when(getExpiringProductsService.execute()).thenReturn("2");
+
+        //Realizando requisição GET
+        mockMvc.perform(get("/products/expiring"))
+                .andExpect(status().isOk()) 
+                .andExpect(jsonPath("$.expiring_products").value("2"));
+        
+        //Verificando chamada correta do service
+        verify(getExpiringProductsService, times(1)).execute();
     }
 }
