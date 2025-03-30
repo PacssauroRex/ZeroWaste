@@ -9,6 +9,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zerowaste.dtos.AuthenticateUserDTO;
 import com.zerowaste.models.user.User;
 import com.zerowaste.repositories.UsersRepository;
+import com.zerowaste.services.users.exceptions.GenerateTokenException;
+
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -50,12 +52,10 @@ public class AuthenticateUserService extends OncePerRequestFilter implements Use
         var authenticationManager = authenticationConfiguration.getAuthenticationManager();
         var auth = authenticationManager.authenticate(authToken);
 
-        var token = generateToken((User) auth.getPrincipal());
-
-        return token;
+        return generateToken((User) auth.getPrincipal());
     }
 
-    private String generateToken(User user) {
+    private String generateToken(User user) throws GenerateTokenException {
         try {
             var algorithm = Algorithm.HMAC256(this.jwtSecret);
 
@@ -68,16 +68,15 @@ public class AuthenticateUserService extends OncePerRequestFilter implements Use
             
             var stringJsonPayload = mapper.writeValueAsString(payload);
 
-            var token = JWT
+            return JWT
                     .create()
                     .withIssuer("zerowaste")
                     .withSubject(stringJsonPayload)
                     .withExpiresAt(this.getExpirationTime())
                     .sign(algorithm);
-
-            return token;
+        
         } catch (JWTCreationException | JsonProcessingException e) {
-            throw new RuntimeException("Erro ao gerar token", e);
+            throw new GenerateTokenException("Erro ao gerar token" + e);
         }
     }
 
