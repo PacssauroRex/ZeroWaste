@@ -3,12 +3,12 @@ package com.zerowaste.zerowaste.controllers.products;
 
 import java.time.LocalDate;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zerowaste.controllers.products.ProductController;
 import com.zerowaste.dtos.products.CreateProductDTO;
 import com.zerowaste.dtos.products.EditProductDTO;
 import com.zerowaste.models.product.Product;
 import com.zerowaste.models.product.ProductCategory;
+import com.zerowaste.models.product.ProductStatus;
 import com.zerowaste.services.products.CreateProductService;
 import com.zerowaste.services.products.DeleteProductService;
 import com.zerowaste.services.products.EditProductService;
@@ -32,8 +32,6 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 
 @ExtendWith(MockitoExtension.class)
@@ -66,16 +64,6 @@ class ProductControllerTest {
 
     @Test
     void TestCreateProduct_Success() throws Exception {
-        // Dado um DTO de produto
-        CreateProductDTO productDTO = new CreateProductDTO(
-                "Teste", 
-                "Descrição do produto", 
-                "Marca de Teste", 
-                ProductCategory.BAKERY.getCategory(), 
-                100.0, 
-                100, 
-                LocalDate.now().plusDays(1)
-        );
         // Quando o serviço CreateProductService é chamado, ele não faz nada (simulamos sucesso)
         doNothing().when(createProductService).execute(any(CreateProductDTO.class));
 
@@ -103,19 +91,6 @@ class ProductControllerTest {
 
     @Test
     void TestEditProduct_Success() throws Exception {
-        // Dado um DTO de produto editado
-        EditProductDTO editProductDTO = new EditProductDTO(
-                "Produto Editado", 
-                "Descrição Editada", 
-                "Marca Editada", 
-                ProductCategory.BAKERY.getCategory(), 
-                120.0, 
-                110.0, // Preço promocional
-                150, 
-                LocalDate.now().plusDays(1),
-                new HashSet<>(Arrays.asList(1L, 2L, 3L))
-        );
-
         // Quando o serviço EditProductService é chamado, ele não faz nada (simulamos sucesso)
         doNothing().when(editProductService).execute(anyLong(), any(EditProductDTO.class));
 
@@ -157,7 +132,21 @@ class ProductControllerTest {
     @Test
     void TestGetProductById_Success() throws Exception {
         // Dado um produto existente
-        Product product = new Product(1L, "Produto Teste", "Descrição do Produto", "Marca Teste", ProductCategory.BAKERY, 100.0, null, 100, LocalDate.now().plusDays(1), null, null, null);
+        Product product = new Product(
+            1L, 
+            "Produto Teste", 
+            "Descrição do Produto", 
+            "Marca Teste", 
+            ProductCategory.BAKERY, 
+            100.0, 
+            null, 
+            100, 
+            LocalDate.now().plusDays(1),
+            ProductStatus.AVALIABLE,
+            null, 
+            null, 
+            null
+        );
 
         // Quando o serviço GetProductIdService é chamado, ele retorna o produto
         when(getProductIdService.execute(anyLong())).thenReturn(product);
@@ -176,8 +165,36 @@ class ProductControllerTest {
     void TestGetAllProducts_Success() throws Exception {
         // Dado uma lista de produtos
         List<Product> products = List.of(
-            new Product(1L, "Produto Teste", "Descrição do Produto", "Marca Teste", ProductCategory.BAKERY, 100.0, null, 100, LocalDate.now().plusDays(1), null, null, null),
-            new Product(2L, "Produto Teste 2", "Descrição do Produto 2", "Marca Teste 2", ProductCategory.HYGIENE, 50.0, null, 200, LocalDate.now().plusDays(2), null, null, null)
+            new Product(
+                1L, 
+                "Produto Teste", 
+                "Descrição do Produto", 
+                "Marca Teste", 
+                ProductCategory.BAKERY, 
+                100.0, 
+                null, 
+                100, 
+                LocalDate.now().plusDays(1), 
+                ProductStatus.AVALIABLE,
+                null, 
+                null, 
+                null
+            ),
+            new Product(
+                2L, 
+                "Produto Teste 2", 
+                "Descrição do Produto 2", 
+                "Marca Teste 2", 
+                ProductCategory.HYGIENE, 
+                50.0,
+                null, 
+                200, 
+                LocalDate.now().plusDays(2), 
+                ProductStatus.AVALIABLE,
+                null,
+                null, 
+                null
+            )
         );
 
         // Quando o serviço GetProductService é chamado, ele retorna a lista de produtos

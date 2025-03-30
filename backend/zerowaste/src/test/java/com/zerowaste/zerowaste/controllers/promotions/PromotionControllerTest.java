@@ -14,6 +14,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -67,7 +68,7 @@ class PromotionControllerTest {
     void testCreatePromotionSuccess() throws Exception {
         AddPromotionDTO dto = new AddPromotionDTO("Promo1", 20, LocalDate.now(), LocalDate.now().plusDays(10));
         ResponseEntity<Map<String, ?>> response = promotionController.createPromotion(dto);
-        assertEquals(200, response.getStatusCodeValue());
+        assertEquals(HttpStatusCode.valueOf(200), response.getStatusCode());
         assertEquals("promoção criada com sucesso!", response.getBody().get("message"));
     }
 
@@ -76,14 +77,14 @@ class PromotionControllerTest {
         AddPromotionDTO dto = new AddPromotionDTO("Promo1", 20, LocalDate.now().plusDays(10), LocalDate.now());
         doThrow(new InvalidDatePeriodException("The start date must be before the end date.")).when(createPromotionService).execute(dto);
         ResponseEntity<Map<String, ?>> response = promotionController.createPromotion(dto);
-        assertEquals(500, response.getStatusCodeValue());
+        assertEquals(HttpStatusCode.valueOf(500), response.getStatusCode());
         assertEquals("The start date must be before the end date.", response.getBody().get("error"));
     }
 
     @Test
     void testDeletePromotionSuccess() throws Exception {
         ResponseEntity<Map<String, ?>> response = promotionController.delete(1L);
-        assertEquals(200, response.getStatusCodeValue());
+        assertEquals(HttpStatusCode.valueOf(200), response.getStatusCode());
         assertEquals("promoção deletada com sucesso!", response.getBody().get("message"));
     }
 
@@ -91,7 +92,7 @@ class PromotionControllerTest {
     void testDeletePromotionNotFound() throws Exception {
         doThrow(new PromotionNotFoundException("Promoção não encontrada!")).when(deletePromotionService).execute(1L);
         ResponseEntity<Map<String, ?>> response = promotionController.delete(1L);
-        assertEquals(404, response.getStatusCodeValue());
+        assertEquals(HttpStatusCode.valueOf(404), response.getStatusCode());
         assertEquals("Promoção não encontrada!", response.getBody().get("error"));
     }
 
@@ -99,7 +100,7 @@ class PromotionControllerTest {
     void testEditPromotionSuccess() throws Exception {
         EditPromotionDTO dto = new EditPromotionDTO("PromoEdit", 15, LocalDate.now(), LocalDate.now().plusDays(5), null);
         ResponseEntity<Map<String, ?>> response = promotionController.editPromotion(1L, dto);
-        assertEquals(200, response.getStatusCodeValue());
+        assertEquals(HttpStatusCode.valueOf(200), response.getStatusCode());
         assertEquals("Promoção editada com sucesso!", response.getBody().get("message"));
     }
 
@@ -109,7 +110,7 @@ class PromotionControllerTest {
         doThrow(new PromotionNotFoundException("Promoção não encontrada!"))
                 .when(editPromotionService).execute(1L, dto);
         ResponseEntity<Map<String, ?>> response = promotionController.editPromotion(1L, dto);
-        assertEquals(404, response.getStatusCodeValue());
+        assertEquals(HttpStatusCode.valueOf(404), response.getStatusCode());
         assertEquals("Promoção não encontrada!", response.getBody().get("error"));
     }
 
