@@ -15,6 +15,8 @@ import com.zerowaste.services.products.EditProductService;
 import com.zerowaste.services.products.GetExpiringProductsService;
 import com.zerowaste.services.products.GetProductIdService;
 import com.zerowaste.services.products.GetProductService;
+import com.zerowaste.services.products.SetProductStatusService;
+import com.zerowaste.services.products.exceptions.ProductNotAvaliableException;
 import com.zerowaste.services.products.exceptions.ProductNotFoundException;
 import com.zerowaste.utils.Constants;
 
@@ -24,10 +26,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
@@ -36,6 +41,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.util.List;
+import java.util.Map;
 
 @ExtendWith(MockitoExtension.class)
 class ProductControllerTest {
@@ -56,6 +62,9 @@ class ProductControllerTest {
 
     @Mock 
     private GetProductService getProductService;
+
+    @Mock
+    private SetProductStatusService setProductStatusService;
 
     @Mock
     private GetExpiringProductsService getExpiringProductsService;
@@ -243,5 +252,111 @@ class ProductControllerTest {
         
         //Verificando chamada correta do service
         verify(getExpiringProductsService, times(1)).execute();
+    }
+
+    final Long productId = 1L;
+
+    @Test
+    void changeProductStatusDonatedTest() throws Exception {
+        //Mockando comportamento do service
+        doNothing().when(setProductStatusService).execute(productId, ProductStatus.DONATED);
+
+        //Executando controller
+        ResponseEntity<Map<String, String>> response = productController.setProductDonated(productId);
+
+        //Verificando
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Status modificado com sucesso!", response.getBody().get(Constants.message));
+    }
+
+    @Test
+    void changeProductStatusDonatedFail1Test() throws Exception { 
+        //Mockando comportamento do service
+        doThrow(new ProductNotFoundException("Produto não encontrado!")).when(setProductStatusService).execute(productId, ProductStatus.DONATED);
+
+        //Executando controller
+        ResponseEntity<Map<String, String>> response = productController.setProductDonated(productId);
+        
+        //Verificando
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertEquals("Produto não encontrado!", response.getBody().get(Constants.message));
+    }
+    
+    @Test
+    void changeProductStatusDonatedFail2Test() throws Exception {
+        //Mockando comportamento do service
+        doThrow(new ProductNotAvaliableException("Produto não disponível")).when(setProductStatusService).execute(productId, ProductStatus.DONATED);
+
+        //Executando controller
+        ResponseEntity<Map<String, String>> response = productController.setProductDonated(productId);
+
+        //Verificando
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals("Produto não disponível", response.getBody().get(Constants.message));
+    }
+
+    @Test
+    void changeProductStatusDonatedFail3Test() throws Exception {
+        //Mockando comportamento do service
+        doThrow(new RuntimeException("Erro interno")).when(setProductStatusService).execute(productId, ProductStatus.DONATED);
+
+        //Executando controller
+        ResponseEntity<Map<String, String>> response = productController.setProductDonated(productId);
+
+        //Verificando
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+        assertEquals(Constants.generalExceptionCatchText + "Erro interno", response.getBody().get(Constants.message));
+    }
+
+    @Test
+    void changeProductStatusDiscardedTest() throws Exception {
+        //Mockando comportamento do service
+        doNothing().when(setProductStatusService).execute(productId, ProductStatus.DISCARDED);
+
+        //Executando controller
+        ResponseEntity<Map<String, String>> response = productController.setProductDiscarded(productId);
+
+        //Verificando
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Status modificado com sucesso!", response.getBody().get(Constants.message));
+    }
+
+    @Test
+    void changeProductStatusDiscardedFail1Test() throws Exception { 
+        //Mockando comportamento do service
+        doThrow(new ProductNotFoundException("Produto não encontrado!")).when(setProductStatusService).execute(productId, ProductStatus.DISCARDED);
+
+        //Executando controller
+        ResponseEntity<Map<String, String>> response = productController.setProductDiscarded(productId);
+        
+        //Verificando
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertEquals("Produto não encontrado!", response.getBody().get(Constants.message));
+    }
+    
+    @Test
+    void changeProductStatusDiscardedFail2Test() throws Exception {
+        //Mockando comportamento do service
+        doThrow(new ProductNotAvaliableException("Produto não disponível")).when(setProductStatusService).execute(productId, ProductStatus.DISCARDED);
+
+        //Executando controller
+        ResponseEntity<Map<String, String>> response = productController.setProductDiscarded(productId);
+
+        //Verificando
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals("Produto não disponível", response.getBody().get(Constants.message));
+    }
+
+    @Test
+    void changeProductStatusDiscardedFail3Test() throws Exception {
+        //Mockando comportamento do service
+        doThrow(new RuntimeException("Erro interno")).when(setProductStatusService).execute(productId, ProductStatus.DISCARDED);
+
+        //Executando controller
+        ResponseEntity<Map<String, String>> response = productController.setProductDiscarded(productId);
+
+        //Verificando
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+        assertEquals(Constants.generalExceptionCatchText + "Erro interno", response.getBody().get(Constants.message));
     }
 }
