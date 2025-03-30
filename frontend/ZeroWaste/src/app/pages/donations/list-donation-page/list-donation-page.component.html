@@ -1,0 +1,87 @@
+<section class="container">
+  <app-card>
+    <app-card-header>
+      <h2>Lista de Doações</h2>
+    </app-card-header>
+
+    <app-card-content>
+      <div class="table">
+          <table>
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>Data</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              @if (!donations().length) {
+                <tr>
+                  <td colspan="5" style="text-align: center;">
+                    Nenhum ponto de doação encontrado.
+                  </td>
+                </tr>
+              } @else {
+                @for (donation of donations(); track donation.id) {
+                  <tr>
+                    <td>{{ donation.name }}</td>
+                    <td>{{ donation.date }}</td>
+                    <td>
+                      <a
+                        [routerLink]="['/donations/', donation.id]"
+                        title="Detalhar ponto de doação"
+                        >
+                        <app-button [type]="'button'" [variant]="'outline'">
+                          <img src="info.png" alt="detail donation" />
+                        </app-button>
+                      </a>
+                      <a
+                        [routerLink]="['/donations/update', donation.id]"
+                        title="Editar ponto de doação"
+                      >
+                        <app-button [type]="'button'" [variant]="'outline'">
+                          <img src="editar.png" alt="edit donation point" />
+                        </app-button>
+                      </a>
+                      <a routerLink="/donations/"
+                         title="Deletar doação">
+                        <app-button [type]="'button'" [variant]="'outline'" (click)="modal.openModal()">
+                          <img src="deletar.png" alt="delete donation point" />
+                        </app-button>
+
+                        <app-modal #modal>
+                          <app-card>
+                            <app-card-header>
+                              <h2>
+                                Você tem certeza que deseja deletar está doação?
+                              </h2>
+                            </app-card-header>
+
+                            <app-card-content>
+                              Essa ação não pode ser desfeita. Clique em "Confirmar" para deletar a doação.
+                            </app-card-content>
+
+                            <app-card-footer>
+                              <app-button [variant]="'outline'" style="margin-right: 8px;" (click)="modal.closeModal()">
+                                Cancelar
+                              </app-button>
+                              <app-button (click)="onDeleteDonationConfirmation(donation.id)">
+                                Confirmar
+                              </app-button>
+                            </app-card-footer>
+                          </app-card>
+                        </app-modal>
+                      </a>
+                    </td>
+                  </tr>
+                }
+              }
+            </tbody>
+          </table>
+        </div>
+        <a routerLink="/donations/create">
+          <app-button [type]="'button'" [block]="true"> Cadastrar doação </app-button>
+        </a>
+    </app-card-content>
+  </app-card>
+</section>

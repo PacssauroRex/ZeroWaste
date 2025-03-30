@@ -1,0 +1,55 @@
+<section class="container">
+  <header>
+    <h1>Cadastrar doação</h1>
+  </header>
+
+  <form [formGroup]="donationForm" (ngSubmit)="onSubmit($event)">
+    <div class="form-group">
+      <label for="name">Nome</label>
+      <app-input
+        [id]="'name'"
+        [name]="'name'"
+        [type]="'text'"
+        [placeholder]="'Digite o nome da doação'"
+        formControlName="name"
+      />
+      <small *ngIf="donationForm.get('name')?.touched && getErrorMessage('name') as errorMessage" class="invalid-feedback">
+        {{errorMessage}}
+      </small>
+    </div>
+
+    <div class="row">
+      <div class="form-group">
+        <label for="date">Data de doação</label>
+        <app-input [id]="'date'" [name]="'date'" [type]="'date'" [placeholder]="'Digite a data de cadastro'"
+          formControlName="date" />
+        <small *ngIf="donationForm.get('date')?.touched && getErrorMessage('date') as errorMessage"
+          class="invalid-feedback">
+          {{errorMessage}}
+        </small>
+      </div>
+    </div>
+
+    <app-input hidden [id]="'productsId'" [name]="'productsId'" [type]="'text'" formControlName="productsId">
+    </app-input>
+
+    <div class="form-group">
+      <label for="allProducts">Produtos</label>
+      <app-multi-select [id]="'allProducts'" [options]="allProducts" labelKey="name" valueKey="id"
+        (selectionChange)="onSelectionChange($event, allProducts)" [preselectedItems]="alreadyInListProducts">
+      </app-multi-select>
+    </div>
+
+    <footer style="display: flex;">
+      <a routerLink="/donations" class="mr-2">
+        <app-button [type]="'button'" [block]="true" [variant]="'outline'">
+          Voltar
+        </app-button>
+      </a>
+
+      <app-button [type]="'submit'" [block]="true">
+        Salvar
+      </app-button>
+    </footer>
+  </form>
+</section>
