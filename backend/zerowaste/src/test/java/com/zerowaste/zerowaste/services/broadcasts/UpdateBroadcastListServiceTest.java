@@ -1,6 +1,7 @@
 package com.zerowaste.zerowaste.services.broadcasts;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
@@ -26,6 +27,7 @@ import com.zerowaste.repositories.BroadcastEmailsRepository;
 import com.zerowaste.repositories.BroadcastListsRepository;
 import com.zerowaste.repositories.ProductsRepository;
 import com.zerowaste.services.broadcasts.UpdateBroadcastListService;
+import com.zerowaste.services.broadcasts.errors.BroadcastListProductsNotFoundException;
 
 @ExtendWith(MockitoExtension.class)
 public class UpdateBroadcastListServiceTest {
@@ -96,12 +98,46 @@ public class UpdateBroadcastListServiceTest {
     }
 
     @Test
-    @Disabled("It should throw BroadcastListProductsNotFoundException when some products are not found")
+    @DisplayName("It should throw BroadcastListProductsNotFoundException when some products are not found")
     public void itShouldThrowBroadcastListProductsNotFoundException() {
         // Arrange
-        // var product = new Product();
+        var product = new Product();
 
-        // product.setId(1L);
+        product.setId(1L);
+        product.setName("Product 1");
+        product.setDescription("Product 1 description");
+        product.setBrand("Brand 1");
+        product.setCategory(ProductCategory.HYGIENE);
+        product.setUnitPrice(10.0);
+        product.setStock(10);
+
+        var someUnexistentProductId = 2L;
+
+        when(productsRepository.findAllById(List.of(someUnexistentProductId))).thenReturn(List.of());
+
+        var broadcastList = new BroadcastList();
+
+        broadcastList.setId(1L);
+        broadcastList.setName("Promoção de Páscoa");
+        broadcastList.setSendProtocol(BroadcastListSendProtocol.EMAIL);
+        broadcastList.setSendType(BroadcastListSendType.MANUAL);
+        broadcastList.setProducts(List.of(product));
+
+        when(broadcastListRepository.findById(broadcastList.getId())).thenReturn(Optional.of(broadcastList));
+
+        List<Long> productsIds = List.of(someUnexistentProductId);
+        List<String> emails = List.of("john@doe.com");
+
+        var dto = new UpdateBroadcastListDTO(
+            "Promoção de Páscoa",
+            "BOMBANDO! Produtos de Páscoa com até 50% de desconto",
+            BroadcastListSendType.MANUAL.toString(),
+            emails,
+            productsIds
+        );
+
+        // Act & Assert
+        assertThrows(BroadcastListProductsNotFoundException.class, () -> sut.execute(product.getId(), dto));
     }
 
     @Test
