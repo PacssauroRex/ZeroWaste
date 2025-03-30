@@ -16,7 +16,7 @@ import com.zerowaste.services.products.GetExpiringProductsService;
 import com.zerowaste.services.products.GetProductIdService;
 import com.zerowaste.services.products.GetProductService;
 import com.zerowaste.services.products.SetProductStatusService;
-import com.zerowaste.services.products.exceptions.ProductNotAvaliableException;
+import com.zerowaste.services.products.exceptions.ProductNotAvailableException;
 import com.zerowaste.services.products.exceptions.ProductNotFoundException;
 import com.zerowaste.utils.Constants;
 
@@ -285,7 +285,7 @@ class ProductControllerTest {
     @Test
     void changeProductStatusDonatedFail2Test() throws Exception {
         //Mockando comportamento do service
-        doThrow(new ProductNotAvaliableException("Produto não disponível")).when(setProductStatusService).execute(productId, ProductStatus.DONATED);
+        doThrow(new ProductNotAvailableException("Produto não disponível")).when(setProductStatusService).execute(productId, ProductStatus.DONATED);
 
         //Executando controller
         ResponseEntity<Map<String, String>> response = productController.setProductDonated(productId);
@@ -337,7 +337,7 @@ class ProductControllerTest {
     @Test
     void changeProductStatusDiscardedFail2Test() throws Exception {
         //Mockando comportamento do service
-        doThrow(new ProductNotAvaliableException("Produto não disponível")).when(setProductStatusService).execute(productId, ProductStatus.DISCARDED);
+        doThrow(new ProductNotAvailableException("Produto não disponível")).when(setProductStatusService).execute(productId, ProductStatus.DISCARDED);
 
         //Executando controller
         ResponseEntity<Map<String, String>> response = productController.setProductDiscarded(productId);

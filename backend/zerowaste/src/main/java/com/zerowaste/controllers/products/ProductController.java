@@ -11,7 +11,7 @@ import com.zerowaste.services.products.GetExpiringProductsService;
 import com.zerowaste.services.products.GetProductIdService;
 import com.zerowaste.services.products.GetProductService;
 import com.zerowaste.services.products.SetProductStatusService;
-import com.zerowaste.services.products.exceptions.ProductNotAvaliableException;
+import com.zerowaste.services.products.exceptions.ProductNotAvailableException;
 import com.zerowaste.services.products.exceptions.ProductNotFoundException;
 import com.zerowaste.utils.Constants;
 
@@ -144,7 +144,7 @@ public class ProductController {
                 .status(HttpStatus.NOT_FOUND)
                 .body(Map.of(Constants.message, err.getMessage()));
         }
-        catch (ProductNotAvaliableException err) {
+        catch (ProductNotAvailableException err) {
             return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(Map.of(Constants.message, err.getMessage()));
@@ -167,7 +167,7 @@ public class ProductController {
                 .status(HttpStatus.NOT_FOUND)
                 .body(Map.of(Constants.message, err.getMessage()));
         }
-        catch (ProductNotAvaliableException err) {
+        catch (ProductNotAvailableException err) {
             return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(Map.of(Constants.message, err.getMessage()));
