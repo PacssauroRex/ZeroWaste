@@ -19,6 +19,7 @@ import jakarta.persistence.Table;
 @Table(name = "broadcast_lists")
 @Entity(name = "broadcast_lists")
 public class BroadcastList {
+    
     public BroadcastList() {}
 
     public BroadcastList(
@@ -27,7 +28,8 @@ public class BroadcastList {
         LocalDate createdAt,
         LocalDate updatedAt,
         LocalDate deletedAt,
-        BroadcastListSendProtocol sendProtocol
+        BroadcastListSendProtocol sendProtocol,
+        BroadcastListSendType sendType
     ) {
         this.id = id;
         this.name = name;
@@ -35,6 +37,7 @@ public class BroadcastList {
         this.updatedAt = updatedAt;
         this.deletedAt = deletedAt;
         this.sendProtocol = sendProtocol;
+        this.sendType = sendType;
     }
 
     @Id
@@ -66,6 +69,7 @@ public class BroadcastList {
     @JoinTable(name = "broadcast_emails_broadcast_lists", joinColumns = @JoinColumn(name = "broadcast_lists_id"), inverseJoinColumns = @JoinColumn(name = "broadcast_emails_id"))
     private Set<BroadcastEmail> broadcastEmails;
 
+    // Getters and Setters
     public Long getId() {
         return id;
     }
@@ -114,6 +118,14 @@ public class BroadcastList {
         this.sendProtocol = sendProtocol;
     }
 
+    public BroadcastListSendType getSendType() {
+        return sendType;
+    }
+
+    public void setSendType(BroadcastListSendType sendType) {
+        this.sendType = sendType;
+    }
+
     public Set<BroadcastEmail> getBroadcastEmails() {
         return broadcastEmails;
     }
@@ -122,4 +134,6 @@ public class BroadcastList {
         this.broadcastEmails = broadcastEmails;
     }
 }
+
+
 
