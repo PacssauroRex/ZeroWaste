@@ -5,6 +5,8 @@ import { HomeComponent } from './home/home.component';
 
 import { routes as productsRoutes } from './pages/products/products.routes';
 import { routes as promotionsRoutes } from './pages/promotions/promotions.routes';
+import { routes as donations_pointsRoutes } from './pages/donations_points/donations_points.routes';
+import { routes as donationsRoutes } from './pages/donations/donations.routes';
 
 const routes: Routes = [
   {
@@ -28,7 +30,9 @@ const routes: Routes = [
     title: "Homepage"
   },
   ...productsRoutes,
-  ...promotionsRoutes
+  ...promotionsRoutes,
+  ...donations_pointsRoutes,
+  ...donationsRoutes,
 ];
 
 export default routes;
