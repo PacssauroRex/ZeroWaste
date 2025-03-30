@@ -44,7 +44,7 @@ public class UpdateBroadcastListService {
 
         if (products.size() != dto.productsIds().size()) {
             List<String> notFoundProducts = dto.productsIds().stream()
-                .filter(productId -> products.stream().noneMatch(product -> product.getId().equals(id)))
+                .filter(productId -> products.stream().noneMatch(product -> product.getId().equals(productId)))
                 .map(String::valueOf)
                 .toList();
 
