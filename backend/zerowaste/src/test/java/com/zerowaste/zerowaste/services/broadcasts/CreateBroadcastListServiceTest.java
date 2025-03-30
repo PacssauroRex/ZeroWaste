@@ -2,12 +2,13 @@ package com.zerowaste.zerowaste.services.broadcasts;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,6 +18,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.zerowaste.dtos.broadcasts.CreateBroadcastListDTO;
+import com.zerowaste.models.broadcast.BroadcastEmail;
 import com.zerowaste.models.broadcast.BroadcastListSendType;
 import com.zerowaste.models.product.Product;
 import com.zerowaste.models.product.ProductCategory;
@@ -100,21 +102,49 @@ public class CreateBroadcastListServiceTest {
         List<String> emails = List.of("john@doe.com");
 
         var dto = new CreateBroadcastListDTO(
-                "Promoção de Páscoa",
-                "BOMBANDO! Produtos de Páscoa com até 50% de desconto",
-                BroadcastListSendType.MANUAL.toString(),
-                emails,
-                productsIds);
+            "Promoção de Páscoa",
+            "BOMBANDO! Produtos de Páscoa com até 50% de desconto",
+            BroadcastListSendType.MANUAL.toString(),
+            emails,
+            productsIds
+        );
 
         // Act & Assert
         assertThrows(BroadcastListProductsNotFoundException.class, () -> sut.execute(dto));
     }
 
     @Test
-    @Disabled("It should store new e-mails when they are not found")
+    @DisplayName("It should store new e-mails when they are not found")
     public void itShouldStoreNewEmailsWhenTheyAreNotFound() {
         // Arrange
-        // Act
-        // Assert
+        var product = new Product();
+
+        product.setId(1L);
+        product.setName("Product 1");
+        product.setDescription("Product 1 description");
+        product.setBrand("Brand 1");
+        product.setCategory(ProductCategory.HYGIENE);
+        product.setUnitPrice(10.0);
+
+        when(productsRepository.findAllById(List.of(product.getId()))).thenReturn(List.of(product));
+
+        var broadcastEmail = new BroadcastEmail();
+
+        broadcastEmail.setEmail("john@doe.com");
+
+        List<Long> productsIds = List.of(product.getId());
+        List<String> emails = List.of(broadcastEmail.getEmail());
+
+        var dto = new CreateBroadcastListDTO(
+            "Promoção de Páscoa",
+            "BOMBANDO! Produtos de Páscoa com até 50% de desconto",
+            BroadcastListSendType.MANUAL.toString(),
+            emails,
+            productsIds
+        );
+
+        // Act & Assert
+        assertDoesNotThrow(() -> sut.execute(dto));
+        verify(broadcastEmailsRepository, times(1)).saveAll(List.of(broadcastEmail));
     }
 }
