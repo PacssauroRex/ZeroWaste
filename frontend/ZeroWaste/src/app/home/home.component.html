@@ -1,32 +1,55 @@
 <div class="container">
-  <h1>Home Page</h1>
 
-  <!-- Botão para a página de produtos -->
-  <a routerLink="/products">
-    <app-button [type]="'button'" [block]="true">
-      Produtos
-    </app-button>
-  </a>
+  <!-- Produtos a vencer -->
+  <section>
+    <h2>Produtos a vencer</h2>
+    <app-card>
+      <app-card-content *ngIf="expiringProducts(); else noExpiringProducts"
+        class="text-center">{{ expiringProducts() }}</app-card-content>
+    </app-card>
+  </section>
 
-  <!-- Botão para a página de promoções -->
-  <a routerLink="/promotions">
-    <app-button [type]="'button'" [block]="true">
-      Promoções
-    </app-button>
-  </a>
+  <!-- Promoções ativas -->
+  <section>
+    <h2>Promoções ativas</h2>
+    <div *ngIf="activePromotions().length; else noPromotions" class="grid-container">
+      <div *ngFor="let p of activePromotions(); trackBy: trackByPromotionId" class="grid-item">
 
- <!-- Botão para a página de doações -->
-  <a routerLink="/donations">
-    <app-button [type]="'button'" [block]="true">
-      Doações
-    </app-button>
-  </a>
+        <app-card class="text-center card-size">
+          <app-card-header>{{ p.name }}</app-card-header>
+          <app-card-content>{{ p.percentage }}% de desconto</app-card-content>
+          <app-card-content><b>Acaba em:</b> {{ p.endsAt }} </app-card-content>
 
-  <!-- Botão para a página de pontos de doação -->
-  <a routerLink="/donation-points">
-    <app-button [type]="'button'" [block]="true">
-      Pontos de Doação
-    </app-button>
-  </a>
+          <!-- Produtos dentro da promoção -->
+          <ng-container *ngIf="p.products?.length; else noProducts">
+
+            <app-select [placeholder]="'Produtos cadastrados'">
+              <ng-container *ngFor="let product of p.products; trackBy: trackByProductId">
+                <option>{{ product.name }}</option>
+              </ng-container>
+            </app-select>
+
+          </ng-container>
+        </app-card>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Caso a promoção não tenha produtos -->
+  <ng-template #noProducts>
+    <app-select [disabled]="true" [placeholder]="'Ainda sem produtos'"></app-select>
+  </ng-template>
+
+  <!-- Caso não tenha promoções ativas -->
+  <ng-template #noPromotions>
+    <app-card>Sem promoções ativas 😓</app-card>
+  </ng-template>
+
+  <!-- Caso não tenha produtos a vencer -->
+  <ng-template #noExpiringProducts>
+    <app-card-content>Sem produtos a vencer 😀</app-card-content>
+  </ng-template>
 
 </div>
