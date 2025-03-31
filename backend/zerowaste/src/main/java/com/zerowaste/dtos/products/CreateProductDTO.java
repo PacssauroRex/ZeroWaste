@@ -3,7 +3,7 @@ package com.zerowaste.dtos.products;
 import java.time.LocalDate;
 
 import com.zerowaste.models.product.ProductCategory;
-import com.zerowaste.utils.validation.ValidEnum.ValidEnum;
+import com.zerowaste.utils.validation.valid_enum.ValidEnum;
 
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Future;

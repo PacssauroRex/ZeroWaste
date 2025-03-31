@@ -1,4 +1,4 @@
-package com.zerowaste.utils.validation.ValidEnum;
+package com.zerowaste.utils.validation.valid_enum;
 
 import java.util.List;
 import java.util.stream.Collectors;
