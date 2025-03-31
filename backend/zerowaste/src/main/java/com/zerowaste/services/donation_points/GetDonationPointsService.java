@@ -20,10 +20,10 @@ public class GetDonationPointsService {
 
     public List<DonationPointsDTO> execute() {
 
-        List<DonationPoint> valid_donations = donationPointsRepository.findAllNotDeleted();
+        List<DonationPoint> validDonations = donationPointsRepository.findAllNotDeleted();
         List<DonationPointsDTO> donationDTOs = new ArrayList<DonationPointsDTO>();
 
-        for (DonationPoint donation : valid_donations) {
+        for (DonationPoint donation : validDonations) {
             DonationPointsDTO dto = new DonationPointsDTO(
                     donation.getId(),
                     donation.getName(),

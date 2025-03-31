@@ -29,7 +29,7 @@ import com.zerowaste.services.broadcasts.CreateBroadcastListService;
 import com.zerowaste.services.broadcasts.errors.BroadcastListProductsNotFoundException;
 
 @ExtendWith(MockitoExtension.class)
-public class CreateBroadcastListServiceTest {
+class CreateBroadcastListServiceTest {
     @InjectMocks
     private final CreateBroadcastListService sut;
 
@@ -47,13 +47,13 @@ public class CreateBroadcastListServiceTest {
     private ProductsRepository productsRepository;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         MockitoAnnotations.openMocks(this);
     }
 
     @Test
     @DisplayName("It should be able to create a broadcast list")
-    public void itShouldCreateBroadcastList() {
+    void itShouldCreateBroadcastList() {
         // Arrange
         var product = new Product();
 
@@ -84,7 +84,7 @@ public class CreateBroadcastListServiceTest {
 
     @Test
     @DisplayName("It should throw BroadcastListProductsNotFoundException when some products are not found")
-    public void itShouldNotCreateBroadcastListWhenProductsAreNotFound() {
+    void itShouldNotCreateBroadcastListWhenProductsAreNotFound() {
         // Arrange
         var product = new Product();
 
@@ -115,7 +115,7 @@ public class CreateBroadcastListServiceTest {
 
     @Test
     @DisplayName("It should store new e-mails when they are not found")
-    public void itShouldStoreNewEmailsWhenTheyAreNotFound() {
+    void itShouldStoreNewEmailsWhenTheyAreNotFound() {
         // Arrange
         var product = new Product();
 

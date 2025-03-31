@@ -16,7 +16,7 @@ public class HealthCheckController {
     public ResponseEntity<Map<String, String>> healthCheck() {
         Map<String, String> responseBody = new HashMap<String, String>();
 
-        responseBody.put(Constants.message, "Hello World!");
+        responseBody.put(Constants.MESSAGE, "Hello World!");
 
         return ResponseEntity.status(HttpStatus.OK).body(responseBody);
     }

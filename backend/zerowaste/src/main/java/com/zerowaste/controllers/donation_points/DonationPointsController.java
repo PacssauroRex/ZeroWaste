@@ -58,25 +58,25 @@ public class DonationPointsController {
 
             return ResponseEntity
                     .status(HttpStatus.CREATED)
-                    .body(Map.of(Constants.message, "Ponto de doação criado com sucesso!"));
+                    .body(Map.of(Constants.MESSAGE, "Ponto de doação criado com sucesso!"));
         }
 
         catch (InvalidTimePeriodException e) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
-                    .body(Map.of(Constants.message, e.getMessage()));
+                    .body(Map.of(Constants.MESSAGE, e.getMessage()));
         }
 
         catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Map.of(Constants.message, Constants.generalExceptionCatchText + e.getMessage()));
+                    .body(Map.of(Constants.MESSAGE, Constants.GENERALEXCEPTIONCATCHTEXT + e.getMessage()));
         }
     }
 
     // Read
     @GetMapping("/")
-    public ResponseEntity<Map<String, ?>> getDonationPoints() {
+    public ResponseEntity<Map<String, Object>> getDonationPoints() {
 
         try {
             return ResponseEntity.ok(Map.of("donation_points", getDonationPointsService.execute()));
@@ -85,13 +85,13 @@ public class DonationPointsController {
         catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Map.of(Constants.message, Constants.generalExceptionCatchText + e.getMessage()));
+                    .body(Map.of(Constants.MESSAGE, Constants.GENERALEXCEPTIONCATCHTEXT + e.getMessage()));
         }
 
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Map<String, ?>> getDonationPoint(@PathVariable Long id) {
+    public ResponseEntity<Map<String, Object>> getDonationPoint(@PathVariable Long id) {
         try {
             return ResponseEntity.ok(Map.of("donation_point", getDonationPointByIdService.execute(id)));
         }
@@ -99,13 +99,13 @@ public class DonationPointsController {
         catch (DonationPointNotFoundException e) {
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
-                    .body(Map.of(Constants.message, e.getMessage()));
+                    .body(Map.of(Constants.MESSAGE, e.getMessage()));
         }
 
         catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Map.of(Constants.message, Constants.generalExceptionCatchText + e.getMessage()));
+                    .body(Map.of(Constants.MESSAGE, Constants.GENERALEXCEPTIONCATCHTEXT + e.getMessage()));
         }
     }
 
@@ -115,19 +115,19 @@ public class DonationPointsController {
             @RequestBody UpdateDonationPointDTO dto) {
         try {
             updateDonationPointService.execute(id, dto);
-            return ResponseEntity.ok(Map.of(Constants.message, "Ponto de doação atualizado com sucesso!"));
+            return ResponseEntity.ok(Map.of(Constants.MESSAGE, "Ponto de doação atualizado com sucesso!"));
         }
 
         catch (InvalidTimePeriodException e) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
-                    .body(Map.of(Constants.message, e.getMessage()));
+                    .body(Map.of(Constants.MESSAGE, e.getMessage()));
         }
 
         catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Map.of(Constants.message, Constants.generalExceptionCatchText + e.getMessage()));
+                    .body(Map.of(Constants.MESSAGE, Constants.GENERALEXCEPTIONCATCHTEXT + e.getMessage()));
         }
 
     }
@@ -138,19 +138,19 @@ public class DonationPointsController {
 
         try {
             deleteDonationPointService.execute(id);
-            return ResponseEntity.ok(Map.of(Constants.message, "Ponto de doação deletado com sucesso!"));
+            return ResponseEntity.ok(Map.of(Constants.MESSAGE, "Ponto de doação deletado com sucesso!"));
         }
 
         catch (DonationPointNotFoundException e) {
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
-                    .body(Map.of(Constants.message, e.getMessage()));
+                    .body(Map.of(Constants.MESSAGE, e.getMessage()));
         }
 
         catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Map.of(Constants.message, Constants.generalExceptionCatchText + e.getMessage()));
+                    .body(Map.of(Constants.MESSAGE, Constants.GENERALEXCEPTIONCATCHTEXT + e.getMessage()));
         }
     }
 

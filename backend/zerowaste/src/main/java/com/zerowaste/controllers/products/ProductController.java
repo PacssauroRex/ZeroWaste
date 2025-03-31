@@ -57,12 +57,12 @@ public class ProductController {
     public ResponseEntity<Map<String, String>> createProduct(@RequestBody @Valid CreateProductDTO dto) {
         try {
             this.createProductService.execute(dto);
-            return ResponseEntity.status(HttpStatus.CREATED).body(Map.of(Constants.message, "Product created successfully"));
+            return ResponseEntity.status(HttpStatus.CREATED).body(Map.of(Constants.MESSAGE, "Product created successfully"));
         } 
         catch (Exception e) {
             return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Map.of(Constants.message, Constants.generalExceptionCatchText + e.getMessage()));
+                .body(Map.of(Constants.MESSAGE, Constants.GENERALEXCEPTIONCATCHTEXT + e.getMessage()));
         }
     }
 
@@ -71,17 +71,17 @@ public class ProductController {
     public ResponseEntity<Map<String, String>> deleteProduct(@PathVariable Long id) {
         try {
             deleteProductService.execute(id);
-            return ResponseEntity.ok(Map.of(Constants.message, "Produto deletado com sucesso!"));
+            return ResponseEntity.ok(Map.of(Constants.MESSAGE, "Produto deletado com sucesso!"));
         } 
         catch (ProductNotFoundException err) {
             return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
-                .body(Map.of(Constants.message, err.getMessage()));
+                .body(Map.of(Constants.MESSAGE, err.getMessage()));
         }
         catch(Exception err) {
             return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Map.of(Constants.message, Constants.generalExceptionCatchText + err.getMessage()));
+                .body(Map.of(Constants.MESSAGE, Constants.GENERALEXCEPTIONCATCHTEXT + err.getMessage()));
         }
     }
 
@@ -90,46 +90,46 @@ public class ProductController {
     public ResponseEntity<Map<String, String>> editProduct(@PathVariable Long id, @RequestBody @Valid EditProductDTO dto) {
         try {
             editProductService.execute(id, dto);
-            return ResponseEntity.ok(Map.of(Constants.message, "Produto editado com sucesso!"));
+            return ResponseEntity.ok(Map.of(Constants.MESSAGE, "Produto editado com sucesso!"));
         } 
         catch (ProductNotFoundException err) {
             return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
-                .body(Map.of(Constants.message, err.getMessage()));
+                .body(Map.of(Constants.MESSAGE, err.getMessage()));
         }
         catch(Exception err) {
             return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Map.of(Constants.message, Constants.generalExceptionCatchText + err.getMessage()));
+                .body(Map.of(Constants.MESSAGE, Constants.GENERALEXCEPTIONCATCHTEXT + err.getMessage()));
         }
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Map<String, ?>> getProductById(@PathVariable Long id) {
+    public ResponseEntity<Map<String, Object>> getProductById(@PathVariable Long id) {
         try {
             return ResponseEntity.ok(Map.of("product", getProductIdService.execute(id)));
         } 
         catch (ProductNotFoundException err) {
             return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
-                .body(Map.of(Constants.message, err.getMessage()));
+                .body(Map.of(Constants.MESSAGE, err.getMessage()));
         }
         catch(Exception err) {
             return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Map.of(Constants.message, Constants.generalExceptionCatchText + err.getMessage()));
+                .body(Map.of(Constants.MESSAGE, Constants.GENERALEXCEPTIONCATCHTEXT + err.getMessage()));
         }
     }
 
     @GetMapping()
-    public ResponseEntity<Map<String, ?>> getAllProducts(@Valid GetProductsDTO dto) {
+    public ResponseEntity<Map<String, Object>> getAllProducts(@Valid GetProductsDTO dto) {
         try {
             return ResponseEntity.ok(Map.of("products", getProductService.execute(dto)));
         }
         catch (Exception err) {
             return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Map.of(Constants.message, Constants.generalExceptionCatchText + err.getMessage()));
+                .body(Map.of(Constants.MESSAGE, Constants.GENERALEXCEPTIONCATCHTEXT + err.getMessage()));
         }
     }
 
@@ -137,22 +137,22 @@ public class ProductController {
     public ResponseEntity<Map<String, String>> setProductDonated (@PathVariable Long id){
         try {
             setProductStatusService.execute(id, ProductStatus.DONATED);
-            return ResponseEntity.ok(Map.of(Constants.message, "Status modificado com sucesso!"));
+            return ResponseEntity.ok(Map.of(Constants.MESSAGE, "Status modificado com sucesso!"));
         }
         catch (ProductNotFoundException err) {
             return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
-                .body(Map.of(Constants.message, err.getMessage()));
+                .body(Map.of(Constants.MESSAGE, err.getMessage()));
         }
         catch (ProductNotAvailableException err) {
             return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(Map.of(Constants.message, err.getMessage()));
+                .body(Map.of(Constants.MESSAGE, err.getMessage()));
         }
         catch(Exception err) {
             return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Map.of(Constants.message, Constants.generalExceptionCatchText + err.getMessage()));
+                .body(Map.of(Constants.MESSAGE, Constants.GENERALEXCEPTIONCATCHTEXT + err.getMessage()));
         }
     }
 
@@ -160,22 +160,22 @@ public class ProductController {
     public ResponseEntity<Map<String, String>> setProductDiscarded (@PathVariable Long id){
         try {
             setProductStatusService.execute(id, ProductStatus.DISCARDED);
-            return ResponseEntity.ok(Map.of(Constants.message, "Status modificado com sucesso!"));
+            return ResponseEntity.ok(Map.of(Constants.MESSAGE, "Status modificado com sucesso!"));
         }
         catch (ProductNotFoundException err) {
             return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
-                .body(Map.of(Constants.message, err.getMessage()));
+                .body(Map.of(Constants.MESSAGE, err.getMessage()));
         }
         catch (ProductNotAvailableException err) {
             return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(Map.of(Constants.message, err.getMessage()));
+                .body(Map.of(Constants.MESSAGE, err.getMessage()));
         }
         catch(Exception err) {
             return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Map.of(Constants.message, Constants.generalExceptionCatchText + err.getMessage()));
+                .body(Map.of(Constants.MESSAGE, Constants.GENERALEXCEPTIONCATCHTEXT + err.getMessage()));
         }
     }
 
@@ -187,7 +187,7 @@ public class ProductController {
         catch(Exception err) {
             return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Map.of(Constants.message, Constants.generalExceptionCatchText + err.getMessage()));
+                .body(Map.of(Constants.MESSAGE, Constants.GENERALEXCEPTIONCATCHTEXT + err.getMessage()));
         }
     }
     
