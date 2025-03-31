@@ -52,4 +52,42 @@ export class ProductService {
       });
     }
   }
+
+  public async setDonatedStatusProduct(id: number): Promise<void> {
+    const response = await fetch(API_URL + '/products/donate/' + id, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        'Accept': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      const body = await response.json();
+
+      throw new Error('Error setting new status', {
+        cause: body,
+      });
+    }
+  }
+
+  public async setDiscardedStatusProduct(id: number): Promise<void> {
+    const response = await fetch(API_URL + '/products/discard/' + id, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        'Accept': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      const body = await response.json();
+
+      throw new Error('Error setting new status', {
+        cause: body,
+      });
+    }
+  }
 }

@@ -1,7 +1,9 @@
 package com.zerowaste.models.broadcast;
 
 import java.time.LocalDate;
-import java.util.Set;
+import java.util.List;
+
+import com.zerowaste.models.product.Product;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -19,7 +21,6 @@ import jakarta.persistence.Table;
 @Table(name = "broadcast_lists")
 @Entity(name = "broadcast_lists")
 public class BroadcastList {
-    
     public BroadcastList() {}
 
     public BroadcastList(
@@ -67,9 +68,12 @@ public class BroadcastList {
 
     @ManyToMany
     @JoinTable(name = "broadcast_emails_broadcast_lists", joinColumns = @JoinColumn(name = "broadcast_lists_id"), inverseJoinColumns = @JoinColumn(name = "broadcast_emails_id"))
-    private Set<BroadcastEmail> broadcastEmails;
+    private List<BroadcastEmail> broadcastEmails;
 
-    // Getters and Setters
+    @ManyToMany
+    @JoinTable(name = "broadcast_lists_products", joinColumns = @JoinColumn(name = "broadcast_lists_id"), inverseJoinColumns = @JoinColumn(name = "products_id"))
+    private List<Product> products;
+
     public Long getId() {
         return id;
     }
@@ -126,14 +130,20 @@ public class BroadcastList {
         this.sendType = sendType;
     }
 
-    public Set<BroadcastEmail> getBroadcastEmails() {
+    public List<BroadcastEmail> getBroadcastEmails() {
         return broadcastEmails;
     }
 
-    public void setBroadcastEmails(Set<BroadcastEmail> broadcastEmails) {
+    public void setBroadcastEmails(List<BroadcastEmail> broadcastEmails) {
         this.broadcastEmails = broadcastEmails;
     }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
+    }
 }
-
-
 

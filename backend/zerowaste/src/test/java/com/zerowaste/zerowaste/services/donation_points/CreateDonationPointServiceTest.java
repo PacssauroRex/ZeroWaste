@@ -23,7 +23,7 @@ import com.zerowaste.services.donation_points.CreateDonationPointService;
 import com.zerowaste.services.donation_points.exceptions.InvalidTimePeriodException;
 
 @ExtendWith(MockitoExtension.class)
-public class CreateDonationPointServiceTest {
+class CreateDonationPointServiceTest {
 
     @InjectMocks
     private CreateDonationPointService sut;
@@ -32,13 +32,13 @@ public class CreateDonationPointServiceTest {
     private DonationPointsRepository donationPointsRepository;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         this.sut = new CreateDonationPointService(donationPointsRepository);
     }
 
     @Test
     @DisplayName("It should be able to create a donation point")
-    public void shouldCreateDonationPoint() {
+    void shouldCreateDonationPoint() {
 
         // Define o DTO
         CreateDonationPointDTO dto = new CreateDonationPointDTO(
@@ -60,7 +60,7 @@ public class CreateDonationPointServiceTest {
 
     @Test
     @DisplayName("It should not be able to create a donation point with invalid time period")
-    public void shouldThrowInvalidTimePeriodException() {
+    void shouldThrowInvalidTimePeriodException() {
 
         // Arrange
         CreateDonationPointDTO dto = new CreateDonationPointDTO(

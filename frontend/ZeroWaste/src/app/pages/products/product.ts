@@ -8,6 +8,7 @@ export interface Product {
     promotionPrice: number,
     stock: number,
     expiresAt: Date,
+    status: string,
     createdAt: Date,
     updatedAt: Date,
     deletedAt: Date

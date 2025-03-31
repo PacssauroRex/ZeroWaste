@@ -6,11 +6,14 @@ import com.zerowaste.services.products.exceptions.ProductNotFoundException;
 import com.zerowaste.services.promotions.CreatePromotionService;
 import com.zerowaste.services.promotions.DeletePromotionService;
 import com.zerowaste.services.promotions.EditPromotionService;
+import com.zerowaste.services.promotions.GetActivePromotionsService;
 import com.zerowaste.services.promotions.GetPromotionPercentageService;
 import com.zerowaste.services.promotions.GetPromotionProductService;
 import com.zerowaste.services.promotions.GetPromotionService;
 import com.zerowaste.services.promotions.GetPromotionsIdService;
 import com.zerowaste.services.promotions.exceptions.PromotionNotFoundException;
+import com.zerowaste.utils.Constants;
+
 import jakarta.validation.Valid;
 import java.util.Map;
 import org.springframework.http.HttpStatus;
@@ -35,8 +38,11 @@ public class PromotionController {
         private final GetPromotionPercentageService getPromotionPercentageService;
         private final GetPromotionProductService getPromotionProductService;
         private final GetPromotionService getPromotionService;
+        private final GetActivePromotionsService getActivePromotionsService;
 
-        public PromotionController(CreatePromotionService createPromotionService, DeletePromotionService deletePromotionService, EditPromotionService editPromotionService, GetPromotionsIdService getPromotionsIdService, GetPromotionPercentageService getPromotionPercentageService, GetPromotionProductService getPromotionProductService, GetPromotionService getPromotionService) {
+        public PromotionController(CreatePromotionService createPromotionService, DeletePromotionService deletePromotionService, EditPromotionService editPromotionService,
+                                GetPromotionsIdService getPromotionsIdService, GetPromotionPercentageService getPromotionPercentageService, GetPromotionProductService getPromotionProductService, 
+                                GetPromotionService getPromotionService, GetActivePromotionsService getActivePromotionsService) {
             this.createPromotionService = createPromotionService;
             this.deletePromotionService = deletePromotionService;
             this.editPromotionService = editPromotionService;
@@ -44,53 +50,56 @@ public class PromotionController {
             this.getPromotionPercentageService = getPromotionPercentageService;
             this.getPromotionProductService = getPromotionProductService;
             this.getPromotionService = getPromotionService;
+            this.getActivePromotionsService = getActivePromotionsService;
         }
 
     @PostMapping("/")
-    public ResponseEntity<Map<String, ?>> createPromotion (@RequestBody @Valid AddPromotionDTO dto) {
+    public ResponseEntity<Map<String, String>> createPromotion (@RequestBody @Valid AddPromotionDTO dto) {
         try {
             createPromotionService.execute(dto);
-            return ResponseEntity.ok(Map.of("message", "promoção criada com sucesso!"));
+            return ResponseEntity.ok(Map.of(Constants.message, "promoção criada com sucesso!"));
         } 
         catch(Exception err) {
             return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Map.of("error", err.getMessage()));
+                .body(Map.of(Constants.message, Constants.generalExceptionCatchText + err.getMessage()));
         }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Map<String, ?>> delete(@PathVariable Long id) {
-
+    public ResponseEntity<Map<String, String>> deletePromotion(@PathVariable Long id) {
         try {
             deletePromotionService.execute(id);
-            return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "promoção deletada com sucesso!"));
+            return ResponseEntity.status(HttpStatus.OK).body(Map.of(Constants.message, "promoção deletada com sucesso!"));
         }
-
         catch (PromotionNotFoundException err) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", err.getMessage()));
+            return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(Map.of(Constants.message, err.getMessage()));
         }
-
         catch (Exception err) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", err.getMessage()));
+            return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(Map.of(Constants.message, Constants.generalExceptionCatchText + err.getMessage()));
         }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Map<String, ?>> editPromotion(
+    public ResponseEntity<Map<String, String>> editPromotion(
             @PathVariable Long id, @RequestBody @Valid EditPromotionDTO dto) {
-
         try {
             editPromotionService.execute(id, dto);
-            return ResponseEntity.ok(Map.of("message", "Promoção editada com sucesso!"));
+            return ResponseEntity.ok(Map.of(Constants.message, "Promoção editada com sucesso!"));
         }
-
         catch (PromotionNotFoundException | ProductNotFoundException err) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", err.getMessage()));
+            return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(Map.of(Constants.message, err.getMessage()));
         }
-
         catch (Exception err) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", err.getMessage()));
+            return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(Map.of(Constants.message, Constants.generalExceptionCatchText + err.getMessage()));
         }
     }
 
@@ -102,12 +111,12 @@ public class PromotionController {
         catch(PromotionNotFoundException err) {
             return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
-                .body(Map.of("error", err.getMessage()));
+                .body(Map.of(Constants.message, err.getMessage()));
         }
         catch(Exception err) {
             return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Map.of("error", err.getMessage()));
+                .body(Map.of(Constants.message, Constants.generalExceptionCatchText + err.getMessage()));
         }
     }
 
@@ -119,12 +128,12 @@ public class PromotionController {
         catch(PromotionNotFoundException err) {
             return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
-                .body(Map.of("error", err.getMessage()));
+                .body(Map.of(Constants.message, err.getMessage()));
         }
         catch(Exception err) {
             return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Map.of("error", err.getMessage()));
+                .body(Map.of(Constants.message, Constants.generalExceptionCatchText + err.getMessage()));
         }
     }
 
@@ -136,12 +145,12 @@ public class PromotionController {
         catch(PromotionNotFoundException err) {
             return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
-                .body(Map.of("error", err.getMessage()));
+                .body(Map.of(Constants.message, err.getMessage()));
         }
         catch(Exception err) {
             return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Map.of("error", err.getMessage()));
+                .body(Map.of(Constants.message, Constants.generalExceptionCatchText + err.getMessage()));
         }
     }
 
@@ -153,9 +162,20 @@ public class PromotionController {
         catch(Exception err) {
             return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Map.of("error", err.getMessage()));
+                .body(Map.of(Constants.message, Constants.generalExceptionCatchText + err.getMessage()));
         }
     }
 
+    @GetMapping("/active")
+    public ResponseEntity<Map<String, ?>> getAllActivePromotions() {
+        try {
+            return ResponseEntity.ok(Map.of("promotions", getActivePromotionsService.execute()));
+        }
+        catch(Exception err) {
+            return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(Map.of(Constants.message, Constants.generalExceptionCatchText + err.getMessage()));
+        }
+    }
     
 }

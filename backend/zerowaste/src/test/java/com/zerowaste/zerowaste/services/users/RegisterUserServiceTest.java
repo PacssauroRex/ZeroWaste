@@ -22,7 +22,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
 @ExtendWith(MockitoExtension.class)
-public class RegisterUserServiceTest {
+class RegisterUserServiceTest {
     @InjectMocks
     private final RegisterUserService registerUserService;
 
@@ -34,14 +34,14 @@ public class RegisterUserServiceTest {
     private UsersRepository usersRepository;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         ReflectionTestUtils.setField(registerUserService, "bcryptEncoderStrength", 10);
         MockitoAnnotations.openMocks(this);
     }
 
     @Test
     @DisplayName("It should throw UserWithSameEmailAlreadyExistsException when user with same email exists")
-    public void itShouldThrowUserWithSameEmailExistsException() {
+    void itShouldThrowUserWithSameEmailExistsException() {
         // Arrange
         var dto = new RegisterUserDTO(
             "John Doe",
@@ -58,7 +58,7 @@ public class RegisterUserServiceTest {
 
     @Test
     @DisplayName("It should be able to register user")
-    public void itShouldRegisterUser() {
+    void itShouldRegisterUser() {
         // Arrange
         var dto = new RegisterUserDTO(
             "John Doe",

@@ -21,7 +21,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class GetPromotionPercentageServiceTest {
+class GetPromotionPercentageServiceTest {
 
     @InjectMocks
     private GetPromotionPercentageService sut;
@@ -30,13 +30,13 @@ public class GetPromotionPercentageServiceTest {
     private PromotionsRepository promotionsRepository;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         MockitoAnnotations.openMocks(this);
     }
 
     @Test
     @DisplayName("It should be able to get a promotion by Percentage")
-    public void itShouldGetPromotionByPercentage() {
+    void itShouldGetPromotionByPercentage() {
         // Arrange
         int percentage = 15;
         Promotion promotion = new Promotion();
@@ -59,7 +59,7 @@ public class GetPromotionPercentageServiceTest {
 
     @Test
     @DisplayName("It should throw PromotionNotFoundException")
-    public void itShouldThrowExceptionForPromotionNotFound() {
+    void itShouldThrowExceptionForPromotionNotFound() {
         // Arrange
         int percentage = 20;
         when(promotionsRepository.findByPercentage(percentage)).thenReturn(Collections.emptyList());

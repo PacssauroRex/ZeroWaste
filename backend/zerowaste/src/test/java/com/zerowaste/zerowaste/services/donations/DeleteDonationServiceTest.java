@@ -21,20 +21,20 @@ import com.zerowaste.repositories.DonationsRepository;
 import com.zerowaste.services.donations.DeleteDonationService;
 import com.zerowaste.services.donations.exceptions.DonationNotFoundException;
 
-public class DeleteDonationServiceTest {
+class DeleteDonationServiceTest {
     @Mock
     private DonationsRepository donationsRepository;
 
     private DeleteDonationService deleteDonationService;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         MockitoAnnotations.openMocks(this);
         deleteDonationService = new DeleteDonationService(donationsRepository);
     }
 
     @Test
-    public void deleteDonationTest() throws DonationNotFoundException { //Doação deletada com sucesso
+    void deleteDonationTest() throws DonationNotFoundException { //Doação deletada com sucesso
         //Criando doação
         Long donationId = 1L;
         Donation existingDonation = new Donation();
@@ -58,7 +58,7 @@ public class DeleteDonationServiceTest {
     }
 
     @Test
-    public void deleteDonationFailTest1() { //Tentativa de deletar doação inválida
+    void deleteDonationFailTest1() { //Tentativa de deletar doação inválida
         Long donationId = 1L;
         when(donationsRepository.findById(donationId)).thenReturn(Optional.empty());
 
@@ -73,7 +73,7 @@ public class DeleteDonationServiceTest {
     }
 
     @Test
-    public void deleteDonationFailTest2() { //Tentativa de deletar uma doação já deletada
+    void deleteDonationFailTest2() { //Tentativa de deletar uma doação já deletada
         //Criando doação
         Long donationId = 1L;
         Donation deletedDonation = new Donation();

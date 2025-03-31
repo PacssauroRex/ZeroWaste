@@ -27,7 +27,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class GetPromotionProductServiceTest {
+class GetPromotionProductServiceTest {
 
     @InjectMocks
     private GetPromotionProductService sut;
@@ -36,13 +36,13 @@ public class GetPromotionProductServiceTest {
     private PromotionsRepository promotionsRepository;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         MockitoAnnotations.openMocks(this);
     }
 
     @Test
     @DisplayName("It should be able to get a promotion by product Id")
-    public void itShouldGetPromotionByProductId() {
+    void itShouldGetPromotionByProductId() {
 
         // Arrange
         Long productId = 2L;
@@ -76,7 +76,7 @@ public class GetPromotionProductServiceTest {
 
     @Test
     @DisplayName("It should throw PromotionNotFoundException")
-    public void itShouldThrowExceptionForPromotionNotFound() {
+    void itShouldThrowExceptionForPromotionNotFound() {
         // Arrange
         Long productId = 2l;
         when(promotionsRepository.findByProducts_Id(productId)).thenReturn(Collections.emptyList());

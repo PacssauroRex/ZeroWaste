@@ -23,7 +23,7 @@ import com.zerowaste.repositories.DonationPointsRepository;
 import com.zerowaste.services.donation_points.GetDonationPointsService;
 
 @ExtendWith(MockitoExtension.class)
-public class GetDonationPointsServiceTest {
+class GetDonationPointsServiceTest {
 
     @InjectMocks
     private GetDonationPointsService sut;
@@ -32,13 +32,13 @@ public class GetDonationPointsServiceTest {
     private DonationPointsRepository donationPointsRepository;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         this.sut = new GetDonationPointsService(donationPointsRepository);
     }
 
     @Test
     @DisplayName("It should be able to get all donation points")
-    public void shouldGetDonationPoints() {
+    void shouldGetDonationPoints() {
 
         // Arrange
         DonationPoint a = new DonationPoint();
@@ -78,7 +78,7 @@ public class GetDonationPointsServiceTest {
 
     @Test
     @DisplayName("It should get an empty list of donation points")
-    public void shouldGetEmptyList() {
+    void shouldGetEmptyList() {
 
         // Act & Assert
         List<DonationPointsDTO> donationPoints = sut.execute();

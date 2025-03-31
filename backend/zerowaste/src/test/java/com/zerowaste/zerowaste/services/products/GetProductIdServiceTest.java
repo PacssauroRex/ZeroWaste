@@ -22,7 +22,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class GetProductIdServiceTest {
+class GetProductIdServiceTest {
 
     @InjectMocks
     private  GetProductIdService sut;
@@ -31,13 +31,13 @@ public class GetProductIdServiceTest {
     private ProductsRepository productsRepository;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         MockitoAnnotations.openMocks(this);
     }
 
     @Test
     @DisplayName("It should be able to get a product by ID")
-    public void itShouldGetProductById() {
+    void itShouldGetProductById() {
         // Arrange
         Long productId = 1L;
         Product product = new Product();
@@ -61,7 +61,7 @@ public class GetProductIdServiceTest {
 
     @Test
     @DisplayName("It should throw ProductNotFoundException")
-    public void itShouldThrowExceptionForProductNotFound() {
+    void itShouldThrowExceptionForProductNotFound() {
         // Arrange
         Long productId = null;
         when(productsRepository.findById(productId)).thenReturn(Optional.empty());

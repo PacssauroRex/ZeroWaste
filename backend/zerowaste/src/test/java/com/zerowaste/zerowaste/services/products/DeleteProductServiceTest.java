@@ -22,7 +22,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class DeleteProductServiceTest {
+class DeleteProductServiceTest {
 
     @InjectMocks
     private DeleteProductService sut;
@@ -31,13 +31,13 @@ public class DeleteProductServiceTest {
     private ProductsRepository productsRepository;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         MockitoAnnotations.openMocks(this);
     }
 
     @Test
     @DisplayName("It should be able to delete a product")
-    public void itShouldDeleteProduct() {
+    void itShouldDeleteProduct() {
         // Arrange
         Long productId = 1L;
         Product product = new Product();
@@ -61,7 +61,7 @@ public class DeleteProductServiceTest {
 
     @Test
     @DisplayName("It should throw ProductNotFoundException")
-    public void itShouldThrowExceptionForProductNotFound() {
+    void itShouldThrowExceptionForProductNotFound() {
         // Arrange
         Long productId = null;
         Product product = new Product();

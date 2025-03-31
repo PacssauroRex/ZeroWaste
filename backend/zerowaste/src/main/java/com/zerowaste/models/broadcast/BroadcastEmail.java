@@ -1,7 +1,7 @@
 package com.zerowaste.models.broadcast;
 
 import java.time.LocalDate;
-import java.util.Set;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -21,20 +21,8 @@ import jakarta.persistence.Table;
 public class BroadcastEmail {
     public BroadcastEmail() {}
 
-    public BroadcastEmail(
-        Long id,
-        String email,
-        LocalDate createdAt,
-        LocalDate updatedAt,
-        LocalDate deletedAt,
-        Set<BroadcastList> broadcastLists
-    ) {
-        this.id = id;
+    public BroadcastEmail(String email) {
         this.email = email;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-        this.deletedAt = deletedAt;
-        this.broadcastLists = broadcastLists;
     }
 
     @Id
@@ -66,7 +54,7 @@ public class BroadcastEmail {
 
     @ManyToMany
     @JoinTable(name = "broadcast_emails_broadcast_lists", joinColumns = @JoinColumn(name = "broadcast_emails_id"), inverseJoinColumns = @JoinColumn(name = "broadcast_lists_id"))
-    private Set<BroadcastList> broadcastLists;
+    private List<BroadcastList> broadcastLists;
 
     public Long getId() {
         return id;
@@ -108,11 +96,42 @@ public class BroadcastEmail {
         this.deletedAt = deletedAt;
     }
 
-    public Set<BroadcastList> getBroadcastLists() {
+    public List<BroadcastList> getBroadcastLists() {
         return broadcastLists;
     }
 
-    public void setBroadcastLists(Set<BroadcastList> broadcastLists) {
+    public void setBroadcastLists(List<BroadcastList> broadcastLists) {
         this.broadcastLists = broadcastLists;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        result = prime * result + ((email == null) ? 0 : email.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        BroadcastEmail other = (BroadcastEmail) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        if (email == null) {
+            if (other.email != null)
+                return false;
+        } else if (!email.equals(other.email))
+            return false;
+        return true;
     }
 }
