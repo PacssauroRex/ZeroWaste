@@ -13,6 +13,7 @@ import com.zerowaste.services.broadcasts.GetBroadcastListsService;
 import com.zerowaste.services.broadcasts.DeleteBroadcastListService;
 import com.zerowaste.services.broadcasts.errors.BroadcastListNotFoundException;
 import com.zerowaste.services.broadcasts.errors.BroadcastListProductsNotFoundException;
+import com.zerowaste.utils.Constants;
 
 import jakarta.validation.Valid;
 
@@ -67,30 +68,37 @@ public class BroadcastsController {
     public ResponseEntity<Map<String, Object>> create(@RequestBody @Valid CreateBroadcastListDTO dto) {
         try {
             this.createBroadcastListService.execute(dto);
-            return successResponse("Lista de transmissão criada com sucesso", HttpStatus.CREATED);
+            return ResponseEntity.status(HttpStatus.CREATED).body(Map.of(Constants.MESSAGE, "Lista de transmissão criada com sucesso"));
         }
         catch (BroadcastListProductsNotFoundException e) {
-            return errorResponse(e.getMessage(), HttpStatus.BAD_REQUEST);
+            return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(Map.of(Constants.MESSAGE, e.getMessage()));
         }
         catch (Exception e) {
-            return errorResponse(INTERNAL_ERROR_MESSAGE, HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(Map.of(Constants.MESSAGE, Constants.GENERALEXCEPTIONCATCHTEXT + e.getMessage()));
         }
     }
 
-    @PutMapping("{id}")
-    public ResponseEntity<Map<String, Object>> update(
-        @PathVariable Long id,
-        @RequestBody @Valid UpdateBroadcastListDTO dto
-    ) {
+    @PutMapping("/{id}")
+    public ResponseEntity<Map<String, Object>> update(@PathVariable Long id, @RequestBody @Valid UpdateBroadcastListDTO dto) {
         try {
             this.updateBroadcastListService.execute(id, dto);
-            return successResponse("Lista de transmissão atualizada com sucesso", HttpStatus.OK);
+            return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(Map.of(Constants.MESSAGE, "Lista de transmissão atualizada com sucesso"));
         }
         catch (BroadcastListProductsNotFoundException e) {
-            return errorResponse(e.getMessage(), HttpStatus.BAD_REQUEST);
+            return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(Map.of(Constants.MESSAGE, e.getMessage()));
         }
         catch (Exception e) {
-            return errorResponse(INTERNAL_ERROR_MESSAGE, HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(Map.of(Constants.MESSAGE, Constants.GENERALEXCEPTIONCATCHTEXT + e.getMessage()));
         }
     }
 
@@ -133,6 +141,7 @@ public class BroadcastsController {
         }
         catch (Exception e) {
             return errorResponse(INTERNAL_ERROR_MESSAGE + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+
         }
     }
 }

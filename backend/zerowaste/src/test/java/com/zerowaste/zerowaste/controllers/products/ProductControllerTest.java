@@ -27,7 +27,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -35,13 +34,13 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @ExtendWith(MockitoExtension.class)
 class ProductControllerTest {
@@ -79,55 +78,52 @@ class ProductControllerTest {
 
     @Test
     void TestCreateProduct_Success() throws Exception {
-        // Quando o serviço CreateProductService é chamado, ele não faz nada (simulamos sucesso)
-        doNothing().when(createProductService).execute(any(CreateProductDTO.class));
+        //Criando DTO
+        CreateProductDTO dto = new CreateProductDTO(
+            "Teste", 
+            "Teste", 
+            "Marca teste", 
+            ProductCategory.BAKERY.getCategory(), 
+            10.0, 
+            10, 
+            LocalDate.now().plusDays(1)
+        );
 
-        // Então, executamos a requisição POST para criar o produto
-        mockMvc.perform(post("/products")
-        .contentType(MediaType.APPLICATION_JSON)
-        .content("{"
-        + "\"name\":\"Teste\","
-        + "\"description\":\"Descrição do produto\","
-        + "\"brand\":\"Marca de Teste\","
-        + "\"category\":\"" + ProductCategory.BAKERY.getCategory() + "\","
-        + "\"unitPrice\":100.0,"
-        + "\"stock\":100,"
-        + "\"expiresAt\": [" + LocalDate.now().getYear() + ", " 
-        + LocalDate.now().getMonthValue() + ", " 
-        + (LocalDate.now().getDayOfMonth() + 1) + "]"
-        + "}"))
-       
-            .andExpect(status().isCreated()) // Espera-se um código 201
-            .andExpect(jsonPath("$.message").value("Product created successfully")); // A mensagem retornada deve ser "Product created successfully"
- 
-        // Verifica que o serviço foi chamado uma vez com o DTO
-        verify(createProductService, times(1)).execute(any(CreateProductDTO.class));
+        //Mockando comportamento do service
+        doNothing().when(createProductService).execute(dto);
+
+        //Executando controller
+        ResponseEntity<Map<String, String>> response = productController.createProduct(dto);
+
+        //Verificando
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertEquals("Product created successfully", response.getBody().get(Constants.MESSAGE));
     }
 
     @Test
     void TestEditProduct_Success() throws Exception {
-        // Quando o serviço EditProductService é chamado, ele não faz nada (simulamos sucesso)
-        doNothing().when(editProductService).execute(anyLong(), any(EditProductDTO.class));
+        //Criando DTO
+        EditProductDTO dto = new EditProductDTO(
+            "Teste", 
+            "Teste", 
+            "Marca teste", 
+            ProductCategory.BAKERY.getCategory(), 
+            10.0, 
+            9.0,
+            10, 
+            LocalDate.now().plusDays(1),
+            Set.of(1L)
+        );
 
-        // Então, executamos a requisição PUT para editar o produto
-        mockMvc.perform(put("/products/{id}", 1L)
-        .contentType(MediaType.APPLICATION_JSON)
-        .content("{"
-        + "\"name\":\"Produto Editado\","
-        + "\"description\":\"Descrição Editada\","
-        + "\"brand\":\"Marca Editada\","
-        + "\"category\":\"" + ProductCategory.BAKERY.getCategory() + "\","
-        + "\"unitPrice\":120.0,"
-        + "\"promotionPrice\":110.0,"
-        + "\"stock\":150,"
-        + "\"expiresAt\": [" + LocalDate.now().getYear() + ", " + LocalDate.now().getMonthValue() + ", " + (LocalDate.now().getDayOfMonth() + 1) + "],"
-        + "\"promotionsIds\": [1,2,3]"
-        + "}"))
-                .andExpect(status().isOk()) // Espera-se um código 200
-                .andExpect(jsonPath("$.message").value("Produto editado com sucesso!")); // A mensagem retornada deve ser "Produto editado com sucesso!"
-        
-        // Verifica que o serviço foi chamado uma vez com o ID do produto e o DTO
-        verify(editProductService, times(1)).execute(eq(1L), any(EditProductDTO.class));
+        //Mockando comportamento do service
+        doNothing().when(editProductService).execute(productId, dto);
+
+        //Executando controller
+        ResponseEntity<Map<String, String>> response = productController.editProduct(productId, dto);
+
+        //Verificando
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Produto editado com sucesso!", response.getBody().get(Constants.MESSAGE));
     }
 
     @Test
@@ -138,7 +134,7 @@ class ProductControllerTest {
         // Então, executamos a requisição DELETE para deletar o produto
         mockMvc.perform(delete("/products/{id}", 1L))
                 .andExpect(status().isOk()) // Espera-se um código 200
-                .andExpect(jsonPath("$.message").value("Produto deletado com sucesso!")); // A mensagem retornada deve ser "Produto deletado com sucesso!"
+                .andExpect(jsonPath("$." + Constants.MESSAGE).value("Produto deletado com sucesso!")); // A mensagem retornada deve ser "Produto deletado com sucesso!"
         
         // Verifica que o serviço foi chamado uma vez com o ID do produto
         verify(deleteProductService, times(1)).execute((1L));
@@ -234,7 +230,7 @@ class ProductControllerTest {
         // Então, executamos a requisição GET para buscar o produto
         mockMvc.perform(get("/products/{id}", 999L))
                 .andExpect(status().isNotFound()) // Espera-se um código 404
-                .andExpect(jsonPath("$." + Constants.message).value("Produto não encontrado")); // Verifica a mensagem de erro
+                .andExpect(jsonPath("$." + Constants.MESSAGE).value("Produto não encontrado")); // Verifica a mensagem de erro
         
         // Verifica que o serviço foi chamado uma vez com o ID do produto
         verify(getProductIdService, times(1)).execute((999L));
@@ -266,7 +262,7 @@ class ProductControllerTest {
 
         //Verificando
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("Status modificado com sucesso!", response.getBody().get(Constants.message));
+        assertEquals("Status modificado com sucesso!", response.getBody().get(Constants.MESSAGE));
     }
 
     @Test
@@ -279,7 +275,7 @@ class ProductControllerTest {
         
         //Verificando
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-        assertEquals("Produto não encontrado!", response.getBody().get(Constants.message));
+        assertEquals("Produto não encontrado!", response.getBody().get(Constants.MESSAGE));
     }
     
     @Test
@@ -292,7 +288,7 @@ class ProductControllerTest {
 
         //Verificando
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals("Produto não disponível", response.getBody().get(Constants.message));
+        assertEquals("Produto não disponível", response.getBody().get(Constants.MESSAGE));
     }
 
     @Test
@@ -305,7 +301,7 @@ class ProductControllerTest {
 
         //Verificando
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
-        assertEquals(Constants.generalExceptionCatchText + "Erro interno", response.getBody().get(Constants.message));
+        assertEquals(Constants.GENERALEXCEPTIONCATCHTEXT + "Erro interno", response.getBody().get(Constants.MESSAGE));
     }
 
     @Test
@@ -318,7 +314,7 @@ class ProductControllerTest {
 
         //Verificando
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("Status modificado com sucesso!", response.getBody().get(Constants.message));
+        assertEquals("Status modificado com sucesso!", response.getBody().get(Constants.MESSAGE));
     }
 
     @Test
@@ -331,7 +327,7 @@ class ProductControllerTest {
         
         //Verificando
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-        assertEquals("Produto não encontrado!", response.getBody().get(Constants.message));
+        assertEquals("Produto não encontrado!", response.getBody().get(Constants.MESSAGE));
     }
     
     @Test
@@ -344,7 +340,7 @@ class ProductControllerTest {
 
         //Verificando
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals("Produto não disponível", response.getBody().get(Constants.message));
+        assertEquals("Produto não disponível", response.getBody().get(Constants.MESSAGE));
     }
 
     @Test
@@ -357,6 +353,6 @@ class ProductControllerTest {
 
         //Verificando
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
-        assertEquals(Constants.generalExceptionCatchText + "Erro interno", response.getBody().get(Constants.message));
+        assertEquals(Constants.GENERALEXCEPTIONCATCHTEXT + "Erro interno", response.getBody().get(Constants.MESSAGE));
     }
 }

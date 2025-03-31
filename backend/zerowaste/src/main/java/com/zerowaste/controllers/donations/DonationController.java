@@ -50,46 +50,46 @@ public class DonationController {
     public ResponseEntity<Map<String, String>> createDonation(@RequestBody @Valid CreateDonationDTO dto) {
         try {
             createDonationService.execute(dto);
-            return ResponseEntity.ok(Map.of(Constants.message, "Doação cadastrada com sucesso!"));
+            return ResponseEntity.ok(Map.of(Constants.MESSAGE, "Doação cadastrada com sucesso!"));
         } 
         catch (ProductNotFoundException err) {
             return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
-                .body(Map.of(Constants.message, err.getMessage()));
+                .body(Map.of(Constants.MESSAGE, err.getMessage()));
         }
         catch(Exception err) {
             return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Map.of(Constants.message, Constants.generalExceptionCatchText + err.getMessage()));
+                .body(Map.of(Constants.MESSAGE, Constants.GENERALEXCEPTIONCATCHTEXT + err.getMessage()));
         }
     }
  
     @GetMapping()
-    public ResponseEntity<Map<String, ?>> getDonations() {
+    public ResponseEntity<Map<String, Object>> getDonations() {
         try {
             return ResponseEntity.ok(Map.of("donations", getDonationService.execute()));
         } 
         catch(Exception err) {
             return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Map.of(Constants.message, Constants.generalExceptionCatchText + err.getMessage()));
+                .body(Map.of(Constants.MESSAGE, Constants.GENERALEXCEPTIONCATCHTEXT + err.getMessage()));
         }
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Map<String, ?>> getDonationById(@PathVariable Long id) {
+    public ResponseEntity<Map<String, Object>> getDonationById(@PathVariable Long id) {
         try {
             return ResponseEntity.ok(Map.of("donation", getDonationIdService.execute(id)));
         } 
         catch (DonationNotFoundException err) {
             return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
-                .body(Map.of(Constants.message, err.getMessage()));
+                .body(Map.of(Constants.MESSAGE, err.getMessage()));
         }
         catch(Exception err) {
             return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Map.of(Constants.message, Constants.generalExceptionCatchText + err.getMessage()));
+                .body(Map.of(Constants.MESSAGE, Constants.GENERALEXCEPTIONCATCHTEXT + err.getMessage()));
         }
     }
     
@@ -97,17 +97,17 @@ public class DonationController {
     public ResponseEntity<Map<String, String>> editDonation(@PathVariable Long id, @RequestBody @Valid EditDonationDTO dto) {
         try {
             editDonationService.execute(id, dto);
-            return ResponseEntity.ok(Map.of(Constants.message, "Doação editada com sucesso!"));
+            return ResponseEntity.ok(Map.of(Constants.MESSAGE, "Doação editada com sucesso!"));
         } 
         catch (DonationNotFoundException|ProductNotFoundException err) {
             return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
-                .body(Map.of(Constants.message, err.getMessage()));
+                .body(Map.of(Constants.MESSAGE, err.getMessage()));
         }
         catch(Exception err) {
             return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Map.of(Constants.message, Constants.generalExceptionCatchText + err.getMessage()));
+                .body(Map.of(Constants.MESSAGE, Constants.GENERALEXCEPTIONCATCHTEXT + err.getMessage()));
         }
     }
     
@@ -115,17 +115,17 @@ public class DonationController {
     public ResponseEntity<Map<String, String>> deleteDonation(@PathVariable Long id) {
         try {
             deleteDonationService.execute(id);
-            return ResponseEntity.ok(Map.of(Constants.message, "Doação deletada com sucesso!"));
+            return ResponseEntity.ok(Map.of(Constants.MESSAGE, "Doação deletada com sucesso!"));
         } 
         catch (DonationNotFoundException err) {
             return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
-                .body(Map.of(Constants.message, err.getMessage()));
+                .body(Map.of(Constants.MESSAGE, err.getMessage()));
         }
         catch(Exception err) {
             return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Map.of(Constants.message, Constants.generalExceptionCatchText + err.getMessage()));
+                .body(Map.of(Constants.MESSAGE, Constants.GENERALEXCEPTIONCATCHTEXT + err.getMessage()));
         }
     }
 }

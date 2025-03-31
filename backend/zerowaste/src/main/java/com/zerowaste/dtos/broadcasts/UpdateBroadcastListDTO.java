@@ -3,7 +3,7 @@ package com.zerowaste.dtos.broadcasts;
 import java.util.List;
 
 import com.zerowaste.models.broadcast.BroadcastListSendType;
-import com.zerowaste.utils.validation.ValidEnum.ValidEnum;
+import com.zerowaste.utils.validation.valid_enum.ValidEnum;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;

@@ -31,37 +31,36 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<Map<String, ?>> handle(@RequestBody @Valid RegisterUserDTO dto) {
+    public ResponseEntity<Map<String, Object>> handle(@RequestBody @Valid RegisterUserDTO dto) {
         try {
             registerUserService.execute(dto);
-            return ResponseEntity.ok(Map.of(Constants.message, "User registered successfully"));
+            return ResponseEntity.ok(Map.of(Constants.MESSAGE, "User registered successfully"));
         } 
         catch (UserWithSameEmailAlreadyExistsException e) {
             return ResponseEntity
                 .status(HttpStatus.CONFLICT)
-                .body(Map.of(Constants.message, e.getMessage()));
+                .body(Map.of(Constants.MESSAGE, e.getMessage()));
         } 
         catch (Exception e) {
             return ResponseEntity
             .status(HttpStatus.INTERNAL_SERVER_ERROR)
-            .body(Map.of(Constants.message, Constants.generalExceptionCatchText + "Internal server error"));
+            .body(Map.of(Constants.MESSAGE, Constants.GENERALEXCEPTIONCATCHTEXT + "Internal server error"));
         }
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Map<String, ?>> handle(@RequestBody @Valid AuthenticateUserDTO dto) {
+    public ResponseEntity<Map<String, String>> handle(@RequestBody @Valid AuthenticateUserDTO dto) {
         try {
             String token = authenticateUserService.execute(dto);
-
             return ResponseEntity.ok(Map.of("token", token));
         } catch (AuthenticationException e) {
             return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
-                .body(Map.of(Constants.message, e.getMessage()));
+                .body(Map.of(Constants.MESSAGE, e.getMessage()));
         } catch (Exception e) {
             return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Map.of(Constants.message, Constants.generalExceptionCatchText + "Internal server error"));
+                .body(Map.of(Constants.MESSAGE, Constants.GENERALEXCEPTIONCATCHTEXT + "Internal server error"));
         }
     }
 
