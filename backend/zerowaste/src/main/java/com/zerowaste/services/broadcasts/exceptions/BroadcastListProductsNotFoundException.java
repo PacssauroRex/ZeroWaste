@@ -1,4 +1,4 @@
-package com.zerowaste.services.broadcasts.errors;
+package com.zerowaste.services.broadcasts.exceptions;
 
 import java.util.List;
 

@@ -7,7 +7,7 @@ import com.zerowaste.dtos.broadcasts.CreateBroadcastListDTO;
 import com.zerowaste.dtos.broadcasts.UpdateBroadcastListDTO;
 import com.zerowaste.services.broadcasts.CreateBroadcastListService;
 import com.zerowaste.services.broadcasts.UpdateBroadcastListService;
-import com.zerowaste.services.broadcasts.errors.BroadcastListProductsNotFoundException;
+import com.zerowaste.services.broadcasts.exceptions.BroadcastListProductsNotFoundException;
 import com.zerowaste.utils.Constants;
 
 import jakarta.validation.Valid;

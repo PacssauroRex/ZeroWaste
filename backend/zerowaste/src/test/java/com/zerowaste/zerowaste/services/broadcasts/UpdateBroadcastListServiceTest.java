@@ -29,7 +29,7 @@ import com.zerowaste.repositories.BroadcastEmailsRepository;
 import com.zerowaste.repositories.BroadcastListsRepository;
 import com.zerowaste.repositories.ProductsRepository;
 import com.zerowaste.services.broadcasts.UpdateBroadcastListService;
-import com.zerowaste.services.broadcasts.errors.BroadcastListProductsNotFoundException;
+import com.zerowaste.services.broadcasts.exceptions.BroadcastListProductsNotFoundException;
 
 @ExtendWith(MockitoExtension.class)
 class UpdateBroadcastListServiceTest {
