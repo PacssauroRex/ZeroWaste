@@ -25,7 +25,7 @@ import com.zerowaste.models.broadcast.BroadcastListSendType;
 import com.zerowaste.dtos.broadcasts.GetBroadcastDTO;
 import com.zerowaste.repositories.BroadcastListsRepository;
 import com.zerowaste.services.broadcasts.GetBroadcastListByIdService;
-import com.zerowaste.services.broadcasts.errors.BroadcastListNotFoundException;
+import com.zerowaste.services.broadcasts.exceptions.BroadcastListNotFoundException;
 
 @ExtendWith(MockitoExtension.class)
 class GetBroadcastListByIdServiceTest {
@@ -62,7 +62,7 @@ class GetBroadcastListByIdServiceTest {
     @Test
     @DisplayName("It should return the broadcast list when it exists and is not deleted")
     void itShouldReturnBroadcastListWhenExistsAndNotDeleted() {
-        when(broadcastListRepository.findAllByDeletedAtIsNull()).thenReturn(List.of(broadcastList));
+        when(broadcastListRepository.findAllNotDeleted()).thenReturn(List.of(broadcastList));
         GetBroadcastDTO result = assertDoesNotThrow(() -> sut.execute(1L));
         assertEquals(broadcastList.getId(), result.getId());
         assertEquals(broadcastList.getName(), result.getName());
@@ -76,7 +76,7 @@ class GetBroadcastListByIdServiceTest {
             .toList();
 
         assertEquals(expectedEmails, result.getEmail());
-        verify(broadcastListRepository, times(1)).findAllByDeletedAtIsNull();
+        verify(broadcastListRepository, times(1)).findAllNotDeleted();
     }
 
 
@@ -84,7 +84,7 @@ class GetBroadcastListByIdServiceTest {
     @DisplayName("It should throw BroadcastListNotFoundException when the broadcast list does not exist")
     void itShouldThrowExceptionForBroadcastListNotFound() {
 
-        when(broadcastListRepository.findAllByDeletedAtIsNull()).thenReturn(List.of());
+        when(broadcastListRepository.findAllNotDeleted()).thenReturn(List.of());
 
         assertThrows(BroadcastListNotFoundException.class, () -> sut.execute(1L));
     }
@@ -93,11 +93,11 @@ class GetBroadcastListByIdServiceTest {
     @DisplayName("It should throw BroadcastListNotFoundException when the broadcast list is deleted")
     void itShouldThrowExceptionForDeletedBroadcastList() {
         broadcastList.setDeletedAt(LocalDate.now());  // Marca a lista como deletada
-        when(broadcastListRepository.findAllByDeletedAtIsNull()).thenReturn(List.of(broadcastList));
+        when(broadcastListRepository.findAllNotDeleted()).thenReturn(List.of(broadcastList));
     
         assertThrows(BroadcastListNotFoundException.class, () -> sut.execute(1L));
     
-        verify(broadcastListRepository, times(1)).findAllByDeletedAtIsNull();
+        verify(broadcastListRepository, times(1)).findAllNotDeleted();
     }
 }
 

@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 import com.zerowaste.dtos.broadcasts.GetBroadcastDTO;
 import com.zerowaste.models.broadcast.BroadcastList;
 import com.zerowaste.repositories.BroadcastListsRepository;
-import com.zerowaste.services.broadcasts.errors.BroadcastListNotFoundException;
+import com.zerowaste.services.broadcasts.exceptions.BroadcastListNotFoundException;
 
 import java.util.List;
 
@@ -20,7 +20,7 @@ public class GetBroadcastListByIdService {
 
     public GetBroadcastDTO execute(Long id) {
 
-        List<BroadcastList> broadcastLists = broadcastListRepository.findAllByDeletedAtIsNull();
+        List<BroadcastList> broadcastLists = broadcastListRepository.findAllNotDeleted();
 
         BroadcastList broadcastList = broadcastLists.stream()
             .filter(list -> list.getId().equals(id))

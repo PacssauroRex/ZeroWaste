@@ -17,7 +17,7 @@ public class GetBroadcastListsService {
     }
 
     public List<GetBroadcastDTO> execute() {
-    List<BroadcastList> broadcastLists = broadcastListsRepository.findAllByDeletedAtIsNull();
+    List<BroadcastList> broadcastLists = broadcastListsRepository.findAllNotDeleted();
     
     return broadcastLists.stream().map(broadcastList -> {
     

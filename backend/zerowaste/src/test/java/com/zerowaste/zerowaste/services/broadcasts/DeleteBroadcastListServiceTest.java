@@ -22,7 +22,7 @@ import com.zerowaste.models.broadcast.BroadcastList;
 import com.zerowaste.models.broadcast.BroadcastListSendType;
 import com.zerowaste.repositories.BroadcastListsRepository;
 import com.zerowaste.services.broadcasts.DeleteBroadcastListService;
-import com.zerowaste.services.broadcasts.errors.BroadcastListNotFoundException;
+import com.zerowaste.services.broadcasts.exceptions.BroadcastListNotFoundException;
 
 @ExtendWith(MockitoExtension.class)
 class DeleteBroadcastListServiceTest {
@@ -57,7 +57,7 @@ class DeleteBroadcastListServiceTest {
     @DisplayName("It should create and delete the broadcast list")
     void itShouldCreateAndDeleteBroadcastList() {
         
-        when(broadcastListsRepository.findAllByDeletedAtIsNull()).thenReturn(List.of(broadcastList));
+        when(broadcastListsRepository.findAllNotDeleted()).thenReturn(List.of(broadcastList));
         when(broadcastListsRepository.save(broadcastList)).thenReturn(broadcastList);
 
         assertDoesNotThrow(() -> sut.execute(1L));
@@ -71,7 +71,7 @@ class DeleteBroadcastListServiceTest {
     @DisplayName("It should throw BroadcastListNotFoundException when no broadcast list is found")
     void itShouldThrowExceptionWhenBroadcastListNotFound() {
 
-        when(broadcastListsRepository.findAllByDeletedAtIsNull()).thenReturn(List.of());
+        when(broadcastListsRepository.findAllNotDeleted()).thenReturn(List.of());
 
         assertThrows(BroadcastListNotFoundException.class, () -> sut.execute(1L)); 
     }
@@ -82,7 +82,7 @@ class DeleteBroadcastListServiceTest {
 
         broadcastList.setDeletedAt(LocalDate.now());
 
-        when(broadcastListsRepository.findAllByDeletedAtIsNull()).thenReturn(List.of(broadcastList));
+        when(broadcastListsRepository.findAllNotDeleted()).thenReturn(List.of(broadcastList));
 
         assertDoesNotThrow(() -> sut.execute(1L)); 
 

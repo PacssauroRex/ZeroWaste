@@ -3,7 +3,7 @@ package com.zerowaste.services.broadcasts;
 import org.springframework.stereotype.Service;
 import com.zerowaste.models.broadcast.BroadcastList;
 import com.zerowaste.repositories.BroadcastListsRepository;
-import com.zerowaste.services.broadcasts.errors.BroadcastListNotFoundException;
+import com.zerowaste.services.broadcasts.exceptions.BroadcastListNotFoundException;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -19,7 +19,7 @@ public class DeleteBroadcastListService {
     }
 
     public void execute(Long id) {
-        List<BroadcastList> broadcastLists = broadcastListsRepository.findAllByDeletedAtIsNull();
+        List<BroadcastList> broadcastLists = broadcastListsRepository.findAllNotDeleted();
 
         Optional<BroadcastList> broadcastListOptional = broadcastLists.stream()
             .filter(broadcastList -> broadcastList.getId().equals(id))
