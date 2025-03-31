@@ -6,7 +6,6 @@ import com.zerowaste.repositories.BroadcastListsRepository;
 import com.zerowaste.services.broadcasts.exceptions.BroadcastListNotFoundException;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -19,24 +18,16 @@ public class DeleteBroadcastListService {
     }
 
     public void execute(Long id) {
-        List<BroadcastList> broadcastLists = broadcastListsRepository.findAllNotDeleted();
+        Optional<BroadcastList> broadcastOpt = broadcastListsRepository.findById(id);
 
-        Optional<BroadcastList> broadcastListOptional = broadcastLists.stream()
-            .filter(broadcastList -> broadcastList.getId().equals(id))
-            .findFirst();
+        if(!broadcastOpt.isPresent() || broadcastOpt.get().getDeletedAt() != null)
+            throw new BroadcastListNotFoundException(null);
 
-        if (broadcastListOptional.isEmpty()) {
-            throw new BroadcastListNotFoundException("Lista de transmissão não encontrada para o ID: " + id);
-        }
+        BroadcastList broadcast = broadcastOpt.get();
+        
+        broadcast.setDeletedAt(LocalDate.now());
 
-        BroadcastList broadcastList = broadcastListOptional.get();
-
-        if (broadcastList.getDeletedAt() != null) {
-            return;
-        }
-
-        broadcastList.setDeletedAt(LocalDate.now());
-        broadcastListsRepository.save(broadcastList);
+        broadcastListsRepository.save(broadcast);
     }
 }
 
