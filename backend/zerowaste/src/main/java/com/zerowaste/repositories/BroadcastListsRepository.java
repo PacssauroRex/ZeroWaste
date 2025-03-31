@@ -1,9 +1,14 @@
 package com.zerowaste.repositories;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.zerowaste.models.broadcast.BroadcastList;
 
 @Repository
-public interface BroadcastListsRepository extends JpaRepository<BroadcastList, Long> {}
+public interface BroadcastListsRepository extends JpaRepository<BroadcastList, Long> {
+
+    List<BroadcastList> findAllByDeletedAtIsNull();
+}

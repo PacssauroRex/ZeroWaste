@@ -26,6 +26,7 @@ public class BroadcastList {
     public BroadcastList(
         Long id,
         String name,
+        String description,
         LocalDate createdAt,
         LocalDate updatedAt,
         LocalDate deletedAt,
@@ -34,6 +35,7 @@ public class BroadcastList {
     ) {
         this.id = id;
         this.name = name;
+        this.description = description;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.deletedAt = deletedAt;
@@ -48,6 +50,9 @@ public class BroadcastList {
 
     @Column(name = "name", nullable = false, length = 100)
     private String name;
+
+    @Column(name = "description", nullable = false, length = 255)
+    private String description;
 
     @Column(name = "created_at")
     private LocalDate createdAt;
@@ -88,6 +93,14 @@ public class BroadcastList {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public LocalDate getCreatedAt() {
