@@ -88,6 +88,32 @@ export class PromotionService {
     }
   }
 
+  public async getActivePromotions(): Promise<Promotion[]> {
+
+    // Efetua a requisição para obter as promoções ativas
+    const response = await fetch(API_URL + '/promotions/active', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        'Accept': 'application/json',
+      }
+    });
+
+    // Em caso de erro, lança uma exceção
+    if (!response.ok) {
+      const body = await response.json();
+
+      throw new Error('Error getting active promotions', {
+        cause: body,
+      });
+    }
+
+    // Retorna as promoções ativas
+    const { promotions } = await response.json();
+    return promotions ?? [];
+
+  }
 }
 
 
