@@ -21,7 +21,7 @@ public class GetBroadcastListByIdService {
         Optional<BroadcastList> broadcastOpt = broadcastListRepository.findById(id);
 
         if(!broadcastOpt.isPresent() || broadcastOpt.get().getDeletedAt() != null)
-            throw new BroadcastListNotFoundException(null);
+            throw new BroadcastListNotFoundException("Lista de transmissão não encontrada");
         
         return broadcastOpt.get();
     }

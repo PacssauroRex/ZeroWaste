@@ -21,7 +21,7 @@ public class DeleteBroadcastListService {
         Optional<BroadcastList> broadcastOpt = broadcastListsRepository.findById(id);
 
         if(!broadcastOpt.isPresent() || broadcastOpt.get().getDeletedAt() != null)
-            throw new BroadcastListNotFoundException(null);
+            throw new BroadcastListNotFoundException("Lista de transmissão não encontrada");
 
         BroadcastList broadcast = broadcastOpt.get();
         
