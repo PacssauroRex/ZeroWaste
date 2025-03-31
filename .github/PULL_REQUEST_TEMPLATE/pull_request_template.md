@@ -1,3 +1,9 @@
+---
+name: Default Pull Request
+about: Default pull request template
+
+---
+
 Este PR...
 
 ### Alterações principais
