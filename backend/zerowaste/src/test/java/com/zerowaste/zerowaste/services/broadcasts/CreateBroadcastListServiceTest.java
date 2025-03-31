@@ -30,13 +30,6 @@ import com.zerowaste.services.broadcasts.exceptions.BroadcastListProductsNotFoun
 
 @ExtendWith(MockitoExtension.class)
 class CreateBroadcastListServiceTest {
-    @InjectMocks
-    private final CreateBroadcastListService sut;
-
-    public CreateBroadcastListServiceTest() {
-        this.sut = new CreateBroadcastListService(broadcastListRepository, broadcastEmailsRepository, productsRepository);
-    }
-
     @Mock
     private BroadcastListsRepository broadcastListRepository;
 
@@ -45,6 +38,14 @@ class CreateBroadcastListServiceTest {
 
     @Mock
     private ProductsRepository productsRepository;
+    
+    @InjectMocks
+    private final CreateBroadcastListService sut;
+
+    public CreateBroadcastListServiceTest() {
+        MockitoAnnotations.openMocks(this);
+        this.sut = new CreateBroadcastListService(broadcastListRepository, broadcastEmailsRepository, productsRepository);
+    }
 
     @BeforeEach
     void setup() {
@@ -125,6 +126,7 @@ class CreateBroadcastListServiceTest {
         product.setBrand("Brand 1");
         product.setCategory(ProductCategory.HYGIENE);
         product.setUnitPrice(10.0);
+
 
         when(productsRepository.findAllById(List.of(product.getId()))).thenReturn(List.of(product));
 

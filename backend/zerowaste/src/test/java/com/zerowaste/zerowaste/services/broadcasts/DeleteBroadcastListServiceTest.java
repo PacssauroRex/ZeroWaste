@@ -8,6 +8,7 @@ import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -57,7 +58,7 @@ class DeleteBroadcastListServiceTest {
     @DisplayName("It should create and delete the broadcast list")
     void itShouldCreateAndDeleteBroadcastList() {
         
-        when(broadcastListsRepository.findAllNotDeleted()).thenReturn(List.of(broadcastList));
+        when(broadcastListsRepository.findById(broadcastList.getId())).thenReturn(Optional.of(broadcastList));
         when(broadcastListsRepository.save(broadcastList)).thenReturn(broadcastList);
 
         assertDoesNotThrow(() -> sut.execute(1L));
@@ -71,7 +72,7 @@ class DeleteBroadcastListServiceTest {
     @DisplayName("It should throw BroadcastListNotFoundException when no broadcast list is found")
     void itShouldThrowExceptionWhenBroadcastListNotFound() {
 
-        when(broadcastListsRepository.findAllNotDeleted()).thenReturn(List.of());
+        when(broadcastListsRepository.findById(broadcastList.getId())).thenReturn(Optional.empty());
 
         assertThrows(BroadcastListNotFoundException.class, () -> sut.execute(1L)); 
     }
@@ -82,9 +83,9 @@ class DeleteBroadcastListServiceTest {
 
         broadcastList.setDeletedAt(LocalDate.now());
 
-        when(broadcastListsRepository.findAllNotDeleted()).thenReturn(List.of(broadcastList));
+        when(broadcastListsRepository.findById(broadcastList.getId())).thenReturn(Optional.of(broadcastList));
 
-        assertDoesNotThrow(() -> sut.execute(1L)); 
+        assertThrows(BroadcastListNotFoundException.class, () -> sut.execute(1L)); 
 
         verify(broadcastListsRepository, times(0)).save(broadcastList);
     }
