@@ -90,4 +90,28 @@ export class ProductService {
       });
     }
   }
+
+  public async getExpiringProducts(): Promise<number> {
+    const url = `${API_URL}/products/expiring`;
+
+    // Efetua a requisição para buscar os produtos a vencer
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    });
+
+    // Retorna 0 caso a requisição falhe
+    if (!response.ok) {
+      console.error('Erro ao buscar produtos a vencer:', response.statusText);
+      return 0;
+    }
+
+    // Executa a conversão de String para inteiro
+    const data = await response.json();
+    return parseInt(data.expiring_products, 10) || 0;
+  }
+
 }
