@@ -33,6 +33,9 @@ public class BroadcastEmail {
     @Column(name = "email", nullable = false, length = 320)
     private String email;
 
+    @Column(name = "description", nullable = false, length = 255)
+    private String description;
+
     @Column(name = "created_at")
     private LocalDate createdAt;
 
@@ -70,6 +73,14 @@ public class BroadcastEmail {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public LocalDate getCreatedAt() {
