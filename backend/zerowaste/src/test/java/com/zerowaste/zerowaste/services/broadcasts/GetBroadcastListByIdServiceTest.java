@@ -44,7 +44,6 @@ class GetBroadcastListByIdServiceTest {
         broadcastList = new BroadcastList();
         broadcastList.setId(1L);
         broadcastList.setName("Test Broadcast");
-        broadcastList.setDescription("Description for test");
         broadcastList.setSendType(BroadcastListSendType.MANUAL);
         broadcastList.setCreatedAt(LocalDate.now());
         broadcastList.setUpdatedAt(null);  
@@ -63,14 +62,10 @@ class GetBroadcastListByIdServiceTest {
     @Test
     @DisplayName("It should return the broadcast list when it exists and is not deleted")
     void itShouldReturnBroadcastListWhenExistsAndNotDeleted() {
-
         when(broadcastListRepository.findAllByDeletedAtIsNull()).thenReturn(List.of(broadcastList));
-
         GetBroadcastDTO result = assertDoesNotThrow(() -> sut.execute(1L));
-
         assertEquals(broadcastList.getId(), result.getId());
         assertEquals(broadcastList.getName(), result.getName());
-        assertEquals(broadcastList.getDescription(), result.getDescription());
         assertEquals(broadcastList.getSendType().name(), result.getSendType());
         assertEquals(broadcastList.getCreatedAt(), result.getCreatedAt());
         assertEquals(broadcastList.getUpdatedAt(), result.getUpdatedAt());  
@@ -78,11 +73,12 @@ class GetBroadcastListByIdServiceTest {
 
         List<String> expectedEmails = broadcastList.getBroadcastEmails().stream()
             .map(BroadcastEmail::getEmail)
-            .collect(Collectors.toList());
-        assertEquals(expectedEmails, result.getEmail());
+            .toList();
 
+        assertEquals(expectedEmails, result.getEmail());
         verify(broadcastListRepository, times(1)).findAllByDeletedAtIsNull();
     }
+
 
     @Test
     @DisplayName("It should throw BroadcastListNotFoundException when the broadcast list does not exist")

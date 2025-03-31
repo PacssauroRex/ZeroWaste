@@ -32,9 +32,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.time.LocalDate;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
 @ExtendWith(MockitoExtension.class)
 class BroadcastsControllerTest {
@@ -119,7 +117,6 @@ class BroadcastsControllerTest {
         GetBroadcastDTO dto = new GetBroadcastDTO();
         dto.setId(id);
         dto.setName("Broadcast List 1");
-        dto.setDescription("Description");
 
         when(getBroadcastListByIdService.execute(id)).thenReturn(dto);
 
@@ -148,25 +145,19 @@ class BroadcastsControllerTest {
                 1L, 
                 List.of("email1@example.com", "email2@example.com"),
                 "Broadcast List 1",
-                "Description 1",
                 "MANUAL",
                 LocalDate.now(), 
                 LocalDate.now(), 
-                null, 
-                new LinkedHashSet<>(Set.of(1L, 2L)),
-                List.of()
+                null
             ),
             new GetBroadcastDTO(
                 2L, 
                 List.of("email3@example.com", "email4@example.com"),
                 "Broadcast List 2",
-                "Description 2", 
-                "INTERVAL",
+                "MANUAL",
                 LocalDate.now(), 
                 LocalDate.now(),
-                null,
-                new LinkedHashSet<>(Set.of(3L, 4L)),
-                List.of()
+                null
             )
         );
 

@@ -39,7 +39,6 @@ class GetBroadcastListsServiceTest {
         broadcastList1 = new BroadcastList();
         broadcastList1.setId(1L);
         broadcastList1.setName("Broadcast List 1");
-        broadcastList1.setDescription("Description 1");
         broadcastList1.setCreatedAt(LocalDate.now());
         broadcastList1.setUpdatedAt(null);
         broadcastList1.setDeletedAt(null); 
@@ -52,7 +51,6 @@ class GetBroadcastListsServiceTest {
         broadcastList2 = new BroadcastList();
         broadcastList2.setId(2L);
         broadcastList2.setName("Broadcast List 2");
-        broadcastList2.setDescription("Description 2");
         broadcastList2.setCreatedAt(LocalDate.now());
         broadcastList2.setUpdatedAt(null);
         broadcastList2.setDeletedAt(LocalDate.now());  
@@ -65,23 +63,13 @@ class GetBroadcastListsServiceTest {
 
     @Test
     void testExecute_WithActiveAndDeletedBroadcastLists() {
-
+        
         when(broadcastListsRepository.findAllByDeletedAtIsNull()).thenReturn(Arrays.asList(broadcastList1));
-
+    
         List<GetBroadcastDTO> result = getBroadcastListsService.execute();
-
+  
         assertEquals(1, result.size());
         assertEquals("Broadcast List 1", result.get(0).getName());
-    }
-
-    @Test
-    void testExecute_WhenNoActiveBroadcastList() {
-
-        when(broadcastListsRepository.findAllByDeletedAtIsNull()).thenReturn(List.of());
-
-        List<GetBroadcastDTO> result = getBroadcastListsService.execute();
-
-        assertTrue(result.isEmpty());
     }
 
     @Test

@@ -3,13 +3,11 @@ package com.zerowaste.services.broadcasts;
 import org.springframework.stereotype.Service;
 import com.zerowaste.dtos.broadcasts.GetBroadcastDTO;
 import com.zerowaste.models.broadcast.BroadcastList;
-import com.zerowaste.models.product.Product;
 import com.zerowaste.repositories.BroadcastListsRepository;
 import com.zerowaste.services.broadcasts.errors.BroadcastListNotFoundException;
 
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
+
 
 @Service
 public class GetBroadcastListByIdService {
@@ -35,28 +33,16 @@ public class GetBroadcastListByIdService {
 
         List<String> emails = broadcastList.getBroadcastEmails().stream()
             .map(emailObj -> emailObj.getEmail())
-            .collect(Collectors.toList());
-
-        Set<Long> broadcastListIds = broadcastList.getBroadcastEmails().stream()
-            .map(emailObj -> emailObj.getId())
-            .collect(Collectors.toSet());
-
-        List<Long> productsIds = broadcastList.getProducts().stream()
-            .map(p -> (Product) p)
-            .map(Product::getId)
-            .collect(Collectors.toList());
+            .toList();
 
         return new GetBroadcastDTO(
             broadcastList.getId(),
             emails,
             broadcastList.getName(),
-            broadcastList.getDescription(),
             broadcastList.getSendType().name(),
             broadcastList.getCreatedAt(),
             broadcastList.getUpdatedAt(),
-            broadcastList.getDeletedAt(),
-            broadcastListIds,
-            productsIds
+            broadcastList.getDeletedAt()
         );
     }
 }

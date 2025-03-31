@@ -40,7 +40,6 @@ class DeleteBroadcastListServiceTest {
         broadcastList = new BroadcastList();
         broadcastList.setId(1L);
         broadcastList.setName("Test Broadcast");
-        broadcastList.setDescription("Description for test");
         broadcastList.setSendType(BroadcastListSendType.MANUAL);
         broadcastList.setCreatedAt(LocalDate.now());
         broadcastList.setUpdatedAt(null);  

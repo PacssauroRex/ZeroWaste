@@ -28,11 +28,13 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-
-
 @RestController
 @RequestMapping("/broadcasts")
 public class BroadcastsController {
+
+    private static final String MESSAGE_KEY = "message";
+    private static final String INTERNAL_ERROR_MESSAGE = "Erro interno: ";
+
     private final CreateBroadcastListService createBroadcastListService;
     private final UpdateBroadcastListService updateBroadcastListService;
     private final GetBroadcastListByIdService getBroadcastListByIdService;
@@ -53,18 +55,25 @@ public class BroadcastsController {
         this.deleteBroadcastListService = deleteBroadcastListService;
     }
 
+    private ResponseEntity<Map<String, Object>> successResponse(String message, HttpStatus status) {
+        return ResponseEntity.status(status).body(Map.of(MESSAGE_KEY, message));
+    }
+
+    private ResponseEntity<Map<String, Object>> errorResponse(String message, HttpStatus status) {
+        return ResponseEntity.status(status).body(Map.of(MESSAGE_KEY, message));
+    }
+
     @PostMapping()
     public ResponseEntity<Map<String, Object>> create(@RequestBody @Valid CreateBroadcastListDTO dto) {
         try {
             this.createBroadcastListService.execute(dto);
-
-            return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("message", "Lista de transmissão criada com sucesso"));
+            return successResponse("Lista de transmissão criada com sucesso", HttpStatus.CREATED);
         }
         catch (BroadcastListProductsNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message", e.getMessage()));
+            return errorResponse(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
         catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("message", "Erro interno"));
+            return errorResponse(INTERNAL_ERROR_MESSAGE, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -75,77 +84,57 @@ public class BroadcastsController {
     ) {
         try {
             this.updateBroadcastListService.execute(id, dto);
-
-            return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "Lista de transmissão atualizada com sucesso"));
+            return successResponse("Lista de transmissão atualizada com sucesso", HttpStatus.OK);
         }
         catch (BroadcastListProductsNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message", e.getMessage()));
+            return errorResponse(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
         catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("message", "Erro interno"));
+            return errorResponse(INTERNAL_ERROR_MESSAGE, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    
     @GetMapping("/{id}")
-    public ResponseEntity<Map<String, ?>> getBroadcastListById(@PathVariable Long id) {
+    public ResponseEntity<Map<String, Object>> getBroadcastListById(@PathVariable Long id) {
         try {
-            GetBroadcastDTO broadcastListDTO = getBroadcastListByIdService.execute(id); // Chama o serviço
-            return ResponseEntity.ok(Map.of("broadcast_list", broadcastListDTO)); // Retorna a lista de transmissão
+            GetBroadcastDTO broadcastListDTO = getBroadcastListByIdService.execute(id);
+            return ResponseEntity.ok(Map.of("broadcast_list", broadcastListDTO));
         }
-        // Caso não encontre a lista de transmissão
         catch (BroadcastListNotFoundException e) {
-            return ResponseEntity
-                .status(HttpStatus.NOT_FOUND)
-                .body(Map.of("message", e.getMessage())); // Mensagem customizada
+            return errorResponse(e.getMessage(), HttpStatus.NOT_FOUND);
         }
-        // Para qualquer outro erro inesperado
         catch (Exception e) {
-            return ResponseEntity
-                .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Map.of("message", "Erro interno: " + e.getMessage())); // Mensagem genérica de erro
+            return errorResponse(INTERNAL_ERROR_MESSAGE + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-   
+
     @GetMapping
-    public ResponseEntity<Map<String, ?>> getAllBroadcastLists() {
+    public ResponseEntity<Map<String, Object>> getAllBroadcastLists() {
         try {
-            List<GetBroadcastDTO> broadcastListDTOs = getBroadcastListsService.execute(); // Chama o serviço
-            return ResponseEntity.ok(Map.of("broadcast_lists", broadcastListDTOs)); // Retorna as listas de transmissão
+            List<GetBroadcastDTO> broadcastListDTOs = getBroadcastListsService.execute();
+            return ResponseEntity.ok(Map.of("broadcast_lists", broadcastListDTOs));
         }
-        // Caso não encontre listas de transmissão
         catch (BroadcastListNotFoundException e) {
-            return ResponseEntity
-            .status(HttpStatus.NOT_FOUND)
-            .body(Map.of("message", e.getMessage())); // Mensagem customizada
+            return errorResponse(e.getMessage(), HttpStatus.NOT_FOUND);
         }
-        // Para qualquer outro erro inesperado
         catch (Exception e) {
-            return ResponseEntity
-            .status(HttpStatus.INTERNAL_SERVER_ERROR)
-            .body(Map.of("message", "Erro interno: " + e.getMessage())); // Mensagem genérica de erro
+            return errorResponse(INTERNAL_ERROR_MESSAGE + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Map<String, ?>> deleteBroadcastList(@PathVariable Long id) {
+    public ResponseEntity<Map<String, Object>> deleteBroadcastList(@PathVariable Long id) {
         try {
-            deleteBroadcastListService.execute(id); // Chama o serviço para deletar
-            return ResponseEntity.noContent().build(); // Retorna sucesso com status 204 (sem conteúdo)
+            deleteBroadcastListService.execute(id);
+            return ResponseEntity.noContent().build();
         }
-        // Caso não encontre a lista de transmissão para excluir
         catch (BroadcastListNotFoundException e) {
-            return ResponseEntity
-                .status(HttpStatus.NOT_FOUND)
-                .body(Map.of("message", e.getMessage())); // Mensagem de erro se a lista não for encontrada
-        }   
-        // Para qualquer outro erro inesperado
+            return errorResponse(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
         catch (Exception e) {
-            return ResponseEntity
-                .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Map.of("message", "Erro interno: " + e.getMessage())); // Mensagem genérica de erro
+            return errorResponse(INTERNAL_ERROR_MESSAGE + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
 }
+
 
