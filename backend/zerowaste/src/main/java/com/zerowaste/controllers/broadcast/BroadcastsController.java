@@ -141,7 +141,7 @@ public class BroadcastsController {
         }
     }
 
-    @PostMapping("{id}/trigger")
+    @PostMapping("/{id}/trigger")
     public ResponseEntity<Map<String, Object>> trigger(@PathVariable Long id) {
         try {
             this.triggerBroadcastService.execute(id);

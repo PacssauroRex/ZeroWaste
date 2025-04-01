@@ -7,7 +7,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import com.zerowaste.repositories.BroadcastListsRepository;
-import com.zerowaste.services.broadcasts.errors.BroadcastListNotFoundException;
+import com.zerowaste.services.broadcasts.exceptions.BroadcastListNotFoundException;
 
 @Service
 public class TriggerBroadcastService {
