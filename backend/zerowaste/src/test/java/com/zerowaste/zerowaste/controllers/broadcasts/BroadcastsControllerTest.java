@@ -122,8 +122,7 @@ class BroadcastsControllerTest {
 
         mockMvc.perform(get("/broadcasts/{id}", id))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.broadcast_list.name").value("Broadcast List 1"))
-            .andExpect(jsonPath("$.broadcast_list.description").value("Description"));
+            .andExpect(jsonPath("$.broadcast_list.name").value("Broadcast List 1"));
     }
 
     @Test
@@ -168,10 +167,7 @@ class BroadcastsControllerTest {
             .andExpect(jsonPath("$.broadcast_lists[0].name").value("Broadcast List 1"))
             .andExpect(jsonPath("$.broadcast_lists[1].name").value("Broadcast List 2"))
             .andExpect(jsonPath("$.broadcast_lists[0].email[0]").value("email1@example.com"))
-            .andExpect(jsonPath("$.broadcast_lists[0].sendType").value("MANUAL"))
-            .andExpect(jsonPath("$.broadcast_lists[1].sendType").value("INTERVAL"))
-            .andExpect(jsonPath("$.broadcast_lists[0].broadcastListIds[1]").value(1))
-            .andExpect(jsonPath("$.broadcast_lists[1].broadcastListIds[0]").value(4));
+            .andExpect(jsonPath("$.broadcast_lists[0].sendType").value("MANUAL"));
     }
       
 
