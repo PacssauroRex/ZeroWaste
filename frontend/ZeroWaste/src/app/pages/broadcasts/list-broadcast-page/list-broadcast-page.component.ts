@@ -43,7 +43,7 @@ export class ListBroadcastPageComponent {
       const user: UserPayload = JSON.parse(localStorage.getItem('user')!);
       if (user.role !== 'ADMIN') {
         alert('Você não tem permissão para deletar listas de transmissão');
-        this.modal.closeModal();
+        this.modalDelete.closeModal();
         return;
       }
       
