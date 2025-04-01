@@ -1,0 +1,88 @@
+<section class="container">
+    <app-card>
+      <app-card-header>
+        <h2>Listas de transmissão</h2>
+      </app-card-header>
+  
+      <app-card-content>
+        <div class="table">
+            <table>
+              <thead>
+                <tr>
+                  <th>Nome</th>
+                  <th>Tipo de envio</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody>
+                @if (!broadcasts().length) {
+                  <tr>
+                    <td colspan="5" style="text-align: center;">
+                      Nenhuma lista de transmissão encontrada.
+                    </td>
+                  </tr>
+                } @else {
+                  @for (broadcast of broadcasts(); track broadcast.id) {
+                    <tr>
+                      <td>{{ broadcast.name }}</td>
+                      <td>{{ broadcast.sendType }}</td>
+                      <td>
+                        <a
+                          [routerLink]="['/broadcasts/', broadcast.id]"
+                          title="Detalhar lista de transmissão"
+                          >
+                          <app-button [type]="'button'" [variant]="'outline'">
+                            <img src="info.png" alt="detail broadcast" />
+                          </app-button>
+                        </a>
+                        <a
+                          [routerLink]="['/broadcasts/update', broadcast.id]"
+                          title="Editar lista de transmissão"
+                        >
+                          <app-button [type]="'button'" [variant]="'outline'">
+                            <img src="editar.png" alt="edit broadcast" />
+                          </app-button>
+                        </a>
+                        <a routerLink="/broadcasts/"
+                           title="Deletar lista de transmissão">
+                          <app-button [type]="'button'" [variant]="'outline'" (click)="modal.openModal()">
+                            <img src="deletar.png" alt="delete broadcast" />
+                          </app-button>
+  
+                          <app-modal #modal>
+                            <app-card>
+                              <app-card-header>
+                                <h2>
+                                  Você tem certeza que deseja deletar esta lista de transmissão?
+                                </h2>
+                              </app-card-header>
+  
+                              <app-card-content>
+                                Essa ação não pode ser desfeita. Clique em "Confirmar" para deletar a lista de transmissão.
+                              </app-card-content>
+  
+                              <app-card-footer>
+                                <app-button [variant]="'outline'" style="margin-right: 8px;" (click)="modal.closeModal()">
+                                  Cancelar
+                                </app-button>
+                                <app-button (click)="onDeleteBroadcastConfirmation(broadcast.id)">
+                                  Confirmar
+                                </app-button>
+                              </app-card-footer>
+                            </app-card>
+                          </app-modal>
+                        </a>
+                      </td>
+                    </tr>
+                  }
+                }
+              </tbody>
+            </table>
+          </div>
+          <a routerLink="/broadcasts/create">
+            <app-button [type]="'button'" [block]="true"> Cadastrar lista de transmissão </app-button>
+          </a>
+      </app-card-content>
+    </app-card>
+  </section>
+  
