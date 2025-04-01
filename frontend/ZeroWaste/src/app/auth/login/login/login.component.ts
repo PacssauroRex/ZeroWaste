@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../auth.service';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -11,8 +11,8 @@ import { ButtonComponent } from '../../../components/form/button/button.componen
 @Component({
   selector: 'app-login',
   imports: [
-    CommonModule, 
-    ReactiveFormsModule, 
+    CommonModule,
+    ReactiveFormsModule,
     RouterModule,
     InputComponent,
     ButtonComponent
@@ -37,10 +37,17 @@ export class LoginComponent {
       const { email, senha } = this.loginForm.value;
 
       this.authService.login(email, senha)
-      .then(() => this.router.navigate(['/home']), () => this.router.navigate(['/login']))
-      .catch(err => alert('Login error: ' + err));
+        .then(success => {
+          if (success) {
+            this.router.navigate(['/home']);
+          } else {
+            alert('Email ou senha incorretos');
+          }
+        })
+        .catch(err => alert('Erro ao tentar logar: ' + err));
     }
   }
+
 
   public getErrorMessage(controlName: string): string | null {
     const validationErrorMessage = this.validationErrorMessage.getValidationErrorMessage(this.loginForm.get(controlName)!);
