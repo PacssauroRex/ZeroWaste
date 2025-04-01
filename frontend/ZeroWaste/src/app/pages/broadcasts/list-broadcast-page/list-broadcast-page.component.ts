@@ -30,14 +30,21 @@ export class ListBroadcastPageComponent {
     public fb = inject(FormBuilder);
     public route = inject(ActivatedRoute);
     public broadcasts = signal<Broadcast[]>([]);
-    @ViewChild(ModalComponent) modal!: ModalComponent;
-  
+    @ViewChild(ModalComponent) modalConfirmBroadcastTrigger!: ModalComponent;
+    @ViewChild(ModalComponent) modalDelete!: ModalComponent;
+
     public async ngOnInit(): Promise<void> {
       const broadcasts = await this.broadcastService.getAllBroadcasts();
       this.broadcasts.set(broadcasts);
     }
 
     public async onDeleteBroadcastConfirmation(id: number): Promise<void>{
-      
+
+    }
+
+    public async onConfirmBroadcastTrigger(id: number): Promise<void> {
+      await this.broadcastService.triggerBroadcast(id);
+
+      this.modalConfirmBroadcastTrigger.closeModal();
     }
 }
