@@ -35,7 +35,25 @@ export class BroadcastService {
     if (response.status !== 200) {
       throw new Error('Erro ao enviar broadcast');
     }
-
     return;
   }
+
+  public async deleteBroadcast(id: number): Promise<void> {
+      const response = await fetch(API_URL + '/broadcasts/' + id, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          'Accept': 'application/json',
+        },
+      });
+    
+      if (!response.ok) {
+        const body = await response.json();
+    
+        throw new Error('Error deleting broadcast', {
+          cause: body,
+        });
+      }
+    }
 }
