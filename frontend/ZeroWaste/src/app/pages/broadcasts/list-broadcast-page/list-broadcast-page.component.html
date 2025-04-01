@@ -3,7 +3,7 @@
       <app-card-header>
         <h2>Listas de transmissão</h2>
       </app-card-header>
-  
+
       <app-card-content>
         <div class="table">
             <table>
@@ -27,6 +27,34 @@
                       <td>{{ broadcast.name }}</td>
                       <td>{{ broadcast.sendType }}</td>
                       <td>
+                        <span title="Disparar lista de transmissão">
+                          <app-button [type]="'button'" [variant]="'outline'" (click)="confirmBroadcastTriggerModal.openModal()">
+                            <img src="send.png" alt="send broadcast" />
+                          </app-button>
+
+                          <app-modal #confirmBroadcastTriggerModal>
+                            <app-card>
+                              <app-card-header>
+                                <h2>
+                                  Você tem certeza que deseja disparar esta lista de transmissão?
+                                </h2>
+                              </app-card-header>
+
+                              <app-card-content>
+                                Essa ação não pode ser desfeita. Clique em "Confirmar" para disparar a lista de transmissão.
+                              </app-card-content>
+
+                              <app-card-footer>
+                                <app-button [variant]="'outline'" style="margin-right: 8px;" (click)="confirmBroadcastTriggerModal.closeModal()">
+                                  Cancelar
+                                </app-button>
+                                <app-button (click)="onConfirmBroadcastTrigger(broadcast.id)">
+                                  Confirmar
+                                </app-button>
+                              </app-card-footer>
+                            </app-card>
+                          </app-modal>
+                        </span>
                         <a
                           [routerLink]="['/broadcasts/', broadcast.id]"
                           title="Detalhar lista de transmissão"
@@ -45,24 +73,24 @@
                         </a>
                         <a routerLink="/broadcasts/"
                            title="Deletar lista de transmissão">
-                          <app-button [type]="'button'" [variant]="'outline'" (click)="modal.openModal()">
+                          <app-button [type]="'button'" [variant]="'outline'" (click)="deleteModal.openModal()">
                             <img src="deletar.png" alt="delete broadcast" />
                           </app-button>
-  
-                          <app-modal #modal>
+
+                          <app-modal #deleteModal>
                             <app-card>
                               <app-card-header>
                                 <h2>
                                   Você tem certeza que deseja deletar esta lista de transmissão?
                                 </h2>
                               </app-card-header>
-  
+
                               <app-card-content>
                                 Essa ação não pode ser desfeita. Clique em "Confirmar" para deletar a lista de transmissão.
                               </app-card-content>
-  
+
                               <app-card-footer>
-                                <app-button [variant]="'outline'" style="margin-right: 8px;" (click)="modal.closeModal()">
+                                <app-button [variant]="'outline'" style="margin-right: 8px;" (click)="deleteModal.closeModal()">
                                   Cancelar
                                 </app-button>
                                 <app-button (click)="onDeleteBroadcastConfirmation(broadcast.id)">
@@ -85,4 +113,3 @@
       </app-card-content>
     </app-card>
   </section>
-  

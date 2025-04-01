@@ -31,8 +31,9 @@ export class ListBroadcastPageComponent {
     public fb = inject(FormBuilder);
     public route = inject(ActivatedRoute);
     public broadcasts = signal<Broadcast[]>([]);
-    @ViewChild(ModalComponent) modal!: ModalComponent;
-  
+    @ViewChild(ModalComponent) modalConfirmBroadcastTrigger!: ModalComponent;
+    @ViewChild(ModalComponent) modalDelete!: ModalComponent;
+
     public async ngOnInit(): Promise<void> {
       const broadcasts = await this.broadcastService.getAllBroadcasts();
       this.broadcasts.set(broadcasts);
@@ -41,7 +42,7 @@ export class ListBroadcastPageComponent {
     public async onDeleteBroadcastConfirmation(id: number): Promise<void>{
       const user: UserPayload = JSON.parse(localStorage.getItem('user')!);
       if (user.role !== 'ADMIN') {
-        alert('Você não tem permissão para deletar pontos de doações');
+        alert('Você não tem permissão para deletar listas de transmissão');
         this.modal.closeModal();
         return;
       }
@@ -49,15 +50,23 @@ export class ListBroadcastPageComponent {
       try {
         await this.broadcastService.deleteBroadcast(id);
       
-        alert('Ponto de doação deletado com sucesso!');
+        alert('Lista de transmissão deletada com sucesso!');
       
         this.broadcasts.set(this.broadcasts().filter((broadcasts) => broadcasts.id !== id));
       } catch (error) {
         if ((error as Error).cause) {
           const { message } = (error as Error).cause as any;
       
-          alert('Erro ao deletar ponto de doação: ' + message);
+          alert('Erro ao deletar lista de transmissão: ' + message);
         }
       } 
+
+    }
+
+    public async onConfirmBroadcastTrigger(id: number): Promise<void> {
+      await this.broadcastService.triggerBroadcast(id);
+
+      this.modalConfirmBroadcastTrigger.closeModal();
+
     }
 }
