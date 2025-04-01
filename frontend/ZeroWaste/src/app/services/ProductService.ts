@@ -76,7 +76,7 @@ export class ProductService {
     const response = await fetch(API_URL + '/products/discard/' + id, {
       method: 'PATCH',
       headers: {
-        'Content-Type': 'application',
+        'Content-Type': 'application/json',
         'Authorization': `Bearer ${localStorage.getItem('token')}`,
         'Accept': 'application/json',
       },

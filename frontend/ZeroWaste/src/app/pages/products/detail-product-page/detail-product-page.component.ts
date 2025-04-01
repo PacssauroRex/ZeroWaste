@@ -1,5 +1,5 @@
 import { CommonModule, formatDate } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, ViewChild } from '@angular/core';
 import { ProductService } from '../../../services/ProductService';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Product } from '../product';
@@ -37,6 +37,7 @@ export class DetailProductPageComponent {
   private router: Router = inject(Router);
   product: Product | undefined;
   public productId: number = 0;
+  @ViewChild(ModalComponent) modal!: ModalComponent;
 
   //Amostragem de informações
   public productForm = this.fb.group({
@@ -97,7 +98,9 @@ export class DetailProductPageComponent {
       else if(this.statusForm.get('status')?.value == "DISCARDED")
         await this.productService.setDiscardedStatusProduct(this.productId);
       
-      this.router.navigate(["/products/" + this.productId]);
+      this.modal.closeModal();
+      alert("Disponibilidade modificada!");
+      window.location.reload();
     }
     catch(error) {
       console.error('Erro ao modificar disponilbilidade: ', error);
