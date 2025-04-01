@@ -22,4 +22,22 @@ export class BroadcastService {
         return broadcast_lists ?? [];
     }
 
+    public async deleteBroadcast(id: number): Promise<void> {
+        const response = await fetch(API_URL + '/broadcasts/' + id, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+            'Accept': 'application/json',
+          },
+        });
+    
+        if (!response.ok) {
+          const body = await response.json();
+    
+          throw new Error('Error deleting broadcast', {
+            cause: body,
+          });
+        }
+      }
 }

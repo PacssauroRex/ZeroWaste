@@ -8,6 +8,7 @@ import { CardComponent, CardContentComponent, CardFooterComponent, CardHeaderCom
 import { BroadcastService } from '../../../services/BroadcastService';
 import { ValidationErrorMessage } from '../../../services/ValidationErrorMessage';
 import { Broadcast } from '../broadcast';
+import { UserPayload } from '../../../auth/auth.service';
 
 @Component({
   selector: 'app-list-broadcast-page',
@@ -38,6 +39,25 @@ export class ListBroadcastPageComponent {
     }
 
     public async onDeleteBroadcastConfirmation(id: number): Promise<void>{
+      const user: UserPayload = JSON.parse(localStorage.getItem('user')!);
+      if (user.role !== 'ADMIN') {
+        alert('Você não tem permissão para deletar pontos de doações');
+        this.modal.closeModal();
+        return;
+      }
       
+      try {
+        await this.broadcastService.deleteBroadcast(id);
+      
+        alert('Ponto de doação deletado com sucesso!');
+      
+        this.broadcasts.set(this.broadcasts().filter((broadcasts) => broadcasts.id !== id));
+      } catch (error) {
+        if ((error as Error).cause) {
+          const { message } = (error as Error).cause as any;
+      
+          alert('Erro ao deletar ponto de doação: ' + message);
+        }
+      } 
     }
 }
