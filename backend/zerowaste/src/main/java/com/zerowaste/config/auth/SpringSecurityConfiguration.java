@@ -45,7 +45,7 @@ public class SpringSecurityConfiguration {
             var corsConfiguration = new org.springframework.web.cors.CorsConfiguration();
             
             corsConfiguration.setAllowedOrigins(java.util.List.of("*"));
-            corsConfiguration.setAllowedMethods(java.util.List.of("GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS"));
+            corsConfiguration.setAllowedMethods(java.util.List.of("GET", "POST", "PUT", "DELETE", "PATCH", "HEAD", "OPTIONS"));
             corsConfiguration.setAllowedHeaders(java.util.List.of("*"));
 
             return corsConfiguration;
@@ -88,6 +88,8 @@ public class SpringSecurityConfiguration {
             // Broadcasts
             .requestMatchers(HttpMethod.POST, BROADCAST_PATH, BROADCAST_PATH + ANY_PATH).hasRole(ADMIN_ROLE)
             .requestMatchers(HttpMethod.PUT, BROADCAST_PATH + ANY_PATH).hasRole(ADMIN_ROLE)
+            .requestMatchers(HttpMethod.GET, BROADCAST_PATH, BROADCAST_PATH + ANY_PATH).hasRole(ADMIN_ROLE)
+            .requestMatchers(HttpMethod.DELETE, BROADCAST_PATH + ANY_PATH).hasRole(ADMIN_ROLE)
         )
         .addFilterBefore(authenticationUserService, UsernamePasswordAuthenticationFilter.class)
         .build();

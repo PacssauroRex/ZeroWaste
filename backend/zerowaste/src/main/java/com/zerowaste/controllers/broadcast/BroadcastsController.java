@@ -5,20 +5,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.zerowaste.dtos.broadcasts.CreateBroadcastListDTO;
 import com.zerowaste.dtos.broadcasts.UpdateBroadcastListDTO;
-import com.zerowaste.dtos.broadcasts.GetBroadcastDTO;
 import com.zerowaste.services.broadcasts.CreateBroadcastListService;
 import com.zerowaste.services.broadcasts.UpdateBroadcastListService;
 import com.zerowaste.services.broadcasts.GetBroadcastListByIdService; 
 import com.zerowaste.services.broadcasts.GetBroadcastListsService;
 import com.zerowaste.services.broadcasts.TriggerBroadcastService;
 import com.zerowaste.services.broadcasts.DeleteBroadcastListService;
-import com.zerowaste.services.broadcasts.errors.BroadcastListNotFoundException;
-import com.zerowaste.services.broadcasts.errors.BroadcastListProductsNotFoundException;
+import com.zerowaste.services.broadcasts.exceptions.BroadcastListNotFoundException;
+import com.zerowaste.services.broadcasts.exceptions.BroadcastListProductsNotFoundException;
 import com.zerowaste.utils.Constants;
 
 import jakarta.validation.Valid;
 
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.HttpStatus;
@@ -33,10 +31,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 @RestController
 @RequestMapping("/broadcasts")
 public class BroadcastsController {
-
-    private static final String MESSAGE_KEY = "message";
-    private static final String INTERNAL_ERROR_MESSAGE = "Erro interno: ";
-
     private final CreateBroadcastListService createBroadcastListService;
     private final UpdateBroadcastListService updateBroadcastListService;
     private final GetBroadcastListByIdService getBroadcastListByIdService;
@@ -58,10 +52,6 @@ public class BroadcastsController {
         this.getBroadcastListsService = getBroadcastListsService;
         this.deleteBroadcastListService = deleteBroadcastListService;
         this.triggerBroadcastService = triggerBroadcastService;
-    }
-
-    private ResponseEntity<Map<String, Object>> errorResponse(String message, HttpStatus status) {
-        return ResponseEntity.status(status).body(Map.of(MESSAGE_KEY, message));
     }
 
     @PostMapping()
@@ -105,28 +95,29 @@ public class BroadcastsController {
     @GetMapping("/{id}")
     public ResponseEntity<Map<String, Object>> getBroadcastListById(@PathVariable Long id) {
         try {
-            GetBroadcastDTO broadcastListDTO = getBroadcastListByIdService.execute(id);
-            return ResponseEntity.ok(Map.of("broadcast_list", broadcastListDTO));
+            return ResponseEntity.ok(Map.of("broadcast_list", getBroadcastListByIdService.execute(id)));
         }
         catch (BroadcastListNotFoundException e) {
-            return errorResponse(e.getMessage(), HttpStatus.NOT_FOUND);
+            return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(Map.of(Constants.MESSAGE, e.getMessage()));
         }
         catch (Exception e) {
-            return errorResponse(INTERNAL_ERROR_MESSAGE + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(Map.of(Constants.MESSAGE, Constants.GENERALEXCEPTIONCATCHTEXT + e.getMessage()));
         }
     }
 
     @GetMapping
     public ResponseEntity<Map<String, Object>> getAllBroadcastLists() {
         try {
-            List<GetBroadcastDTO> broadcastListDTOs = getBroadcastListsService.execute();
-            return ResponseEntity.ok(Map.of("broadcast_lists", broadcastListDTOs));
-        }
-        catch (BroadcastListNotFoundException e) {
-            return errorResponse(e.getMessage(), HttpStatus.NOT_FOUND);
+            return ResponseEntity.ok(Map.of("broadcast_lists", getBroadcastListsService.execute()));
         }
         catch (Exception e) {
-            return errorResponse(INTERNAL_ERROR_MESSAGE + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(Map.of(Constants.MESSAGE, Constants.GENERALEXCEPTIONCATCHTEXT + e.getMessage()));
         }
     }
 
@@ -134,14 +125,19 @@ public class BroadcastsController {
     public ResponseEntity<Map<String, Object>> deleteBroadcastList(@PathVariable Long id) {
         try {
             deleteBroadcastListService.execute(id);
-            return ResponseEntity.noContent().build();
+            return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(Map.of(Constants.MESSAGE, "Lista de transmissão deletada com sucesso"));
         }
         catch (BroadcastListNotFoundException e) {
-            return errorResponse(e.getMessage(), HttpStatus.NOT_FOUND);
+            return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(Map.of(Constants.MESSAGE, e.getMessage()));
         }
         catch (Exception e) {
-            return errorResponse(INTERNAL_ERROR_MESSAGE + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-
+            return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(Map.of(Constants.MESSAGE, Constants.GENERALEXCEPTIONCATCHTEXT + e.getMessage()));
         }
     }
 

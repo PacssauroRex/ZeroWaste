@@ -64,7 +64,7 @@ class GetBroadcastListsServiceTest {
     @Test
     void testExecute_WithActiveAndDeletedBroadcastLists() {
         
-        when(broadcastListsRepository.findAllByDeletedAtIsNull()).thenReturn(Arrays.asList(broadcastList1));
+        when(broadcastListsRepository.findAllNotDeleted()).thenReturn(Arrays.asList(broadcastList1));
     
         List<GetBroadcastDTO> result = getBroadcastListsService.execute();
   
@@ -75,7 +75,7 @@ class GetBroadcastListsServiceTest {
     @Test
     void testExecute_WhenAllBroadcastListsAreActive() {
 
-        when(broadcastListsRepository.findAllByDeletedAtIsNull()).thenReturn(Arrays.asList(broadcastList1));
+        when(broadcastListsRepository.findAllNotDeleted()).thenReturn(Arrays.asList(broadcastList1));
 
         List<GetBroadcastDTO> result = getBroadcastListsService.execute();
 
@@ -86,7 +86,7 @@ class GetBroadcastListsServiceTest {
     @Test
     void testExecute_WhenRepositoryReturnsEmpty() {
         
-        when(broadcastListsRepository.findAllByDeletedAtIsNull()).thenReturn(List.of());
+        when(broadcastListsRepository.findAllNotDeleted()).thenReturn(List.of());
 
         List<GetBroadcastDTO> result = getBroadcastListsService.execute();
 

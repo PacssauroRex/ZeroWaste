@@ -9,13 +9,15 @@ import com.zerowaste.controllers.broadcast.BroadcastsController;
 import com.zerowaste.dtos.broadcasts.CreateBroadcastListDTO;
 import com.zerowaste.dtos.broadcasts.GetBroadcastDTO;
 import com.zerowaste.dtos.broadcasts.UpdateBroadcastListDTO;
+import com.zerowaste.models.broadcast.BroadcastList;
 import com.zerowaste.services.broadcasts.CreateBroadcastListService;
 import com.zerowaste.services.broadcasts.UpdateBroadcastListService;
+import com.zerowaste.services.broadcasts.exceptions.BroadcastListNotFoundException;
+import com.zerowaste.services.broadcasts.exceptions.BroadcastListProductsNotFoundException;
+import com.zerowaste.utils.Constants;
 import com.zerowaste.services.broadcasts.GetBroadcastListByIdService;
 import com.zerowaste.services.broadcasts.GetBroadcastListsService;
 import com.zerowaste.services.broadcasts.DeleteBroadcastListService;
-import com.zerowaste.services.broadcasts.errors.BroadcastListNotFoundException;
-import com.zerowaste.services.broadcasts.errors.BroadcastListProductsNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,7 +33,6 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @ExtendWith(MockitoExtension.class)
@@ -114,11 +115,11 @@ class BroadcastsControllerTest {
     @Test
     void testGetBroadcastListById() throws Exception {
         Long id = 1L;
-        GetBroadcastDTO dto = new GetBroadcastDTO();
-        dto.setId(id);
-        dto.setName("Broadcast List 1");
+        BroadcastList broadcastList = new BroadcastList();
+        broadcastList.setId(id);
+        broadcastList.setName("Broadcast List 1");
 
-        when(getBroadcastListByIdService.execute(id)).thenReturn(dto);
+        when(getBroadcastListByIdService.execute(id)).thenReturn(broadcastList);
 
         mockMvc.perform(get("/broadcasts/{id}", id))
             .andExpect(status().isOk())
@@ -129,34 +130,25 @@ class BroadcastsControllerTest {
     void testGetBroadcastListById_NotFound() throws Exception {
         Long id = 1L;
 
-        when(getBroadcastListByIdService.execute(id)).thenThrow(new BroadcastListNotFoundException("Lista não encontrada"));
+        when(getBroadcastListByIdService.execute(id)).thenThrow(new BroadcastListNotFoundException("Lista de transmissão não encontrada"));
 
         mockMvc.perform(get("/broadcasts/{id}", id))
             .andExpect(status().isNotFound())
-            .andExpect(jsonPath("$.message").value("Lista não encontrada"));
+            .andExpect(jsonPath("$." + Constants.MESSAGE).value("Lista de transmissão não encontrada"));
     }
 
     @Test
     void testGetAllBroadcastLists() throws Exception {
-
         List<GetBroadcastDTO> broadcastLists = List.of(
             new GetBroadcastDTO(
-                1L, 
-                List.of("email1@example.com", "email2@example.com"),
+                1L,
                 "Broadcast List 1",
-                "MANUAL",
-                LocalDate.now(), 
-                LocalDate.now(), 
-                null
+                "MANUAL"
             ),
             new GetBroadcastDTO(
                 2L, 
-                List.of("email3@example.com", "email4@example.com"),
                 "Broadcast List 2",
-                "MANUAL",
-                LocalDate.now(), 
-                LocalDate.now(),
-                null
+                "INTERVAL"
             )
         );
 
@@ -179,7 +171,8 @@ class BroadcastsControllerTest {
         doNothing().when(deleteBroadcastListService).execute(id);
 
         mockMvc.perform(delete("/broadcasts/{id}", id))
-            .andExpect(status().isNoContent());
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$." + Constants.MESSAGE).value("Lista de transmissão deletada com sucesso"));
     }
 
     @Test
@@ -190,7 +183,7 @@ class BroadcastsControllerTest {
 
         mockMvc.perform(delete("/broadcasts/{id}", id))
             .andExpect(status().isNotFound())
-            .andExpect(jsonPath("$.message").value("Lista não encontrada"));
+            .andExpect(jsonPath("$." + Constants.MESSAGE).value("Lista não encontrada"));
     }
 
     @Test

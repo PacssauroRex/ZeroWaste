@@ -1,12 +1,11 @@
 package com.zerowaste.services.broadcasts;
 
 import org.springframework.stereotype.Service;
-import com.zerowaste.dtos.broadcasts.GetBroadcastDTO;
 import com.zerowaste.models.broadcast.BroadcastList;
 import com.zerowaste.repositories.BroadcastListsRepository;
-import com.zerowaste.services.broadcasts.errors.BroadcastListNotFoundException;
+import com.zerowaste.services.broadcasts.exceptions.BroadcastListNotFoundException;
 
-import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -18,32 +17,13 @@ public class GetBroadcastListByIdService {
         this.broadcastListRepository = broadcastListRepository;
     }
 
-    public GetBroadcastDTO execute(Long id) {
+    public BroadcastList execute(Long id) {
+        Optional<BroadcastList> broadcastOpt = broadcastListRepository.findById(id);
 
-        List<BroadcastList> broadcastLists = broadcastListRepository.findAllByDeletedAtIsNull();
-
-        BroadcastList broadcastList = broadcastLists.stream()
-            .filter(list -> list.getId().equals(id))
-            .findFirst()
-            .orElseThrow(() -> new BroadcastListNotFoundException("Lista de transmissão não encontrada para o ID: " + id));
-
-        if (broadcastList.getDeletedAt() != null) {
-            throw new BroadcastListNotFoundException("Lista de transmissão deletada não encontrada para o ID: " + id);
-        }
-
-        List<String> emails = broadcastList.getBroadcastEmails().stream()
-            .map(emailObj -> emailObj.getEmail())
-            .toList();
-
-        return new GetBroadcastDTO(
-            broadcastList.getId(),
-            emails,
-            broadcastList.getName(),
-            broadcastList.getSendType().name(),
-            broadcastList.getCreatedAt(),
-            broadcastList.getUpdatedAt(),
-            broadcastList.getDeletedAt()
-        );
+        if(!broadcastOpt.isPresent() || broadcastOpt.get().getDeletedAt() != null)
+            throw new BroadcastListNotFoundException("Lista de transmissão não encontrada");
+        
+        return broadcastOpt.get();
     }
 }
 
