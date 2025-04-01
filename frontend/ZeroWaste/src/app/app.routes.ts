@@ -7,6 +7,8 @@ import { routes as productsRoutes } from './pages/products/products.routes';
 import { routes as promotionsRoutes } from './pages/promotions/promotions.routes';
 import { routes as donations_pointsRoutes } from './pages/donations_points/donations_points.routes';
 import { routes as donationsRoutes } from './pages/donations/donations.routes';
+import { routes as broadcastsRoutes } from './pages/broadcasts/broadcast.routes';
+
 
 const routes: Routes = [
   {
@@ -33,6 +35,7 @@ const routes: Routes = [
   ...promotionsRoutes,
   ...donations_pointsRoutes,
   ...donationsRoutes,
+  ...broadcastsRoutes,
 ];
 
 export default routes;
