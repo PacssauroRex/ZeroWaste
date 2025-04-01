@@ -86,7 +86,7 @@ public class SpringSecurityConfiguration {
             .requestMatchers(HttpMethod.PUT, DONATION_POINT_PATH + ANY_PATH).hasRole(ADMIN_ROLE)
             .requestMatchers(HttpMethod.DELETE, DONATION_POINT_PATH + ANY_PATH).hasRole(ADMIN_ROLE)
             // Broadcasts
-            .requestMatchers(HttpMethod.POST, BROADCAST_PATH).hasRole(ADMIN_ROLE)
+            .requestMatchers(HttpMethod.POST, BROADCAST_PATH, BROADCAST_PATH + ANY_PATH).hasRole(ADMIN_ROLE)
             .requestMatchers(HttpMethod.PUT, BROADCAST_PATH + ANY_PATH).hasRole(ADMIN_ROLE)
             .requestMatchers(HttpMethod.GET, BROADCAST_PATH, BROADCAST_PATH + ANY_PATH).hasRole(ADMIN_ROLE)
             .requestMatchers(HttpMethod.DELETE, BROADCAST_PATH + ANY_PATH).hasRole(ADMIN_ROLE)
