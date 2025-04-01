@@ -10,6 +10,7 @@ import com.zerowaste.services.broadcasts.CreateBroadcastListService;
 import com.zerowaste.services.broadcasts.UpdateBroadcastListService;
 import com.zerowaste.services.broadcasts.GetBroadcastListByIdService; 
 import com.zerowaste.services.broadcasts.GetBroadcastListsService;
+import com.zerowaste.services.broadcasts.TriggerBroadcastService;
 import com.zerowaste.services.broadcasts.DeleteBroadcastListService;
 import com.zerowaste.services.broadcasts.errors.BroadcastListNotFoundException;
 import com.zerowaste.services.broadcasts.errors.BroadcastListProductsNotFoundException;
@@ -41,23 +42,22 @@ public class BroadcastsController {
     private final GetBroadcastListByIdService getBroadcastListByIdService;
     private final GetBroadcastListsService getBroadcastListsService;
     private final DeleteBroadcastListService deleteBroadcastListService;
+    private final TriggerBroadcastService triggerBroadcastService;
 
     public BroadcastsController(
         CreateBroadcastListService createBroadcastListService,
         UpdateBroadcastListService updateBroadcastListService,
         GetBroadcastListByIdService getBroadcastListByIdService,
         GetBroadcastListsService getBroadcastListsService,
-        DeleteBroadcastListService deleteBroadcastListService
+        DeleteBroadcastListService deleteBroadcastListService,
+        TriggerBroadcastService triggerBroadcastService
     ) {
         this.createBroadcastListService = createBroadcastListService;
         this.updateBroadcastListService = updateBroadcastListService;
         this.getBroadcastListByIdService = getBroadcastListByIdService;
         this.getBroadcastListsService = getBroadcastListsService;
         this.deleteBroadcastListService = deleteBroadcastListService;
-    }
-
-    private ResponseEntity<Map<String, Object>> successResponse(String message, HttpStatus status) {
-        return ResponseEntity.status(status).body(Map.of(MESSAGE_KEY, message));
+        this.triggerBroadcastService = triggerBroadcastService;
     }
 
     private ResponseEntity<Map<String, Object>> errorResponse(String message, HttpStatus status) {
@@ -142,6 +142,25 @@ public class BroadcastsController {
         catch (Exception e) {
             return errorResponse(INTERNAL_ERROR_MESSAGE + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 
+        }
+    }
+
+    @PostMapping("{id}/trigger")
+    public ResponseEntity<Map<String, Object>> trigger(@PathVariable Long id) {
+        try {
+            this.triggerBroadcastService.execute(id);
+
+            return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(Map.of(Constants.MESSAGE, "Lista de transmissão disparada com sucesso"));
+        } catch (BroadcastListNotFoundException e) {
+            return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(Map.of(Constants.MESSAGE, e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(Map.of(Constants.MESSAGE, Constants.GENERALEXCEPTIONCATCHTEXT + e.getMessage()));
         }
     }
 }
