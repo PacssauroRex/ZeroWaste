@@ -12,15 +12,15 @@ import com.zerowaste.models.broadcast.BroadcastListSendType;
 import com.zerowaste.repositories.BroadcastEmailsRepository;
 import com.zerowaste.repositories.BroadcastListsRepository;
 import com.zerowaste.repositories.ProductsRepository;
-import com.zerowaste.services.broadcasts.errors.BroadcastListProductsNotFoundException;
+import com.zerowaste.services.broadcasts.exceptions.BroadcastListProductsNotFoundException;
 
 import jakarta.transaction.Transactional;
 
 @Service
 public class CreateBroadcastListService {
-    private BroadcastListsRepository broadcastListRepository;
-    private BroadcastEmailsRepository broadcastEmailsRepository;
-    private ProductsRepository productsRepository;
+    private final BroadcastListsRepository broadcastListRepository;
+    private final BroadcastEmailsRepository broadcastEmailsRepository;
+    private final ProductsRepository productsRepository;
 
     public CreateBroadcastListService(
         BroadcastListsRepository broadcastListRepository,

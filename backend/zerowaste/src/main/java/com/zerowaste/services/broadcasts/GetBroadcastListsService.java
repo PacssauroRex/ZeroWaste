@@ -5,6 +5,7 @@ import com.zerowaste.dtos.broadcasts.GetBroadcastDTO;
 import com.zerowaste.models.broadcast.BroadcastList;
 import com.zerowaste.repositories.BroadcastListsRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -17,24 +18,18 @@ public class GetBroadcastListsService {
     }
 
     public List<GetBroadcastDTO> execute() {
-    List<BroadcastList> broadcastLists = broadcastListsRepository.findAllByDeletedAtIsNull();
-    
-    return broadcastLists.stream().map(broadcastList -> {
-    
-        List<String> emails = broadcastList.getBroadcastEmails().stream()
-            .map(emailObj -> emailObj.getEmail())
-            .toList();
-
-        return new GetBroadcastDTO(
-            broadcastList.getId(),
-            emails,
-            broadcastList.getName(),
-            broadcastList.getSendType().name(),
-            broadcastList.getCreatedAt(),
-            broadcastList.getUpdatedAt(),
-            broadcastList.getDeletedAt()
-        );
-    }).toList();
+        List<BroadcastList> broadcastLists = broadcastListsRepository.findAllNotDeleted();
+        List<GetBroadcastDTO> returnList = new ArrayList<>();
+        for (var broadcastList : broadcastLists) {
+            returnList.add(
+                new GetBroadcastDTO(
+                    broadcastList.getId(), 
+                    broadcastList.getName(), 
+                    broadcastList.getSendType().value()
+                )
+            );
+        }
+        return returnList;
     }
 
 }

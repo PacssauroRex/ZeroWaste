@@ -88,6 +88,8 @@ public class SpringSecurityConfiguration {
             // Broadcasts
             .requestMatchers(HttpMethod.POST, BROADCAST_PATH).hasRole(ADMIN_ROLE)
             .requestMatchers(HttpMethod.PUT, BROADCAST_PATH + ANY_PATH).hasRole(ADMIN_ROLE)
+            .requestMatchers(HttpMethod.GET, BROADCAST_PATH, BROADCAST_PATH + ANY_PATH).hasRole(ADMIN_ROLE)
+            .requestMatchers(HttpMethod.DELETE, BROADCAST_PATH + ANY_PATH).hasRole(ADMIN_ROLE)
         )
         .addFilterBefore(authenticationUserService, UsernamePasswordAuthenticationFilter.class)
         .build();

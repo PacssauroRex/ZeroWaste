@@ -11,8 +11,8 @@ import com.zerowaste.models.broadcast.BroadcastListSendType;
 import com.zerowaste.repositories.BroadcastEmailsRepository;
 import com.zerowaste.repositories.BroadcastListsRepository;
 import com.zerowaste.repositories.ProductsRepository;
-import com.zerowaste.services.broadcasts.errors.BroadcastListNotFoundException;
-import com.zerowaste.services.broadcasts.errors.BroadcastListProductsNotFoundException;
+import com.zerowaste.services.broadcasts.exceptions.BroadcastListNotFoundException;
+import com.zerowaste.services.broadcasts.exceptions.BroadcastListProductsNotFoundException;
 
 import jakarta.transaction.Transactional;
 
