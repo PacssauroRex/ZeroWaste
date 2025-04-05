@@ -5,20 +5,22 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
   selector: 'app-select',
   imports: [],
   template: `
-    <select [name]="name" [id]="id" [value]="value" [disabled]="disabled">
-      @if (placeholder) {
-        <option disabled selected>{{ placeholder }}</option>
+    <select
+      [name]="name"
+      [id]="id"
+      [disabled]="disabled"
+      [multiple]="multiple"
+      (change)="onSelectChange($event)"
+      (blur)="onTouch($event)"
+    >
+      @if (placeholder && !multiple) {
+        <option disabled [selected]="!value">{{ placeholder }}</option>
       }
       <ng-content />
     </select>
   `,
   styleUrl: './select.component.css',
   standalone: true,
-  host: {
-    '[value]': 'value',
-    '(change)': 'onSelectChange($event)',
-    '(blur)': 'onTouch($event)'
-  },
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -30,19 +32,17 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 export class SelectComponent implements ControlValueAccessor {
   @Input() id: HTMLSelectElement['id'] = '';
   @Input() name: HTMLSelectElement['name'] = '';
-  @Input() value: HTMLSelectElement['value'] = '';
   @Input() placeholder: string = '';
   @Input() disabled: HTMLSelectElement['disabled'] = false;
+  @Input() multiple: HTMLSelectElement['multiple'] = false;
 
-  onChange: any = () => {};
-  onTouch: any = () => {};
+  value: any = this.multiple ? [] : '';
 
-  constructor() {}
+  onChange: any = () => { };
+  onTouch: any = () => { };
 
   writeValue(value: any): void {
     this.value = value;
-    this.onChange(value);
-    this.onTouch(value);
   }
 
   registerOnChange(fn: any): void {
@@ -58,7 +58,19 @@ export class SelectComponent implements ControlValueAccessor {
   }
 
   onSelectChange(event: Event): void {
-    this.writeValue((event.target as HTMLSelectElement).value);
-    this.onChange((event.target as HTMLSelectElement).value);
+    const selectElement = event.target as HTMLSelectElement;
+
+    if (this.multiple) {
+      const selectedOptions = Array.from(selectElement.selectedOptions).map(
+        (option: HTMLOptionElement) => option.value
+      );
+      this.value = selectedOptions;
+      this.onChange(selectedOptions);
+    } else {
+      this.value = selectElement.value;
+      this.onChange(selectElement.value);
+    }
+
+    this.onTouch();
   }
 }
