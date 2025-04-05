@@ -1,0 +1,116 @@
+<section class="container">
+  <header>
+    <h1>Cadastrar lista de transmissão</h1>
+  </header>
+
+  <form [formGroup]="broadcastListForm" (ngSubmit)="onSubmit($event)">
+    <div class="form-group">
+      <label for="name">Nome</label>
+      <app-input
+        [id]="'name'"
+        [name]="'name'"
+        [type]="'text'"
+        [placeholder]="'Digite o nome do produto'"
+        formControlName="name"
+      />
+      <small *ngIf="broadcastListForm.get('name')?.touched && getErrorMessage('name') as errorMessage" class="invalid-feedback">
+        {{errorMessage}}
+      </small>
+    </div>
+
+    <div class="form-group">
+      <label for="description">Descrição</label>
+      <app-textarea
+        [id]="'description'"
+        [name]="'description'"
+        [placeholder]="'Digite a descrição do produto'"
+        formControlName="description"
+      />
+      <small *ngIf="broadcastListForm.get('description')?.touched && getErrorMessage('description') as errorMessage" class="invalid-feedback">
+        {{errorMessage}}
+      </small>
+    </div>
+
+    <div class="form-group">
+      <label for="sendType">Categoria</label>
+      <app-select [id]="'sendType'" [name]="'sendType'" [placeholder]="'Selecione um tipo de envio'" formControlName="sendType">
+        <option value="MANUAL">Manual</option>
+        <option value="INTERVAL">Intermitente</option>
+      </app-select>
+      <small *ngIf="broadcastListForm.get('sendType')?.touched && getErrorMessage('sendType') as errorMessage" class="invalid-feedback">
+        {{errorMessage}}
+      </small>
+    </div>
+
+    <div class="form-group" formArrayName="emails">
+      <label for="emails">E-mails</label>
+
+      @for (email of emails.controls; track $index) {
+        <div class="emails-form-group">
+          <div>
+            <app-input
+              [id]="'email-' + $index"
+              [name]="'email-' + $index"
+              [type]="'text'"
+              [placeholder]="'Digite o email'"
+              [formControlName]="$index"
+            />
+            <small *ngIf="email.touched && getErrorMessage('emails', $index) as errorMessage" class="invalid-feedback">
+              {{errorMessage}}
+            </small>
+          </div>
+          <app-button
+            *ngIf="$index != 0"
+            [type]="'button'"
+            [variant]="'outline'"
+            [block]="true"
+            (click)="removeEmail($index)"
+          >
+            -
+          </app-button>
+        </div>
+      }
+
+      <app-button
+        [type]="'button'"
+        [variant]="'outline'"
+        [block]="true"
+        (click)="addEmail()"
+      >
+        +
+      </app-button>
+    </div>
+
+    <div class="form-group">
+      <label for="products-ids">Produtos</label>
+
+      <app-select
+        [id]="'products-ids'"
+        [name]="'products-ids'"
+        [multiple]="true"
+        formControlName="productsIds"
+      >
+      @for (product of products(); track product.id) {
+        <option [value]="product.id">
+          {{product.name}}
+        </option>
+      }
+      </app-select>
+      <small *ngIf="broadcastListForm.get('productsIds')?.touched && getErrorMessage('productsIds') as errorMessage" class="invalid-feedback">
+        {{errorMessage}}
+      </small>
+    </div>
+
+    <footer style="display: flex;">
+      <a routerLink="/broadcasts" class="mr-2">
+        <app-button [type]="'button'" [block]="true" [variant]="'outline'">
+          Voltar
+        </app-button>
+      </a>
+
+      <app-button [type]="'submit'" [block]="true">
+        Salvar
+      </app-button>
+    </footer>
+  </form>
+</section>
