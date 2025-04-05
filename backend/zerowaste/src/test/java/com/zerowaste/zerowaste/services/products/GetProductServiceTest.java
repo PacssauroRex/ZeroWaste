@@ -1,7 +1,8 @@
 package com.zerowaste.zerowaste.services.products;
 
 import com.zerowaste.dtos.products.CreateProductDTO;
-import com.zerowaste.dtos.products.GetProductsDTO;
+import com.zerowaste.dtos.products.GetProductsRequestQueryDTO;
+import com.zerowaste.dtos.products.GetProductsResponseBodyDTO;
 import com.zerowaste.models.product.Product;
 import com.zerowaste.models.product.ProductCategory;
 import com.zerowaste.repositories.ProductsRepository;
@@ -61,12 +62,12 @@ class GetProductServiceTest {
         product.setStock(dto.stock());
         product.setExpiresAt(dto.expiresAt());
 
-        var dtoGet = new GetProductsDTO(daysToExpire);
+        var dtoGet = new GetProductsRequestQueryDTO(daysToExpire);
 
         when(productsRepository.findAllNotDeleted(daysToExpire)).thenReturn(List.of(product));
         
         // Act & Assert
-        List <Product> result = assertDoesNotThrow(() -> sut.execute(dtoGet));
+        List<GetProductsResponseBodyDTO> result = assertDoesNotThrow(() -> sut.execute(dtoGet));
         assertEquals(product, result.get(0));
         verify(this.productsRepository, times(1)).findAllNotDeleted(daysToExpire);
     }
