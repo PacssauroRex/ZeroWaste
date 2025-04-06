@@ -15,8 +15,8 @@ public class GetPromotionProductService {
         this.promotionsRepository = promotionsRepository;
     }
 
-    public List<Promotion> execute(Long productsIds) throws PromotionNotFoundException {
-        List<Promotion> promotions = promotionsRepository.findByProducts_Id(productsIds);
+    public List<Promotion> execute(String productName) throws PromotionNotFoundException {
+        List<Promotion> promotions = promotionsRepository.findByProducts_Name(productName);
         if (promotions.isEmpty() || promotions.stream().allMatch(promo -> promo.getDeletedAt() != null)) {
             throw new PromotionNotFoundException("Nenhuma promoção encontrada para o produto indicado.");
         }
