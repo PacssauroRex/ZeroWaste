@@ -18,8 +18,34 @@ public interface ProductsRepository extends JpaRepository<Product, Long> {
     )
     List <Product> findAllNotDeleted(@Param("daysToExpire") Integer daysToExpire);
     
-    @NativeQuery ("SELECT COUNT(*) FROM products WHERE deleted_at IS NULL AND expires_at <= CAST(:targetDate AS DATE)")
+    @NativeQuery (
+        "SELECT COUNT(*) FROM products WHERE deleted_at IS NULL " + 
+        "AND expires_at <= CAST(:targetDate AS DATE)"
+    )
     Long countExpiringProducts(@Param("targetDate") String targetDate);
+
+    @NativeQuery (
+        "SELECT COUNT(*) FROM products WHERE deleted_at IS NULL " + 
+        "AND expires_at > CAST(:startDate AS DATE) " + 
+        "AND expires_at < CAST(:endDate AS DATE)"
+    )
+    Integer countExpiredProductsBetween(@Param("startDate") String startDate, @Param("endDate") String endDate);
+
+    @NativeQuery (
+        "SELECT SUM(unit_price) FROM products WHERE deleted_at IS NULL " + 
+        "AND expires_at > CAST(:startDate AS DATE) " + 
+        "AND expires_at < CAST(:endDate AS DATE)"
+    )
+    Double sumUnitPriceExpiredProductsBetween(@Param("startDate") String startDate, @Param("endDate") String endDate);
+
+    @NativeQuery(
+        "SELECT category, COUNT (*) as counting, SUM(unit_price) FROM products " + 
+        "WHERE deleted_at IS NULL " + 
+        "AND status IN ('DONATED', 'DISCARDED') " +
+        "GROUP BY category " +
+        "ORDER BY counting DESC" 
+    )
+    List<Object[]> wasteGroupByCategory();
 
     Optional<Product> findById(Long id);
     List<Product> findAllByNameLike(String name);
