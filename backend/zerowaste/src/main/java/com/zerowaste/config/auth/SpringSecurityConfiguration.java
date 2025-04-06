@@ -64,6 +64,7 @@ public class SpringSecurityConfiguration {
             .requestMatchers(HttpMethod.PATCH, PRODUCT_PATH + "/donate/**").hasRole(ADMIN_ROLE)
             .requestMatchers(HttpMethod.PATCH, PRODUCT_PATH + "/discard/**").hasRole(ADMIN_ROLE)
             .requestMatchers(HttpMethod.GET, PRODUCT_PATH + "/expiring").hasAnyRole(USER_ROLE, ADMIN_ROLE)
+            .requestMatchers(HttpMethod.GET, PRODUCT_PATH + "/reports/waste").hasRole(ADMIN_ROLE)
             //Promotions
             .requestMatchers(HttpMethod.GET, PROMOTION_PATH, PROMOTION_PATH + ANY_PATH).hasAnyRole(USER_ROLE, ADMIN_ROLE)
             .requestMatchers(HttpMethod.POST, PROMOTION_PATH + "/").hasRole(ADMIN_ROLE)
