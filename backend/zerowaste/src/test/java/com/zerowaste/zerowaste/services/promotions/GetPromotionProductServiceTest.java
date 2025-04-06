@@ -45,10 +45,10 @@ class GetPromotionProductServiceTest {
     void itShouldGetPromotionByProductId() {
 
         // Arrange
-        Long productId = 2L;
+        String productName = "Product Name";
         Product product = new Product();
-        product.setId(productId);
-        product.setName("Product Name");
+        product.setId(2l);
+        product.setName(productName);
         product.setDescription("Product Description");
         product.setBrand("Product Brand");
         product.setCategory(ProductCategory.BAKERY);
@@ -65,22 +65,22 @@ class GetPromotionProductServiceTest {
         promotion.setEndsAt(java.time.LocalDate.now().plusDays(1));
         promotion.setProducts(Set.of(product));
 
-        when(promotionsRepository.findByProducts_Id(productId)).thenReturn(List.of(promotion));
+        when(promotionsRepository.findByProducts_Name(productName)).thenReturn(List.of(promotion));
 
         // Act & Assert
-        List <Promotion> result = assertDoesNotThrow(() -> sut.execute(productId));
+        List <Promotion> result = assertDoesNotThrow(() -> sut.execute(productName));
 
         assertEquals(promotion, result.get(0));
-        verify(this.promotionsRepository, times(1)).findByProducts_Id(productId);
+        verify(this.promotionsRepository, times(1)).findByProducts_Name(productName);
     }
 
     @Test
     @DisplayName("It should throw PromotionNotFoundException")
     void itShouldThrowExceptionForPromotionNotFound() {
         // Arrange
-        Long productId = 2l;
-        when(promotionsRepository.findByProducts_Id(productId)).thenReturn(Collections.emptyList());
+        String productName = "Product Name";
+        when(promotionsRepository.findByProducts_Name(productName)).thenReturn(Collections.emptyList());
         // Act & Assert
-        assertThrows(PromotionNotFoundException.class, () -> sut.execute(productId));
+        assertThrows(PromotionNotFoundException.class, () -> sut.execute(productName));
     }
 }
