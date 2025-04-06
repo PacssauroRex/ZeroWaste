@@ -18,6 +18,6 @@ public interface PromotionsRepository extends JpaRepository<Promotion, Long> {
     List<Promotion> findAllActive(@Param("currentDate") String currentDate);
 
     Optional<Promotion> findById(Long id);
-    List<Promotion> findByPercentage(int percentage);
-    List<Promotion> findByProducts_Id(Long productsIds);
+    List<Promotion> findByPercentageLessThanEqual(int percentage);
+    List<Promotion> findByProducts_Name(String productName);
 }
