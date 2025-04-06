@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import com.zerowaste.controllers.products.ProductController;
 import com.zerowaste.dtos.products.CreateProductDTO;
 import com.zerowaste.dtos.products.EditProductDTO;
+import com.zerowaste.dtos.products.GetProductsResponseBodyDTO;
 import com.zerowaste.models.product.Product;
 import com.zerowaste.models.product.ProductCategory;
 import com.zerowaste.models.product.ProductStatus;
@@ -208,8 +209,23 @@ class ProductControllerTest {
             )
         );
 
+         var productsDTO = products.stream()
+            .map(product -> new GetProductsResponseBodyDTO(
+                product.getId(),
+                product.getName(),
+                product.getDescription(),
+                product.getBrand(),
+                product.getCategory().getCategory(),
+                product.getUnitPrice(),
+                product.getPromotionPrice(),
+                product.getStock(),
+                product.getExpiresAt(),
+                product.getStatus().name()
+            ))
+            .toList();
+
         // Quando o serviço GetProductService é chamado, ele retorna a lista de produtos
-        when(getProductService.execute(any())).thenReturn(products);
+        when(getProductService.execute(any())).thenReturn(productsDTO);
 
         // Então, executamos a requisição GET para buscar todos os produtos
         mockMvc.perform(get("/products"))

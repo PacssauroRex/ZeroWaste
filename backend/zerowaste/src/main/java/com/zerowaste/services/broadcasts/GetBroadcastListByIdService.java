@@ -1,7 +1,8 @@
 package com.zerowaste.services.broadcasts;
 
 import org.springframework.stereotype.Service;
-import com.zerowaste.models.broadcast.BroadcastList;
+
+import com.zerowaste.dtos.broadcasts.GetBroadcastListByIdResponseBodyDTO;
 import com.zerowaste.repositories.BroadcastListsRepository;
 import com.zerowaste.services.broadcasts.exceptions.BroadcastListNotFoundException;
 
@@ -17,13 +18,26 @@ public class GetBroadcastListByIdService {
         this.broadcastListRepository = broadcastListRepository;
     }
 
-    public BroadcastList execute(Long id) {
-        Optional<BroadcastList> broadcastOpt = broadcastListRepository.findById(id);
+    public GetBroadcastListByIdResponseBodyDTO execute(Long id) {
+        var broadcast = broadcastListRepository.findById(id).orElse(null);
 
-        if(!broadcastOpt.isPresent() || broadcastOpt.get().getDeletedAt() != null)
+        if (broadcast == null || broadcast.getDeletedAt() != null) {
             throw new BroadcastListNotFoundException("Lista de transmissão não encontrada");
+        }
         
-        return broadcastOpt.get();
+        var broadcastListDTO = new GetBroadcastListByIdResponseBodyDTO(
+            broadcast.getId(),
+            broadcast.getName(),
+            broadcast.getDescription(),
+            broadcast.getSendType(),
+            broadcast.getBroadcastEmails().stream().map(email -> email.getEmail()).toArray(String[]::new),
+            broadcast.getProducts().stream().map(product -> product.getId()).toArray(Long[]::new),
+            broadcast.getCreatedAt() == null ? null : broadcast.getCreatedAt().toString(),
+            broadcast.getUpdatedAt() == null ? null : broadcast.getUpdatedAt().toString(),
+            Optional.ofNullable(broadcast.getDeletedAt()).map(Object::toString).orElse(null)
+        );
+
+        return broadcastListDTO;
     }
 }
 
