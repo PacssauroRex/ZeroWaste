@@ -3,6 +3,7 @@ package com.zerowaste.controllers.products;
 import com.zerowaste.dtos.products.CreateProductDTO;
 import com.zerowaste.dtos.products.EditProductDTO;
 import com.zerowaste.dtos.products.GetProductsRequestQueryDTO;
+import com.zerowaste.dtos.products.WasteReportQueryDTO;
 import com.zerowaste.models.product.ProductStatus;
 import com.zerowaste.services.products.CreateProductService;
 import com.zerowaste.services.products.DeleteProductService;
@@ -10,6 +11,7 @@ import com.zerowaste.services.products.EditProductService;
 import com.zerowaste.services.products.GetExpiringProductsService;
 import com.zerowaste.services.products.GetProductIdService;
 import com.zerowaste.services.products.GetProductService;
+import com.zerowaste.services.products.GetWasteReportService;
 import com.zerowaste.services.products.SetProductStatusService;
 import com.zerowaste.services.products.exceptions.ProductNotAvailableException;
 import com.zerowaste.services.products.exceptions.ProductNotFoundException;
@@ -40,10 +42,11 @@ public class ProductController {
     private final GetProductService getProductService;
     private final SetProductStatusService setProductStatusService;
     private final GetExpiringProductsService getExpiringProductsService;
+    private final GetWasteReportService getWasteReportService;
 
     public ProductController(CreateProductService createProductService, DeleteProductService deleteProductService, EditProductService editProductService, 
                             GetProductIdService getProductIdService, GetProductService getProductService, SetProductStatusService setProductStatusService,
-                            GetExpiringProductsService getExpiringProductsService) {
+                            GetExpiringProductsService getExpiringProductsService, GetWasteReportService getWasteReportService) {
         this.createProductService = createProductService;
         this.deleteProductService = deleteProductService;
         this.editProductService = editProductService;
@@ -51,6 +54,7 @@ public class ProductController {
         this.getProductService = getProductService;
         this.setProductStatusService = setProductStatusService;
         this.getExpiringProductsService = getExpiringProductsService;
+        this.getWasteReportService = getWasteReportService;
     }
     
     @PostMapping()
@@ -191,6 +195,19 @@ public class ProductController {
                 .body(Map.of(Constants.MESSAGE, Constants.GENERALEXCEPTIONCATCHTEXT + err.getMessage()));
         }
     }
+
+    @GetMapping("/reports/waste")
+    public ResponseEntity<Map<String, Object>> productsReport(@RequestBody @Valid WasteReportQueryDTO dto) {
+        try {
+            return ResponseEntity.ok(Map.of("waste_report", getWasteReportService.execute(dto)));
+        }
+        catch(Exception err) {
+            return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(Map.of(Constants.MESSAGE, Constants.GENERALEXCEPTIONCATCHTEXT + err.getMessage()));
+        }
+    }
+    
     
 }
 
