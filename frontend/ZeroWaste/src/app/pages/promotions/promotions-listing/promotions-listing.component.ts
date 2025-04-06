@@ -36,16 +36,16 @@ export class PromotionsListingComponent implements OnInit {
   public route = inject(ActivatedRoute);
   public promotions = signal<Promotion[]>([]);
   @ViewChild(ModalComponent) modal!: ModalComponent;
-  
+
   public filtersPercentage = this.fb.group({
     percentage: [null, Validators.min(0)],
   });
 
-  public filtersID = this.fb.group({
-    id: [null, Validators.min(0)],
+  public filtersName = this.fb.group({
+    name: [null, Validators.min(0)],
   });
 
-  
+
 
   public async ngOnInit(): Promise<void> {
     const promotions = await this.promotionService.getAllPromotions();
@@ -72,13 +72,13 @@ export class PromotionsListingComponent implements OnInit {
   public async onSubmitFilterFormProduct(event: SubmitEvent) {
     event.preventDefault();
 
-    if (this.filtersID.invalid) {
+    if (this.filtersName.invalid) {
       return;
     }
 
     try {
-      const id = this.filtersID.get('id')?.value;
-      const filteredPromotions = await this.promotionService.getPromotionByProductId(id);
+      const name = this.filtersName.get('name')?.value;
+      const filteredPromotions = await this.promotionService.getPromotionByProductName(name || '');
       this.promotions.set(filteredPromotions);
     } catch (error) {
       console.error('Erro ao buscar promoções', error);
@@ -118,7 +118,7 @@ export class PromotionsListingComponent implements OnInit {
     return validationErrorMessage;
   }
   public getErrorMessageId(controlName: string): string | null {
-    const validationErrorMessage = this.validationErrorMessage.getValidationErrorMessage(this.filtersID.get(controlName)!);
+    const validationErrorMessage = this.validationErrorMessage.getValidationErrorMessage(this.filtersName.get(controlName)!);
 
     return validationErrorMessage;
   }
