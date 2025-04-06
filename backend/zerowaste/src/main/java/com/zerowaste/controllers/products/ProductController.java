@@ -2,7 +2,7 @@ package com.zerowaste.controllers.products;
 
 import com.zerowaste.dtos.products.CreateProductDTO;
 import com.zerowaste.dtos.products.EditProductDTO;
-import com.zerowaste.dtos.products.GetProductsDTO;
+import com.zerowaste.dtos.products.GetProductsRequestQueryDTO;
 import com.zerowaste.models.product.ProductStatus;
 import com.zerowaste.services.products.CreateProductService;
 import com.zerowaste.services.products.DeleteProductService;
@@ -122,9 +122,10 @@ public class ProductController {
     }
 
     @GetMapping()
-    public ResponseEntity<Map<String, Object>> getAllProducts(@Valid GetProductsDTO dto) {
+    public ResponseEntity<Map<String, Object>> getAllProducts(@Valid GetProductsRequestQueryDTO dto) {
         try {
-            return ResponseEntity.ok(Map.of("products", getProductService.execute(dto)));
+            var products = getProductService.execute(dto);
+            return ResponseEntity.ok(Map.of("products", products));
         }
         catch (Exception err) {
             return ResponseEntity

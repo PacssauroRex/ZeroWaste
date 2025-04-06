@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Broadcast } from "../pages/broadcasts/broadcast";
+import { Broadcast, CreateBroadcastDTO } from "../pages/broadcasts/broadcast";
 import { API_URL } from "../utils/constants";
 
 
@@ -8,6 +8,22 @@ import { API_URL } from "../utils/constants";
 })
 
 export class BroadcastService {
+  public async createBroadcast(data: CreateBroadcastDTO): Promise<void> {
+    const response = await fetch(API_URL + "/broadcasts", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      },
+      body: JSON.stringify(data),
+    });
+
+    const responseData = await response.json();
+
+    return responseData;
+  }
+
   public async getAllBroadcasts(): Promise<Broadcast[]> {
     const response = await fetch(API_URL + '/broadcasts', {
       method: 'GET',
@@ -39,21 +55,21 @@ export class BroadcastService {
   }
 
   public async deleteBroadcast(id: number): Promise<void> {
-      const response = await fetch(API_URL + '/broadcasts/' + id, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
-          'Accept': 'application/json',
-        },
+    const response = await fetch(API_URL + '/broadcasts/' + id, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        'Accept': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      const body = await response.json();
+
+      throw new Error('Error deleting broadcast', {
+        cause: body,
       });
-    
-      if (!response.ok) {
-        const body = await response.json();
-    
-        throw new Error('Error deleting broadcast', {
-          cause: body,
-        });
-      }
     }
+  }
 }
