@@ -137,10 +137,10 @@ public class PromotionController {
         }
     }
 
-    @GetMapping("/productFilter/{productsIds}")
-    public ResponseEntity<Map<String, Object>> getPromotionByProductId(@PathVariable Long productsIds) {
+    @GetMapping("/productFilter/{productName}")
+    public ResponseEntity<Map<String, Object>> getPromotionByProductName(@PathVariable String productName) {
         try {
-            return ResponseEntity.ok(Map.of("promotions", getPromotionProductService.execute(productsIds)));
+            return ResponseEntity.ok(Map.of("promotions", getPromotionProductService.execute(productName)));
         }
         catch(PromotionNotFoundException err) {
             return ResponseEntity
