@@ -47,14 +47,14 @@ class GetPromotionPercentageServiceTest {
         promotion.setEndsAt(java.time.LocalDate.now().plusDays(1));
 
         List<Promotion> expectedPromotions = Collections.singletonList(promotion);
-        when(promotionsRepository.findByPercentage(percentage)).thenReturn(expectedPromotions);
+        when(promotionsRepository.findByPercentageLessThanEqual(percentage)).thenReturn(expectedPromotions);
 
         
         // Act & Assert
         List<Promotion> result = assertDoesNotThrow(() -> sut.execute(percentage));
 
         assertEquals(expectedPromotions, result);
-        verify(this.promotionsRepository, times(1)).findByPercentage(percentage);
+        verify(this.promotionsRepository, times(1)).findByPercentageLessThanEqual(percentage);
     }
 
     @Test
@@ -62,7 +62,7 @@ class GetPromotionPercentageServiceTest {
     void itShouldThrowExceptionForPromotionNotFound() {
         // Arrange
         int percentage = 20;
-        when(promotionsRepository.findByPercentage(percentage)).thenReturn(Collections.emptyList());
+        when(promotionsRepository.findByPercentageLessThanEqual(percentage)).thenReturn(Collections.emptyList());
         // Act & Assert
         assertThrows(PromotionNotFoundException.class, () -> sut.execute(percentage));
     }
