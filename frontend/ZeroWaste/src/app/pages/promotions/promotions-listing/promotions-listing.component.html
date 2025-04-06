@@ -30,20 +30,20 @@
           </div>
         </div>
       </form>
-      <form class="filtersId" [formGroup]="filtersID" (ngSubmit)="onSubmitFilterFormProduct($event)" style="max-width: 300px;">
+      <form class="filtersName" [formGroup]="filtersName" (ngSubmit)="onSubmitFilterFormProduct($event)" style="max-width: 300px;">
         <div class="row">
           <div class="form-group">
             <label for="name">
-              Filtrar por ID de produto
+              Filtrar por nome de produto
             </label>
             <app-input
-              [type]="'number'"
-              [name]="'id'"
-              [id]="'id'"
-              [placeholder]="'Buscar por Id de produto...'"
-              formControlName="id"
+              [type]="'string'"
+              [name]="'name'"
+              [id]="'name'"
+              [placeholder]="'Buscar por nome de produto...'"
+              formControlName="name"
             />
-            <small *ngIf="filtersID.get('id')?.touched && getErrorMessageId('id') as errorMessage" class="invalid-feedback">
+            <small *ngIf="filtersName.get('name')?.touched && getErrorMessageId('name') as errorMessage" class="invalid-feedback">
               {{errorMessage}}
             </small>
           </div>
