@@ -38,8 +38,8 @@ export class PromotionService {
     return promotions ?? {};
   }
 
-  public async getPromotionByProductId(id: number | null = null): Promise<Promotion[]> {
-    const url = `${API_URL}/promotions/productFilter/${id}`;
+  public async getPromotionByProductName(Name: String): Promise<Promotion[]> {
+    const url = `${API_URL}/promotions/productFilter/${Name}`;
 
     const response = await fetch(url, {
       method: 'GET',
