@@ -63,6 +63,7 @@ public class CreateBroadcastListService {
         broadcastEmails.addAll(notFoundBroadcastEmails);
         
         broadcastList.setName(dto.name());
+        broadcastList.setDescription(dto.description());
         broadcastList.setSendType(BroadcastListSendType.valueOf(dto.sendType()));
         broadcastList.setSendProtocol(BroadcastListSendProtocol.EMAIL);
         broadcastList.setBroadcastEmails(broadcastEmails);
